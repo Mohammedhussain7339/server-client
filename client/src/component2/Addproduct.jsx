@@ -37,6 +37,7 @@ export default function Addproduct() {
       
           const data = response.data;
           console.log(data);
+          console.log('hioig')
         } catch (error) {
           console.error('Error:', error.message);
         }
