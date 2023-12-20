@@ -5,8 +5,8 @@ require('./models/product')
 var path = require('path');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
-// const multer = require('multer');
-// const upload = multer({dest:'uploads/'})
+const multer = require('multer');
+const upload = multer({dest:'uploads/'})
 
 const app = express();
 const userRouter = require('./routes/userAuth')

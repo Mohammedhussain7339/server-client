@@ -16,6 +16,6 @@ router.post('/login',loginUser,()=>{
 console.log('this is login page')
 })
 
-router.post('/product',upload.single('image'),productPage);
+router.post('/product', upload.single('image'),productPage);
 
 module.exports = router;
