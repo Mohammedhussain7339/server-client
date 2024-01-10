@@ -1,58 +1,36 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { FaRegHeart ,FaTruck } from "react-icons/fa";
+import { FaUserShield } from "react-icons/fa6";
+import { HiCursorClick } from "react-icons/hi";
+
+
+
 
 export default function Footer() {
   return (
     <>
-      
-<footer>            
-    <div className="fbox"><th>CONTACT US</th><br/>
-                            55 galaxy Enque, 2566 street ,3788Y<br/>
-                            <span>Phone:</span><Link to="">(7339750916)</Link><br/>
-                            <span>Email:</span><Link to="">mohammedhussain7339@gmail.com</Link>
-                            <span>Stay Connected</span>
-                            <ul><li><Link to=""><i className="fa-brands fa-facebook-f"></i></Link></li>
-                            <li><Link to=""><i className="fa-brands fa-instagram"></i></Link></li>
-                            <li><Link to=""><i className="fa-brands fa-twitter"></i></Link></li>
-                            <li><Link to=""><i className="fa-brands fa-youtube"></i></Link></li>
-                        
-                            </ul>
-        </div>
-             <div className="fbox">
-                <th>INFORMATION</th><br/>
-                <td>About Us</td><br/>
-                <td>Contact Us</td><br/>
-                <td>Carrer</td><br/>
-                <td>My Account</td><br/>
-                <td>Wishlist</td><br/>
-                <td>Order and Returns</td><br/>
-                <td>Cart</td>
-            </div>
-
-             <div className="fbox">
-                
-            <th>CUSTOMER SERVICES</th><br/>
-                <td style={{fontStyle:'bold'}}>Privacy Policy</td><br/>
-                <td>Term & Condition</td><br/>
-                <td>Shipping and Returns</td><br/>
-                <td>Help & Facts</td><br/>
-                <td>Latest News</td><br/>
-                <td>Refund Policy</td><br/>
-                <td>Customer Services</td>
-
-            </div>
-             <div className="fbox">
-            <th>NEWSLETTER</th><br/>
-            <h5>Enter your email to receive daily news and get 20%
-                off coupon for all items. NO spam, we promise
-            </h5></div>
-            <input type="text" placeholder="Email Address"/><button>Subscribe</button>            
+    <div className='order'>
+      <div className="suborder"><span><FaRegHeart /></span>
+      <h4>AMAZING VALUE EVERY DAY</h4>
+      <h5>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Qui, inventore!</h5></div>
+      <div className="suborder"><span><FaUserShield />
+</span><h4>ALL INDIA SERVICE POLICY</h4><h5>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Qui, inventore!</h5></div>
+      <div className="suborder"><span><FaTruck /></span>
+<h4>HOME DELIVERY</h4><h5>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Qui, inventore!</h5></div>
+      <div className="suborder"><span><HiCursorClick /></span>
+<h4>CLICK & COLLECT</h4><h5>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Qui, inventore!</h5></div>
+    </div>
+    <div className="subfooter">
+      <div className="subftr"><h4>CONTACTUS</h4><h5>55 Gallaxy Enque, 255 street NY</h5><span>Phone: <h6>7339750916</h6></span><br /><span>Email: <h6>mohammedhussain7339@gmail.com</h6></span><h5>Stay Connected</h5></div>
+      <div className="subftr"><h4>INFORMATION</h4><h5>AboutUs</h5> <h5>ContactUs</h5> <h5>Career</h5><h5>MyAccount</h5><h5>Order & Returns</h5><h5>Wishlist</h5><h5>Cart</h5></div>
+      <div className="subftr"><h4>CUSTOMER SERVICE</h4> <h5>Privacy Policy</h5> <h5>Terms & Condition</h5><h5>Shipping & Returns</h5><h5>Help & FAQs</h5><h5>Latest News</h5><h5>Refund Policy</h5><h5>Customer Service</h5></div>
+      <div className="subftr"><h4>FEEDBACKER</h4><span>Enter Your feedback  to improve our fault daily news and get 20% off coupon fo rall items. No spam ,we promise</span><input type="text" className='feedback' placeholder='Entery your feedback' /><input className='submit' type="submit" /></div>
+    </div>
+    <div className="lastftr">
+      <p>2024, Vogal All Right Reserved</p>
+      <p>2024, Vogal All Right Reserved</p>
     
-            <div className="lastfooter">
-        <h4>© 2023,Vogal. All Rights Reserved.</h4>  
-        </div>
-             </footer>    
-
+    </div>
     </>
   )
 }

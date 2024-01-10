@@ -247,7 +247,7 @@ padding-left: 40px;
 
 /* -----------------------------main styling start------------------------- */
 .main{
-  width: 1538px;
+  width: 1519px;
   height: 100vh;
   background-image:url(img/img1.jpg);
   background-position: center;
@@ -338,4 +338,567 @@ footer{
 .lastfooter img{
   width: 100%;
   height: 50px;
+}
+
+.explorer{
+  width: 100%;
+  height: 100vh;
+  background-color: rgb(235, 231, 231);
+}
+.explorer h1{
+  text-align: center;
+
+}
+table{
+  background-color: rgb(68, 135, 194);
+  width: 500px;
+  margin: 30%;
+  border: 1px solid gray;
+}
+.expcontainer{
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #FFFFFF;
+  text-transform: capitalize;
+  font-family: karla;
+  display: flex;
+}
+.productbox{
+  margin-bottom: 20px;
+  width: 340px;
+  height: 400px;
+  position: relative;
+  border: 1px rgb(186, 182, 182) solid;
+  padding: 6;
+  color: red;
+}
+
+/* ----------------------------populer page--------------------------- */
+.populer-category{
+  position: relative;
+  top: 350px;
+  width: 100%;
+  /* height: 100vh; */
+  background-color:#FFF6F6 ;
+}
+.p-main{
+width: 1470px;
+height: 500px;
+display: flex;
+align-items: center;
+justify-content: space-around;
+}
+.p-box{
+  width: 320px;
+  height: 390px;
+  background-color: #000;
+  overflow: hidden;
+  position: relative;
+}
+
+.p-img{
+  width: 320px;
+  height: 390px;
+  transition: 0.5s;
+
+}
+.p-img:hover{
+  width: 350px;
+  height: 410px;
+  cursor: pointer;
+}
+
+.p-btn{
+  width: 170px;
+  height: 35px;
+  position: relative;
+  right: 20px;
+  border: none;
+  border: 1px solid black;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.5s;
+  line-height: 35px;
+  font-family:  Helvetica, sans-serif;
+}
+.p-btn:hover{
+  background-color: black;
+  color: white;
+}
+.p-btnbox{
+  margin-top: 10px;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: relative;
+  top: -55px;
+}
+
+/* ----------------------sale page---------------------------- */
+.sale-page{
+  position: relative;
+  top: 350px;
+  width: 100%;
+  height: 500px;
+  background-color: #DCCFD6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial;
+  color: white;
+}
+.sale-page h4{
+font-size: 20px;
+margin: 15px;
+}
+.sale-page h1{
+  font-size: 60px;
+}
+.sale-text{
+  width: 600px;
+  text-align: center;
+}
+.shop-box{
+  width: 170px;
+  height: 40px;
+  border: 1px solid white;
+  line-height: 40px;
+  margin-left: 220px;
+  cursor: pointer;
+  transition: 0.5s;
+}
+.shop-box:hover{
+  background-color: white;
+}
+.shop-box:hover a{
+  color: #000;
+}
+.shop-box a{
+  color: white;
+}
+
+/* ------------------------------sofas-page------------------------- */
+
+.sofas-page{
+  position: relative;
+  top: 350px;
+  width: 100%;
+  height: 100vh;
+  background-image: url(img/sofa.jpg);
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+
+}
+.s-textbox{
+  text-align: center;
+  width: 500px;
+  height: 500px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: white ;
+  margin-top: 280px;
+}
+.s-textbox h1{
+  font-size: 90px;
+
+}
+.viewbtn{
+  width: 180px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  background-color: white;
+  margin-left: 170px;
+  margin-top: 20px;
+  transition: 0.5s;
+  
+}
+.viewbtn:hover{
+  background-color: #000;
+}
+.viewbtn:hover a{
+  color: white;
+}
+.viewbtn a{
+  color: black;
+  font-size: 15px;
+}
+
+
+/* ---------------------page 3 is start---------------------- */
+.preorder-page{
+  width: 100%;
+  height: 500px;
+  position: relative;
+  top: 350px;
+  background-color: #ECD2C9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+}
+.preorder-page h1{
+font-size: 70px;
+margin-top: 10px;
+margin-bottom: 10px;
+}
+.preorder-page h4{
+  font-size: 19px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+/* ------------------------------------start shop page---------------- */
+.shop-page{
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  top: 350px;
+  background-image: url(img/oceans.jpg);
+  background-size: cover;
+  background-position: center;
+  /* background-color: #FFFFFF; */
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+.s-tbox{
+  width: 450px;
+  height: 350px;
+  border: 2px solid black;
+  text-align: center;
+  padding-top: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  box-shadow: 0 0 20px black;
+}
+.s-tbox h4{
+  font-size: 16px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.shop-page .shop-box{
+  width: 180px;
+  height: 40px;
+  border: 1px solid black;
+  margin-left: 140px;
+}
+.shop-box a{
+  color: black;
+}
+.shop-box:hover{
+  background-color: black;
+}
+.shop-box:hover a{
+  color: white;
+}
+/* -------------------------start add product page--------------------- */
+.addproduct{
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  top: 350px;
+
+}
+.addtext{
+  width: 100%;
+  height: 150px;
+  background-color: #e6c6c6;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  padding: 50px;
+}
+.addproduct img{
+  width: 100%;
+  height: 700px;
+}
+.alertss{
+  border-radius: none;
+  display: none;
+}
+
+/* --------------------------slider page--------------------------------- */
+.slider{
+  width: 100%;
+  height: 450px;
+  background-color: #c0defb;
+  position: relative;
+  top: 350px;
+  font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+.sliderbox{
+  width: 600px;
+  text-align: center;
+
+}
+.sliderbox ul{
+  padding-left: 197px;
+  padding-top: 30px;
+
+}
+.sliderbox ul li{
+  width: 18px;
+  height: 18px;
+  background-color: yellow;
+  float: left;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  margin-left: 20px;
+}
+.btnul .btnli{
+  width: 39px;
+  height: 5px;
+  background-color: gray;
+  cursor: pointer;
+  clip-path: none;
+  margin: 15px;
+}
+.btnul .btnli:hover{
+  background-color: rgb(3, 3, 3);
+}
+.date{
+  width: 100%;
+  height: 150px;
+  background-image: url(img/mirror.jpg);
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  top: 350px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  color: goldenrod;
+}
+.date::after{
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 07px;
+  width: 97%;
+  height: 90%;
+  border: 2px goldenrod solid;
+}
+
+.explorepage{
+  width: 100%;
+  min-height: 100vh;
+  background-image: linear-gradient(to right,rgb(76,209,249), rgb(250, 230, 236), rgb(76, 209, 249));
+  /* background-color: pink; */
+  position: relative;
+  top: 350px;
+  display: flex;
+  flex-wrap:wrap;
+  text-align: center;
+  /* gap: 50px; */
+}
+.explorepage h1{
+  position: absolute;top: -30px;
+}
+.div{
+  width: 400px;
+  height: 500px;
+  background-color: red;
+  margin: 50px;
+  position: relative;
+}
+.div img{
+  width: 100%;
+  height: 80%;
+}
+.div h4,h5{
+padding-right: 100px;
+padding-top: 10px;
+}
+.box2,.box7,.box9,.box5{
+  height: 600px;
+  background-color: blueviolet;
+}
+
+/* footer...................... */
+
+.order{
+  width: 100%;
+  height: 150px;
+  background-color: #333333;
+  position: relative;
+  top: 350px;
+  display: flex;
+  gap:50px;
+  padding-left: 70px;
+  align-items: center;
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+}
+.order span{
+  font-size: 23px;
+}
+.subfooter{
+  width: 100%;
+  height: 350px;
+  background-color: #FFFFFF;
+  position: relative;
+  top: 350px;
+  display: flex;
+  gap: 0px;
+  padding-left: 0px;
+  /* align-items: center; */
+  font-family: Arial, Helvetica, sans-serif;
+}
+.subftr{
+
+  width: 450px;
+  margin-top: 70px;
+  margin-left: 30px;
+}
+.feedback{
+  position: relative;
+  width: 320px;
+  top: 50px;
+  left: -20px;
+  padding-left: 30px;
+  height: 40px;
+  background-color: rgb(232, 230, 230);
+}
+.subftr .submit{
+  position: absolute;
+  height: 38px;
+  top: 194px;
+  right: 31px;
+  width: 104px;
+  display: inline;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  border: none;
+
+}
+.subfooter h6{
+  display: inline;
+  font-size: 16px;
+}
+.lastftr{
+  width: 100%;
+  height: 70px;
+  position: relative;
+  top: 350px;
+  background-color: #FFFFFF;
+  position: relative;
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
+  padding-left: 50px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* -----------------login page css start------------------------- */
+.loginpage{
+  width: 100%;
+  min-height: 100vh;
+  /* background-color: #c0defb; */
+}
+.home{
+  width: 100%;
+  height: 50px;
+  background-color: gainsboro;
+  line-height: 50px;
+  padding-left: 100px;
+}
+.mainlogin{
+  display: flex;
+  justify-content: space-around;
+}
+.loginbox{
+  width: 500px;
+  height: 320px;
+  border: 2px solid black;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 30px;
+  position: relative;
+  top: 150px;
+}
+.loginp{
+  font-size: 15px;
+}
+.createbox{
+  width: 200px;
+  height: 35px;
+  color: white;
+  background-color: black;
+  line-height: 35px;
+  text-align: center;
+}
+.canchor{
+  color: white;
+  font-size: 14px;
+}
+.loginbox input{
+  height: 35px;
+  padding-left: 20px;
+  position: relative;
+  right: 20px;
+  margin-bottom: 10px;
+}
+.loginbox span{
+  font-size: 25px;
+}
+.loginbox .anchor{
+  color:black;
+  padding-left: 90px;
+}
+.loginbox .anchor:hover{
+  color: gray;
+}
+.loginbox .submit{
+  width: 120px;
+  padding-right: 20px;
+  color: white;
+  background-color: black;
+  border: none;
+
+}
+/* ---------------------sign up styling start--------------------------- */
+.signuppage{
+  width: 100%;
+  height: 100vh;
+}
+.createacc{
+  width: 500px;
+  height: 400px;
+  position: absolute;
+  top: 300px;
+  left: 500px;
+  text-align: center;
+  margin: 10px;
+}
+.createacc input{
+  height: 35px;
+  padding-left: 20px;
+  margin-top: 10px;
+}
+.createacc .fname{
+position: relative;
+width: 200px;
+}
+.createacc .lname{
+  width: 200px;
+  margin-left: 45px;
+}
+.createacc span{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+}
+.createacc .submit{
+  background-color: black;
+  color: white;
+  border: none;
+  padding-right: 20px;
+  cursor: pointer;
 }

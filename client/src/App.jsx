@@ -1,16 +1,16 @@
 import React from 'react'
-// import Headers from './component/Headers';
-// import Navbar from './component/Navbar'
-import Footer from './component/Footer';
 import Home from './component/Home';
 import About from './component/About';
-import Signup from './component/Signup';
-import Login from './component/Login';
 import Mainpage from './component/Mainpage';
-import Addproduct from './component2/Addproduct';
+import Userdata from './component2/Userdata';
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 
 import "./App.css"
+import Login2 from './component/Login2';
+import Signup2 from './component/Signup2';
+import Product from './component2/product'
+import Test from './component2/Test'
+
 
 
 export default function App() {
@@ -22,12 +22,13 @@ export default function App() {
       <Routes>
       <Route path='/' element={<Home/>}></Route>        
       <Route  path='/About' element={<About/>} ></Route>        
-      <Route  path='/Login' element={<Login/>} ></Route>        
-      <Route  path='/Signup' element={<Signup/>} ></Route>        
-      <Route  path='/Addproduct' element={<Addproduct/>} ></Route>        
+      <Route  path='/Product' element={<Product/>} ></Route>        
       <Route  path='/Mainpage' element={<Mainpage/>} ></Route>        
+      <Route  path='/Userdata' element={<Userdata/>} ></Route>        
+      <Route  path='/Login2' element={<Login2/>} ></Route>        
+      <Route  path='/Signup2' element={<Signup2/>} ></Route>        
+      <Route  path='/Test' element={<Test/>} ></Route>        
       </Routes>
-      {/* <Footer/> */}
       </Router>
     </div>
   )

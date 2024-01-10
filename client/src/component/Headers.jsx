@@ -1,5 +1,8 @@
 import React, { useContext } from 'react';
 const MyContext = React.createContext();
+import axios from 'axios';
+import { useState,useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom'
 import { RiAccountCircleLine  } from 'react-icons/ri';
 import { IoCall } from "react-icons/io5";
@@ -11,6 +14,32 @@ import { FaBars } from "react-icons/fa6";
 import { IoIosLogOut } from "react-icons/io";
 import { FaFacebookF,FaInstagram,FaTwitter,FaYoutube,FaRegHeart,FaCartArrowDown  } from "react-icons/fa";
 export default function Headers() {
+    const navigate =useNavigate();
+    const logoutHandler = async () => {
+        try {
+          const response = await axios.post('http://localhost:8000/logout', {}, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            // withCredentials: true, // Send cookies with the request
+          });
+    
+          if (response.status === 200) {
+            console.log(response.data); // Logout successful
+            navigate('/login2')
+            // Redirect or perform any other action after successful logout
+          } else {
+            console.error('Logout error:', response.data.error);
+            // Handle the error accordingly
+          }
+        } catch (error) {
+          console.error('Logout error:', error);
+          // Handle network errors or other issues
+        }
+      };
+    
+    
+
     const contextValue = useContext(MyContext);
   return (
 <>
@@ -22,7 +51,7 @@ export default function Headers() {
             </div>
             <div className="navdiv-3"><i className="fa-brands"><FaFacebookF /></i><i className="fa-brands"><FaInstagram /></i><i className="fa-brands"><FaTwitter/></i><i className="fa-brands"><FaYoutube /></i>
             | English <i className="fa-brands"><IoIosArrowDown /></i>INR <i className="fa-brands"><LiaRupeeSignSolid /></i><i className="fa-solid fa-angle-down"></i>
-        <Link style={{color:'red',fontSize:'24px'}}to="logout.php"><i className='logout'><IoIosLogOut /></i></Link>    
+    <i className='logout'style={{color:'red',fontSize:'24px', cursor:'pointer'}} onClick={logoutHandler}><IoIosLogOut /></i>   
         </div>
 
 
