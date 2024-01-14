@@ -14,7 +14,7 @@ import Footer from './Footer';
 export default function Home() {
   return (
     <div>
-        <Headers/>
+        <Headers tagname='ACCOUNT'/>
       <Navbar navbar="navbarrrr"/>
       <Mainpage/>
       <Explore/>

@@ -11,7 +11,7 @@ const Salepage = () => {
           Save up to 50% off discontinued furniture for every room. In stock and ready for delivery.
         </h4>
         <div className="shop-box">
-          <Link to="">Shop Clearance</Link>
+          <Link to="FILTERS">Shop Clearance</Link>
         </div>
       </div>
     </div>

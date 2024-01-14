@@ -1,6 +1,12 @@
 import React from 'react'
 import { useState,useEffect } from 'react';
 import axios from 'axios';
+import { IoMdHeartEmpty } from "react-icons/io";
+import { IoCartOutline } from "react-icons/io5";
+import { IoSearchOutline } from "react-icons/io5";
+
+
+
 
 export default function Explore() {
   const [products, setProducts] = useState([]);
@@ -39,6 +45,15 @@ export default function Explore() {
           {products.map((product) => (
             <div className='productbox'>
             <li key={product._id}>
+              <div className="imgdiv">
+              <img src={`http://localhost:8000/uploads/${product.productImage}`} alt={product.productName} />
+
+                <div className="icondiv">
+                <i><IoMdHeartEmpty /></i>
+                <i><IoCartOutline /></i>
+                <i><IoSearchOutline /></i>
+                </div>
+              </div>
               <p>{product.productName}</p><p> {product.productPrice}</p>
               {/* Additional product details can be displayed here */}
             </li>

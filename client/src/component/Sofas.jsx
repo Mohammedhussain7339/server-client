@@ -8,7 +8,7 @@ export default function Sofas() {
     <div className="s-textbox">
         <h3>Build Yours in Minutes</h3>
         <h1>MODULAR SOFAS</h1>
-        <div class="viewbtn"><Link to="">VIEW COLLECTION</Link></div>
+        <div class="viewbtn" style={{cursor:'pointer'}}><Link to="FILTERS">VIEW COLLECTION</Link></div>
     </div>
 </div>
 

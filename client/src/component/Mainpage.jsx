@@ -8,7 +8,7 @@ export default function Mainpage() {
             <div className="textbox">
                 <h2 style={{fontSize: '30px'}}>EVERYTHING YOU NEED FOR</h2>
                 <h1 style={{fontSize: '50px', paddingTop: '10px',paddingBottom: '10px'}}>LIVING ROOM</h1>
-                <div><Link to="">SHOP NOW</Link></div>
+                <div style={{cursor:'pointer'}}>  <Link to="Filters">SHOP NOW</Link></div>
             </div>
         </div>
 

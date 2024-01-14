@@ -1,13 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Headers from './Headers'
+import Headers from '../component/Headers';
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 
 
-export default function Login2() {
+export default function Login2({tagname}) {
   const navigate =useNavigate();
   const [credentials, setCredentials] = useState({
     email: '',
@@ -60,7 +60,7 @@ export default function Login2() {
           <div className="loginbox loginbox2">
               <span>NEW CUSTOMER?</span>
               <div className='loginp'>Registering for this site  history. We'll get a new account set up for your in no time. For this will only ask yor for information necessary to make the puchase process faster and easier</div>
-                <div className='createbox'> <Link className='canchor'to =''>CREATE AN ACCOUNT</Link></div>
+                <div className='createbox'> <Link className='canchor'to ='.././Signup2' >CREATE AN ACCOUNT</Link></div>
           </div>
         </div>
         </div>

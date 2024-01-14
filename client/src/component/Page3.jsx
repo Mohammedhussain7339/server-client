@@ -13,7 +13,7 @@ const Page3 = () => {
             Get your hands on them before they sell out again!
           </h4>
           <div className="shop-box">
-            <Link to="">Pre-Order</Link>
+            <Link to="FILTERS">Pre-Order</Link>
           </div>
         </div>
       </div>
@@ -26,7 +26,7 @@ const Page3 = () => {
             Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
           </h4>
           <div className="shop-box">
-            <Link to="">Shop-Now</Link>
+            <Link to="FILTERS">Shop-Now</Link>
           </div>
         </div>
       </div>

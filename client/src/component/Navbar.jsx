@@ -7,7 +7,7 @@ export default function Navbar({navbar}) {
   return (
     <div>
         <div className="nav">
-            <h1>Navbar</h1>
+            <h1>{navbar}</h1>
             <ul>
                 <li><Link to='/'>Home</Link></li>
                 <li><Link to='/Addproduct'>Product</Link></li>

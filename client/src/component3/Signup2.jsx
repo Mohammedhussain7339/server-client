@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import Headers from './Headers';
+import Headers from '../component/Headers';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-export default function Signup2() {
+export default function Signup2({tagname}) {
   const navigate = useNavigate();
 
   const [userInfo, setUserInfo] = useState({

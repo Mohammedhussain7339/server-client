@@ -13,6 +13,7 @@ const cloudinary = require('cloudinary').v2;
 
 const app = express();
 const cors = require('cors');
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
@@ -215,6 +216,56 @@ app.get('/productfetch', async (req, res) => {
   }
 });
 
+//product delete
+app.delete('/product1/:id', async (req, res) => {
+  try {
+    const deletedProduct = await product1.findByIdAndDelete(req.params.id);
+    if (!deletedProduct) {
+      return res.status(404).json({ success: false, message: 'Product not found' });
+    }
+    res.json({ success: true, message: 'Product deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+//update product
+// Update a product by ID
+app.put('/product1/:id', upload.single('productImage'), async (req, res) => {
+  try {
+    const { productName, productPrice, productDescription } = req.body;
+    let updatedProduct;
+
+    if (req.file) {
+      // If a new image is provided, update both product details and image
+      const productImage = req.file.filename;
+      updatedProduct = await product1.findByIdAndUpdate(
+        req.params.id,
+        { productName, productPrice, productDescription, productImage },
+        { new: true }
+      );
+    } else {
+      // If no new image is provided, update only product details
+      updatedProduct = await product1.findByIdAndUpdate(
+        req.params.id,
+        { productName, productPrice, productDescription },
+        { new: true }
+      );
+    }
+
+    if (!updatedProduct) {
+      return res.status(404).json({ success: false, message: 'Product not found' });
+    }
+
+    res.json({ success: true, product: updatedProduct });
+  } catch (error) {
+    console.error('Error updating product:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+    
 
 
 

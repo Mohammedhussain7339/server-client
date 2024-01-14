@@ -13,7 +13,28 @@ import { SlMagnifier } from "react-icons/sl";
 import { FaBars } from "react-icons/fa6";
 import { IoIosLogOut } from "react-icons/io";
 import { FaFacebookF,FaInstagram,FaTwitter,FaYoutube,FaRegHeart,FaCartArrowDown  } from "react-icons/fa";
-export default function Headers() {
+export default function Headers({tagname}) {
+
+    const [isCartVisible, setIsCartVisible] = useState(false);
+  
+    const handleCartToggle = () => {
+      setIsCartVisible(!isCartVisible);
+    };
+    useEffect(() => {
+      // Fetch products from your API endpoint on port 8000
+      const fetchProducts = async () => {
+        try {
+          const response = await fetch('http://localhost:8000/productfetch');
+          const data = await response.json();
+          setProducts(data.products);
+        } catch (error) {
+          console.error('Error fetching products:', error);
+        }
+      };
+  
+      fetchProducts();
+    }, []);
+
     const navigate =useNavigate();
     const logoutHandler = async () => {
         try {
@@ -38,7 +59,24 @@ export default function Headers() {
         }
       };
     
+      useEffect(() => {
+        const fetchData = async () => {
+          try {
+            // You can replace the API_URL with the actual URL of your API
+            const response = await fetch('http://localhost:8000/fetch_name');
+            const result = await response.json();
     
+            // Update state with fetched data
+            setData(result);
+            setLoading(false); // Set loading to false when data is fetched
+          } catch (error) {
+            console.error('Error fetching data:', error);
+            setLoading(false); // Set loading to false on error
+          }
+        };
+    
+        fetchData(); // Call the fetchData function when the component mounts
+      }, []);
 
     const contextValue = useContext(MyContext);
   return (
@@ -63,10 +101,17 @@ export default function Headers() {
                 <input type="text" placeholder="Search for items"/><i className="fa-solid fa-magnifying-glass magnifier"><SlMagnifier /></i></div>
             <div className="navdiv2-2"><h1>VOGAL </h1></div>
             <div className="navdiv2-3">
-                <span><Link to="#"><i className="fa-regular"> <RiAccountCircleLine /></i></Link></span>
-                <Link to="#"><i className="fa-regular"><FaRegHeart /></i></Link>
-                <Link to="#"><i className="fa-regular"><FaCartArrowDown /></i></Link>
+                <span><Link to="./Login2"><i className="fa-regular"> <RiAccountCircleLine /></i></Link></span>
+                <Link to="./Wishlist"><i className="fa-regular"><FaRegHeart /></i></Link>
+                <Link to="#"><i onClick={handleCartToggle} className="fa-regular"><FaCartArrowDown /></i></Link>
                 <ul><li className="li">ACCOUNT</li><li style={{paddingLeft: '20px'}}>WHISLIST</li>
+                {isCartVisible && (
+          <div className='cart'>
+            <button onClick={handleCartToggle}>Close Cart</button>
+            {/* <Cart /> */}
+          </div>
+        )}
+
                     <li style={{paddingLeft: '35px'}}>CART</li>
 
                 </ul>
@@ -95,7 +140,7 @@ export default function Headers() {
                         </ul>
                     </div>
                 </li>
-                <li> <Link to=""><span> home</span></Link></li>
+                <li> <Link to="/"><span> home</span></Link></li>
                 <li> <Link to=""><span> shop</span>
                         <span><i className="fa-solid fa-chevron-down"><IoIosArrowDown /></i></span>
                     </Link>
@@ -187,3 +232,6 @@ export default function Headers() {
 </> 
  )
 }
+
+
+
