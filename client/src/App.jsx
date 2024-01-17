@@ -13,6 +13,8 @@ import Test from './component2/Test'
 import Wishlist from './component3/Wishlist';
 import Cart from './component3/Cart'
 import Filters from './component3/Filters';
+import Quickbox from './component3/Quickbox'
+
 
 
 
@@ -36,7 +38,9 @@ export default function App() {
       <Route  path='/Test' element={<Test/>} ></Route>        
       <Route  path='/Wishlist' element={<Wishlist/>} ></Route>        
       <Route  path='/Cart' element={<Cart/>} ></Route>        
-      <Route  path='/Filters' element={<Filters/>} ></Route>        
+      <Route  path='/Filters' element={<Filters/>} ></Route>  
+      <Route  path='/Quickbox' element={<Quickbox/>} ></Route>  
+
       </Routes>
       </Router>
     </div>
