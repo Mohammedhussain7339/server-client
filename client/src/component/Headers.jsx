@@ -13,71 +13,68 @@ import { SlMagnifier } from "react-icons/sl";
 import { FaBars } from "react-icons/fa6";
 import { IoIosLogOut } from "react-icons/io";
 import { FaFacebookF,FaInstagram,FaTwitter,FaYoutube,FaRegHeart,FaCartArrowDown  } from "react-icons/fa";
-export default function Headers({tagname}) {
+export default function Headers (props) {
 
     const [isCartVisible, setIsCartVisible] = useState(false);
   
     const handleCartToggle = () => {
       setIsCartVisible(!isCartVisible);
     };
+    
+
+    const navigate =useNavigate();
+
+    const [products, setProducts] = useState([]);
+
     useEffect(() => {
-      // Fetch products from your API endpoint on port 8000
-      const fetchProducts = async () => {
+      const fetchData = async () => {
         try {
-          const response = await fetch('http://localhost:8000/productfetch');
-          const data = await response.json();
-          setProducts(data.products);
+          const response = await axios.get('http://localhost:8000/productfetch');
+          setProducts(response.data.products);
+          console.log('Headers data',response.data.products);
         } catch (error) {
           console.error('Error fetching products:', error);
         }
       };
   
-      fetchProducts();
+      fetchData();
     }, []);
 
-    const navigate =useNavigate();
-    const logoutHandler = async () => {
-        try {
-          const response = await axios.post('http://localhost:8000/logout', {}, {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            // withCredentials: true, // Send cookies with the request
-          });
-    
-          if (response.status === 200) {
-            console.log(response.data); // Logout successful
-            navigate('/login2')
-            // Redirect or perform any other action after successful logout
-          } else {
-            console.error('Logout error:', response.data.error);
-            // Handle the error accordingly
-          }
-        } catch (error) {
-          console.error('Logout error:', error);
-          // Handle network errors or other issues
-        }
-      };
-    
-      useEffect(() => {
-        const fetchData = async () => {
-          try {
-            // You can replace the API_URL with the actual URL of your API
-            const response = await fetch('http://localhost:8000/fetch_name');
-            const result = await response.json();
-    
-            // Update state with fetched data
-            setData(result);
-            setLoading(false); // Set loading to false when data is fetched
-          } catch (error) {
-            console.error('Error fetching data:', error);
-            setLoading(false); // Set loading to false on error
-          }
-        };
-    
-        fetchData(); // Call the fetchData function when the component mounts
-      }, []);
 
+
+    const handleLogout = async () => {
+      try {
+        // Make a request to your logout endpoint on the server
+        const response = await axios.post('http://localhost:8000/logout', null, {
+          withCredentials: true, // include credentials (cookies)
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+  
+        if (response.status === 200 && response.headers['content-type'].includes('application/json')) {
+          // Assuming the server responds with a success message
+          const data = response.data;
+          console.log(data.message);
+  
+          // Clear token from localStorage or any other client-side storage
+          localStorage.removeItem('token');
+  
+          // Redirect to the login page
+          navigate('/');
+        } else {
+          console.error('Unexpected response:', response.status, response.statusText);
+        }
+      } catch (error) {
+        console.error('Logout error:', error);
+      }
+    };
+  
+    // Example: Call the logout function when the component mounts
+    useEffect(() => {
+      handleLogout();
+    }, []);
+  
     const contextValue = useContext(MyContext);
   return (
 <>
@@ -89,7 +86,7 @@ export default function Headers({tagname}) {
             </div>
             <div className="navdiv-3"><i className="fa-brands"><FaFacebookF /></i><i className="fa-brands"><FaInstagram /></i><i className="fa-brands"><FaTwitter/></i><i className="fa-brands"><FaYoutube /></i>
             | English <i className="fa-brands"><IoIosArrowDown /></i>INR <i className="fa-brands"><LiaRupeeSignSolid /></i><i className="fa-solid fa-angle-down"></i>
-    <i className='logout'style={{color:'red',fontSize:'24px', cursor:'pointer'}} onClick={logoutHandler}><IoIosLogOut /></i>   
+    <i className='logout'style={{color:'red',fontSize:'24px', cursor:'pointer'}} onClick={handleLogout}><IoIosLogOut /></i>   
         </div>
 
 
@@ -98,7 +95,16 @@ export default function Headers({tagname}) {
          <div className="nav-2">
 
             <div className="navdiv2-1">
-                <input type="text" placeholder="Search for items"/><i className="fa-solid fa-magnifying-glass magnifier"><SlMagnifier /></i></div>
+            <input 
+                type="text"
+                value={props && props.search}
+                onChange={(e) => props.handleSearch && props.handleSearch(e.target.value)}
+              />
+                <i 
+                className="magnifier" 
+                style={{ cursor: 'pointer' }}
+                onClick={() => props.handleClick && props.handleClick()}>
+                  <SlMagnifier /></i></div>
             <div className="navdiv2-2"><h1>VOGAL </h1></div>
             <div className="navdiv2-3">
                 <span><Link to="./Login2"><i className="fa-regular"> <RiAccountCircleLine /></i></Link></span>

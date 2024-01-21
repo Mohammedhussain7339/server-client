@@ -5,11 +5,13 @@ import { IoMdHeartEmpty } from "react-icons/io";
 import { IoCartOutline } from "react-icons/io5";
 import { IoSearchOutline } from "react-icons/io5";
 import { Link } from 'react-router-dom'
+import { SlMagnifier } from "react-icons/sl";
 
 
 
 
-export default function Explore() {
+
+export default function Explore(props) {
   const [num,setNum]=useState(1)
   const plusHandler=()=>{
     setNum(num+1)
@@ -53,6 +55,16 @@ export default function Explore() {
 
   return (
     <div className='explorer'>
+                  <input 
+                type="text"
+                value={props && props.search}
+                onChange={(e) => props.handleSearch && props.handleSearch(e.target.value)}
+              />
+                <i 
+                className="magnifier" 
+                style={{ cursor: 'pointer' }}
+                onClick={() => props.handleClick && props.handleClick()}>
+                  <SlMagnifier /></i>
       <h1>Thoughtfull Design</h1>
       <div className="expcontainer">
       {Array.isArray(products) && products.length > 0 ? (

@@ -10,14 +10,128 @@ import Page3 from './Page3';
 import Slider from './Slider';
 import Explorepage from './Explorepage';
 import Footer from './Footer';
+import { useState,useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+// import AuthCheck from '../component3/AuthCheck';
 
-export default function Home() {
+const Home=()=> {
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    // Fetch user data or perform any other actions based on your requirements
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+          // Navigate to the login page if the token is not present
+          navigate('/');
+          return;
+        }
+
+        // Make a request to your backend to get user data using the token
+        const response = await fetch('http://localhost:8000/userinfo', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUserData(data.user);
+        } else {
+          // Handle the case where the request fails
+          console.error('Failed to fetch user data:', response.status);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, [navigate]);
+
+  // If the user is not logged in, navigate to the login page
+  if (!localStorage.getItem('token')) {
+    navigate('/');
+    return null; // Optionally, return null or display a loading message
+  }
+
+  const [products,setProducts]=useState([])
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/productfetch');
+        setProducts(response.data.products);
+        setFilteredProducts(response.data.products); // Initialize filteredProducts with all products
+
+        console.log('Home data',response.data.products);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+   
+   const [search,setSearch]=useState('Search');
+  const handleSearch = (value) => {
+    setSearch(value);
+
+    // Filter products based on the search term
+    const lowerCaseSearch = value.toLowerCase();
+    const filtered = products.filter(
+      (item) =>
+        item.productName.toLowerCase().includes(lowerCaseSearch) ||
+        item.productPrice.toLowerCase().includes(lowerCaseSearch) ||
+        item.productDescription.toLowerCase().includes(lowerCaseSearch)
+    );
+
+    // Update the filtered products state
+    setFilteredProducts(filtered);
+  };
+  const [ull, setUll] = useState({ display: 'none' });
+
+  const handleClick = () => {
+    if(filteredProducts){
+    setUll({ display: 'block' });
+    }
+    // console.log('filtered products', filteredProducts);
+  };
+const closeHandler=()=>{
+  setUll({display:'none'})
+}
+    
   return (
     <div>
-        <Headers tagname='ACCOUNT'/>
+        <Headers search={search} handleSearch={handleSearch} handleClick={handleClick}/>
       <Navbar navbar="navbarrrr"/>
+      <div className="filteredproduct" style={ull}>
+          <button className='closefilter' onClick={closeHandler}>close</button>
+      <ul className="your-ul-class" >
+        {/* Map through the products and display each one */}
+        {filteredProducts.map((product) => (
+  <div key={product._id}>
+    <div className="imgbox">
+              <div className="imgdivs">
+              <img src={`http://localhost:8000/uploads/${product.productImage}`} alt={product.productName} />
+        </div>
+    <li>{product.productName}</li>
+    <li>{product.productPrice}</li>
+    <li>{product.productDescription}</li>
+    </div>
+  </div>
+))}
+      </ul>
+      </div>
+   
       <Mainpage/>
-      <Explore/>
+      <Explore />
       <Popular/>
       <Salepage/>
       <Sofas/>
@@ -26,3 +140,5 @@ export default function Home() {
     </div>
   )
 }
+export default (Home);
+

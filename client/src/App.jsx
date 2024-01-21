@@ -14,6 +14,7 @@ import Wishlist from './component3/Wishlist';
 import Cart from './component3/Cart'
 import Filters from './component3/Filters';
 import Quickbox from './component3/Quickbox'
+// import AuthCheck from './component3/AuthCheck';
 
 
 
@@ -27,19 +28,21 @@ export default function App() {
       {/* <Headers/>
       <Navbar/> */}
       <Routes>
-      <Route path='/' element={<Home/>}></Route>        
+      <Route path='/' element={<Login2/>}></Route>        
       <Route  path='/About' element={<About/>} ></Route>        
       <Route  path='/Product' element={<Product/>} ></Route>        
       <Route  path='/Mainpage' element={<Mainpage/>} ></Route>        
       <Route  path='/Userdata' element={<Userdata/>} ></Route>        
-      <Route  path='/Login2' element={<Login2/>} > </Route>  
+      <Route  path='/Home' element={<Home/>} > </Route>  
              
       <Route  path='/Signup2' element={<Signup2/>} ></Route>        
       <Route  path='/Test' element={<Test/>} ></Route>        
       <Route  path='/Wishlist' element={<Wishlist/>} ></Route>        
       <Route  path='/Cart' element={<Cart/>} ></Route>        
       <Route  path='/Filters' element={<Filters/>} ></Route>  
-      <Route  path='/Quickbox' element={<Quickbox/>} ></Route>  
+      <Route  path='/Quickbox' element={<Quickbox/>} ></Route> 
+      {/* <Route  path='/AuthCheck' element={<AuthCheck/>} ></Route>  */}
+
 
       </Routes>
       </Router>

@@ -63,6 +63,9 @@ const App = () => {
     productName: '',
     productPrice: '',
     productDescription: '',
+    productType: '', // Add productType to the state
+    colorType: '',   // Add colorType to the state
+  
   });
 
   const handleInputChange = (e) => {
@@ -84,6 +87,9 @@ const App = () => {
       formData.append('productPrice', Product.productPrice);
       formData.append('productDescription', Product.productDescription);
       formData.append('productImage', productImage);
+      formData.append('productType', Product.productType);
+      formData.append('colorType', Product.colorType);
+  
 
       const response = await axios.post('http://localhost:8000/product1', formData, {
         headers: {
@@ -106,6 +112,23 @@ const App = () => {
         <input type="text" name="productPrice" placeholder="Product Price" value={Product.productPrice} onChange={handleInputChange} />
         <input type="text" name="productDescription" placeholder="Product Description" value={Product.productDescription} onChange={handleInputChange} />
         <input type="file" accept="image/*" onChange={handleImageChange} />
+        <select name="productType" value={Product.productType} onChange={handleInputChange}>
+  <option value="">Select Product Type</option>
+  <option value="Chair">Chair</option>
+  <option value="Table">Table</option>
+  <option value="Lalten">Lalten</option>
+  {/* Add other product types as needed */}
+</select>
+
+<select name="colorType" value={Product.colorType} onChange={handleInputChange}>
+  <option value="">Select Color Type</option>
+  <option value="Red">Red</option>
+  <option value="Blue">Blue</option>
+  <option value="Green">Green</option>
+  {/* Add other color types as needed */}
+</select>
+U
+
         <button onClick={handleUpload}>Upload Product</button>
       </div>
       <div>
@@ -114,11 +137,11 @@ const App = () => {
   {/* <table style={{border:'1px solid black',width:'600px',padding:'10px'}}> */}
   {Array.isArray(products) && products.length > 0 ? (
     <ul>
-          <tr> <th>ProductName</th><th>ProuductPrice</th><th>ProuductDescription</th><th>ProductImage</th></tr>
+          <tr> <th>ProductName</th><th>ProuductPrice</th><th>ProuductDescription</th><th>ProductType</th><th>ColorType</th><th>ProductImage</th></tr>
           {products.map((product) => (
             <li key={product._id}>
 
-   <tr><td >{product.productName}</td><td>{product.productPrice}</td><td>{product.productDescription}</td>
+   <tr><td >{product.productName}</td><td>{product.productPrice}</td><td>{product.productDescription}</td><td>{product.productType}</td><td>{product.colorType}</td>
    <td>            <img src={product.productImage} alt={product.productName} style={{ maxWidth: '200px' }} />
  
 </td><td>                      <button onClick={handleUpdate}>Update</button>

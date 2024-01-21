@@ -22,14 +22,18 @@ export default function Login2({tagname}) {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8000/login', credentials, {
-        // withCredentials: true // Include credentials for cross-origin requests
-      });
+      const response = await axios.post('http://localhost:8000/login', credentials);
 
       if (response.data.success) {
+        const token = response.data.token;
+        console.log(token)
+
+        // Store the token securely (you can use localStorage or sessionStorage)
+        localStorage.setItem('token', token);
+
         console.log('Login successful');
-        navigate('/')
         // Redirect or perform additional actions upon successful login
+        navigate('/Home'); // Assuming you are using react-router
       } else {
         console.error('Login failed:', response.data.error);
       }

@@ -3,16 +3,56 @@ import Headers from '../component/Headers'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { BsFillGrid3X3GapFill } from "react-icons/bs";
 import { PiListChecksFill } from "react-icons/pi";
-
-
-
-// Import Swiper styles
+import { Link } from 'react-router-dom';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Pagination } from 'swiper/modules';
+import { useState,useEffect } from 'react';
 import Footer from '../component/Footer';
+import axios from 'axios';
 
 export default function Filters() {
+
+  const [products,setProducts]=useState([])
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/productfetch');
+        setProducts(response.data.products);
+        setFilteredProducts(response.data.products); // Initialize filteredProducts with all products
+
+        console.log('filters data',response.data.products);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  
+  const handleCheckboxChange = (filterType, value) => {
+
+  let updatedFilteredProducts = [...products];
+
+  if (filterType === 'productType') {
+    updatedFilteredProducts = products.filter(product => product.productType === value);
+  } else if (filterType === 'brand') {
+    updatedFilteredProducts = products.filter(product => product.brand === value);
+  } else if (filterType === 'availability') {
+    updatedFilteredProducts = products.filter(product => (value === 'In Stock' && product.inStock) || (value === 'Out Of Stock' && !product.inStock));
+  }
+ else if (filterType === 'colorType') {
+  updatedFilteredProducts = products.filter((product) => product.colorType === value);
+} else if (filterType === 'All') {
+  // Clear all filters
+  updatedFilteredProducts = products;
+}
+
+  setFilteredProducts(updatedFilteredProducts);
+  
+};
+
   return (
     <>
     <Headers></Headers>
@@ -41,15 +81,17 @@ export default function Filters() {
 
       <div className="filtercheckbox">
         <p>COLORS</p><hr style={{border:'0.1px solid white', margin:'10px'}} />
-        <div className="color" style={{background:'white'}}></div>
-        <div className="color" style={{background:'blue'}}></div>
-        <div className="color" style={{background:'red'}}></div>
-        <div className="color" style={{background:'pink'}}></div>
+        <div className="color" style={{ background: 'white' }} onClick={() => handleCheckboxChange('colorType', 'White')}></div>
+        <div className="color" style={{ background: 'blue' }} onClick={() => handleCheckboxChange('colorType', 'Blue')}></div>
+        <div className="color" style={{ background: 'red' }} onClick={() => handleCheckboxChange('colorType', 'Red')}></div>
+        <div className="color" style={{ background: 'pink' }} onClick={() => handleCheckboxChange('colorType', 'Pink')}></div>
         <div className="producttype">
           <p style={{margin:'10px'}}>PRODUCT TYPE</p>
           <div>
-        <input type="checkbox" /><span>Chair</span>
-        <input type="checkbox" style={{marginLeft:'60px'}}/><span>Sofa</span><br />
+        <span style={{padding:'07px',margin:'-97px',background:'black',border:'2px solid black', borderRadius:'5px'}}><a style={{color:'white'}}href="filters">All</a></span>
+        <br />
+        <input type="checkbox" onChange={() => handleCheckboxChange('productType', 'Chair')} /><span>Chair</span>
+        <input type="checkbox" onChange={()=>handleCheckboxChange('productType', 'Sofa')}style={{marginLeft:'60px'}}/><span>Sofa</span><br />
         <input type="checkbox" /><span>Flower</span>
         <input type="checkbox" /><span>Vase</span><br />
         <input type="checkbox" /><span>Flower</span>
@@ -82,65 +124,27 @@ export default function Filters() {
         <div className="extrabox"><span style={{fontStyle:'italic'}}> 14 items </span> <div ><BsFillGrid3X3GapFill /><PiListChecksFill /></div>
         </div>
         <div className="show">
+        {filteredProducts.map((product) => (
+        <div key={product._id}>
           <div className="showbox">
-            <img src="https://vogal-demos.myshopify.com/cdn/shop/files/bookcase.jpg?v=1678096021" alt="img1" />
-            <div style={{position:'relative', left:'40px'}}>
-            <h5>Name</h5>
-            <h5>Price</h5>
-            <ul className='ul'>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-            </ul><br /><br />
+            <div className="imgdivs">
+              <img src={`http://localhost:8000/uploads/${product.productImage}`} alt={product.productName} />
             </div>
-          </div>
-          <div className="showbox">
-            <img src="https://vogal-demos.myshopify.com/cdn/shop/files/bookcase.jpg?v=1678096021" alt="img1" />
-            <div style={{position:'relative', left:'40px'}}>
-            <h5>Name</h5>
-            <h5>Price</h5>
+            <li>{product.productName}</li>
+            <li>{product.productPrice}</li>
             <ul className='ul'>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
             </ul><br /><br />
-            </div>
           </div>
-          <div className="showbox">
-            <img src="https://vogal-demos.myshopify.com/cdn/shop/files/bookcase.jpg?v=1678096021" alt="img1" />
-            <div style={{position:'relative', left:'40px'}}>
-            <h5>Name</h5>
-            <h5>Price</h5>
-            <ul className='ul'>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-            </ul><br /><br />
-            </div>
-          </div>
-          <div className="showbox">
-            <img src="https://vogal-demos.myshopify.com/cdn/shop/files/bookcase.jpg?v=1678096021" alt="img1" />
-            <div style={{position:'relative', left:'40px'}}>
-            <h5>Name</h5>
-            <h5>Price</h5>
-            <ul className='ul'>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-            </ul><br /><br />
-            </div>
-          </div>
-</div>
-      </div>
+        </div>
+      ))}
     </div>
+  </div>
+</div>
     </>
   )
 }

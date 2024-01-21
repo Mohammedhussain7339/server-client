@@ -474,6 +474,57 @@ table{
 .icondiv i:hover{
   background-color: rgb(146, 102, 45);
 }
+/* --------------------------filtered desing-------------------------- */
+.filteredproduct{
+  width: 100%;
+  height: auto;
+  display: flex;
+  padding: 0px 0px 0px 300px;
+  overflow: auto;
+}
+.your-ul-class{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  gap: 50px;
+  justify-content: center;
+  align-items: center;
+
+  /* flex-wrap: nowrap; */
+  color: black;
+}
+.imgbox{
+  width: 300px;
+  height: 370px;
+  border: 1px solid gray;
+  text-align: center;
+  text-transform: capitalize;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.imgbox >.imgdivs {
+  width: 98%;
+  height: 290px;
+  margin: 3px;
+  border: 1px solid rgb(14, 9, 9);
+}
+.imgdivs img{
+  width: 100%;
+  height: 288px;
+}
+.closefilter{
+  cursor: pointer;
+  background-color: black;
+  color: white;
+  border: none;
+  outline: none;
+  width: 150px;
+  height:40px;
+  position: absolute;
+  left: 0px;
+  top: 262px;
+  font-size: 20px;
+  text-transform: capitalize;
+}
 /* ----------------------------populer page--------------------------- */
 .populer-category{
   position: relative;
@@ -1230,23 +1281,23 @@ width: 200px;
   padding: 20px;
 }
 .showbox{
-  width: 300px;
+  width: 220px;
   margin: 10px;
-  height: 370px;
+  height: 300px;
   border: 1px solid black;
   position: relative;
   text-align: center;
 }
 .showbox img{
   width: 97%;
-  height: 75%;
+  height: 210px;
   border: 1px solid black;
   margin-top: 3px;
 }
 .showbox ul li{
   width: 18px;
   height: 18px;
-  background-color: rgb(44, 44, 2);
+  background-color: goldenrod;
   float: left;
   clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
   margin-left: 20px;
