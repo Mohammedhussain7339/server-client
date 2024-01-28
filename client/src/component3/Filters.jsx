@@ -3,7 +3,7 @@ import Headers from '../component/Headers'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { BsFillGrid3X3GapFill } from "react-icons/bs";
 import { PiListChecksFill } from "react-icons/pi";
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Pagination } from 'swiper/modules';
@@ -12,6 +12,14 @@ import Footer from '../component/Footer';
 import axios from 'axios';
 
 export default function Filters() {
+const navigate=useNavigate();
+
+  useEffect(()=>{
+    if(!localStorage.getItem('token')){
+      navigate('/')
+    }
+  },[])
+
 
   const [products,setProducts]=useState([])
   const [filteredProducts, setFilteredProducts] = useState([]);

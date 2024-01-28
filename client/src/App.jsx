@@ -14,6 +14,8 @@ import Wishlist from './component3/Wishlist';
 import Cart from './component3/Cart'
 import Filters from './component3/Filters';
 import Quickbox from './component3/Quickbox'
+import Likedpage from './component3/Likedpage';
+import Quickpage from './component3/Quickpage';
 // import AuthCheck from './component3/AuthCheck';
 
 
@@ -41,6 +43,8 @@ export default function App() {
       <Route  path='/Cart' element={<Cart/>} ></Route>        
       <Route  path='/Filters' element={<Filters/>} ></Route>  
       <Route  path='/Quickbox' element={<Quickbox/>} ></Route> 
+      <Route  path='/Likedpage' element={<Likedpage/>} ></Route> 
+      <Route  path='/products/:productId' element={<Quickpage/>} ></Route> 
       {/* <Route  path='/AuthCheck' element={<AuthCheck/>} ></Route>  */}
 
 

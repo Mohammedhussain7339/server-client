@@ -27,9 +27,9 @@ export default function Login2({tagname}) {
       if (response.data.success) {
         const token = response.data.token;
         console.log(token)
-
         // Store the token securely (you can use localStorage or sessionStorage)
-        localStorage.setItem('token', token);
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('userId', response.data.userId);
 
         console.log('Login successful');
         // Redirect or perform additional actions upon successful login
@@ -38,7 +38,7 @@ export default function Login2({tagname}) {
         console.error('Login failed:', response.data.error);
       }
     } catch (error) {
-      console.error('Login error:', error);
+      alert('Login error:', error);
     }
   };
 
