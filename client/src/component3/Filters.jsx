@@ -16,6 +16,7 @@ const navigate=useNavigate();
 
   useEffect(()=>{
     if(!localStorage.getItem('token')){
+      alert('please! Login first')
       navigate('/')
     }
   },[])

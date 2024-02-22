@@ -4,15 +4,22 @@ import Headers from '../component/Headers';
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
 export default function Login2({tagname}) {
+
+
+
+
   const navigate =useNavigate();
   const [credentials, setCredentials] = useState({
     email: '',
     password: ''
   });
+
     const changeHandler = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
     console.log(credentials)
@@ -30,6 +37,8 @@ export default function Login2({tagname}) {
         // Store the token securely (you can use localStorage or sessionStorage)
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('userId', response.data.userId);
+        localStorage.setItem('firstname', response.data.firstname);
+
 
         console.log('Login successful');
         // Redirect or perform additional actions upon successful login
@@ -38,7 +47,10 @@ export default function Login2({tagname}) {
         console.error('Login failed:', response.data.error);
       }
     } catch (error) {
-      alert('Login error:', error);
+      toast.error('Your! Login info is not match',{
+        position:'top-center',
+        autoClose:1500,
+      })
     }
   };
 
@@ -59,15 +71,19 @@ export default function Login2({tagname}) {
               <input type="email" onChange={changeHandler} placeholder='Enter your Email' name='email'/>
               <input type="password" onChange={changeHandler} placeholder='Enter your Password' name='password'/>
               <input className='submit' onClick={submitHandler} type="submit" value='Sign IN' />
+
               <Link className='anchor'to=''>Forget Your Password?</Link>
+
           </div>
           <div className="loginbox loginbox2">
+              <ToastContainer />
               <span>NEW CUSTOMER?</span>
               <div className='loginp'>Registering for this site  history. We'll get a new account set up for your in no time. For this will only ask yor for information necessary to make the puchase process faster and easier</div>
                 <div className='createbox'> <Link className='canchor'to ='.././Signup2' >CREATE AN ACCOUNT</Link></div>
           </div>
         </div>
         </div>
+
       
     </div>
     </>

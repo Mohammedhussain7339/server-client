@@ -1,11 +1,15 @@
 *{margin: 0;padding: 0;box-sizing: border-box;
   text-decoration: none;
   list-style: none;
+  font-family: Arial, Helvetica, sans-serif;
 }
 body{
   width: 100%;
   height: 100vh;
   background-color: aliceblue;
+}
+.alert{
+  color: red;
 }
 .nav{
   width: 100%;
@@ -456,7 +460,13 @@ table{
 .imgdiv:hover .icondiv i{
   opacity: 1;
 }
-
+.imgdiv:hover .icondiv{
+  top: 220px;
+}
+.loader{
+  position: relative;
+  left: 50%;
+}
 .imgdiv img{
   width: 94%;
   height: 75%;
@@ -465,7 +475,9 @@ table{
 }
 .icondiv{
   position: relative;
-  top: 230px;
+  top: 240px;
+  transition: 1s;
+
 }
 .icondiv i{
   margin: 10px;
@@ -481,6 +493,113 @@ table{
 }
 .icondiv i:hover{
   background-color: rgb(146, 102, 45);
+}
+/* -----------------------------quick page design--------------------------- */
+.quickpage{
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  padding: 100px;
+}
+.quickimgbox{
+  width: 800px;
+  height: 550px;
+  background-color: green;
+}
+.quickimg1,.quickimg2{
+  width: 100px;
+  height: 100px;
+  background-color: red;
+  margin-bottom: 10px;
+}
+.quickimg3{
+  width: 660px;
+  height: 530px;
+  background-color: blue;
+  position: absolute;
+  top: 293px;
+  left: 220px;
+}
+.quicktext{
+  width: 500px;
+  height: 550px;
+  position: absolute;
+  top: 282px;
+  left: 950px;
+}
+.qbtnbox{
+  width: 120px;
+  height: 40px;
+  /* border: 1px solid black; */
+  display: flex;
+}
+.qbtnbox button{
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  border: 1px solid gray;
+  font-size: 20px;
+  cursor: pointer;
+}
+.cartbtn{
+  width: 500px;
+  height: 50px;
+  background-color: black;
+  color: white;
+  text-align: center;
+  line-height: 50px;
+}
+.dspg{
+  width: 100%;
+  height: auto;
+  background-color: #FAFAFA;
+  text-align: center;
+}
+.dspg button{
+  background-color: #FAFAFA;
+  border: none;
+  margin: 20px 60px;
+  text-align: center;
+  font-size: 17px;
+  cursor: pointer;
+}
+.pbold{
+  font-weight: 550;
+}
+.quickmsg{
+ width: 400px;
+ height: 200px;
+ background-color: black;
+ margin-left: 100px;
+ color: white;
+}
+.inputcomment{
+  border: none;
+  background-color: #333333;
+  color: white;
+  width: 85%;
+  position: relative;
+  right: 20px;
+  outline: none;
+  margin-top: 10px;
+  padding-left: 10px;
+}
+.showmsg{
+  width: 100%;
+  height: 140px;
+  overflow: scroll;
+  background-color: rgb(193, 184, 184);
+  border: 1px silver solid;
+  color: black;
+}
+.sendbtn button{
+  background-color:black;
+  border: none;
+  color: rgb(99, 99, 233);
+  font-size: 25px;
+  position: relative;
+  top: 8px;
+  cursor: pointer;
 }
 /* --------------------------filtered desing-------------------------- */
 .filteredproduct{
@@ -563,8 +682,7 @@ justify-content: space-around;
 
 }
 .p-img:hover{
-  width: 350px;
-  height: 410px;
+  scale: 1.3;
   cursor: pointer;
 }
 
@@ -1236,6 +1354,26 @@ width: 200px;
   position: relative;
   bottom: 180px;
   left: 1380px;
+}
+.checkoutBox{
+  position: absolute;
+  top: 1200px;
+  left: 1000px;
+  width: 450px;
+  height: 310px;
+  background-color: rgb(219, 216, 216);
+  padding: 20px;
+}
+.checkoutbtn{
+  background-color: rgb(49, 48, 48);
+  color: white;
+  border: none;
+  width: 400px;
+  height: 40px;
+  font-size: 17px;
+  margin: 10px 6px;
+  text-align: center;
+  
 }
 /* ------------------filter style is start------------------------ */
 .swiper {

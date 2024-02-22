@@ -8,8 +8,12 @@ import { Link } from "react-router-dom";
 import { SlMagnifier } from "react-icons/sl";
 import { FaHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function Explore(props) {
+  
   const Navigate = useNavigate();
   const [num, setNum] = useState(1);
   const plusHandler = () => {
@@ -80,21 +84,28 @@ export default function Explore(props) {
 
 
   const handleLiked = (productId) => {
-    let userId = localStorage.getItem("userId");
-    console.log("liked successfully", productId, "and", userId);
-    const url = `http://localhost:8000/like-product`;
-    const data = { userId, productId };
-    axios
-      .post(url, data)
-      .then((res, data) => {
-        setlikeRefresh(!likerefresh)
-        console.log(res, data);
-      })
-      .catch((err) => {
-        alert("server err");
-      });
+    const userId = localStorage.getItem("userId");
+  
+    if (userId) {
+      console.log("liked successfully", productId, "by user:", userId );
+      console.log(userId)
+      const url = `http://localhost:8000/like-product`;
+      const data = { userId, productId };
+  
+      axios
+        .post(url, data)
+        .then((res) => {
+          setlikeRefresh(!likerefresh);
+          console.log(res, data);
+        })
+        .catch((err) => {
+          alert("Server error");
+        });
+    } else {
+      alert("Please login first");
+    }
   };
-  //handledisliked
+    //handledisliked
   const handleDisLiked = (productId) => {
     let userId = localStorage.getItem("userId");
     console.log("liked successfully", productId, "and", userId);
@@ -116,11 +127,13 @@ export default function Explore(props) {
     Navigate("/products/" + id);
   };
 //cart product
-const[cartproducts, setcartProducts]=useState([]);
 const [cartrefresh, setcartRefresh]=useState(false)
+const [cartItemCount, setCartItemCount] = useState(1);
+const[cartproducts, setcartProducts]=useState([]);
+
+let userId = localStorage.getItem("userId");
 
 const handleCart = (productId) => {
-  let userId = localStorage.getItem("userId");
   console.log("Adding product to cart:", productId, "for user:", userId);
 
   const url = `http://localhost:8000/cart-product`;
@@ -134,7 +147,10 @@ const handleCart = (productId) => {
       .then((res) => {
         alert('Product added to cart successfully!');
         setcartRefresh(!cartrefresh);
-        console.log(res.data);
+        setcartProducts(res.data.cartproducts); // Update cartproducts with the new data
+        console.log('Cart products length:', res.data.cartproducts.length);
+
+
       })
       .catch((err) => {
         alert("Server error");
@@ -163,9 +179,8 @@ const handleCart = (productId) => {
                 <li key={product._id}>
                   <div
                     className="imgdiv"
-                    // onClick={() => handleProduct(product._id)}
                     >
-                    <img
+                    <img  onClick={() => handleProduct(product._id)}
                       src={`http://localhost:8000/uploads/${product.productImage}`}
                       alt={product.productName}
                     />
@@ -175,10 +190,11 @@ const handleCart = (productId) => {
                         style={{  }}
                         >
                           {
-                            likedproducts.find((likedItem)=>likedItem._id === product._id)?
+                            likedproducts.find((likedItem)=>likedItem._id === product._id )?
                             <FaHeart onClick={() => handleDisLiked(product._id)} style={{color:'red'}}/>:
-                            <FaHeart onClick={() => handleLiked(product._id)} />
+                            <FaHeart onClick={() => handleLiked(product._id)}  />
                           }
+                        
                       </i>
                       <i>
                         <IoCartOutline onClick={() => handleCart(product._id)} />

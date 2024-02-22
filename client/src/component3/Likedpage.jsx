@@ -7,6 +7,9 @@ import { IoMdHeartEmpty } from 'react-icons/io';
 import { IoCartOutline } from 'react-icons/io5';
 import { IoSearchOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function Likedpage() {
 
@@ -14,6 +17,7 @@ export default function Likedpage() {
 
   useEffect(()=>{
     if(!localStorage.getItem('token')){
+      alert ('please! login first');
       navigate('/')
     }
   },[])
@@ -69,6 +73,8 @@ export default function Likedpage() {
         <p>No products found.</p>
       )}
       </div>
+      <ToastContainer />
+
       <Footer/>
     </div>
     </>

@@ -72,6 +72,7 @@ const Home = () => {
       try {
         const response = await axios.get("http://localhost:8000/productfetch");
         setProducts(response.data.products);
+        console.log('filters',response.data.products)
         setFilteredProducts(response.data.products); // Initialize filteredProducts with all products
 
         console.log("Home data", response.data.products);
@@ -144,6 +145,7 @@ const Home = () => {
                     <p>No images found for this product.</p>
                   )}
                 </div>
+                
                 <li>{product.productName}</li>
                 <li>{product.productPrice}</li>
                 <li>{product.productDescription}</li>

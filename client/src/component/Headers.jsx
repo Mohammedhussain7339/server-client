@@ -12,6 +12,10 @@ import { IoIosArrowDown } from "react-icons/io";
 import { SlMagnifier } from "react-icons/sl";
 import { FaBars } from "react-icons/fa6";
 import { IoIosLogOut } from "react-icons/io";
+import { useLocation } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import {
   FaFacebookF,
   FaInstagram,
@@ -21,6 +25,8 @@ import {
   FaCartArrowDown,
 } from "react-icons/fa";
 export default function Headers(props) {
+
+
   const [isCartVisible, setIsCartVisible] = useState(false);
 
   const handleCartToggle = () => {
@@ -31,12 +37,14 @@ export default function Headers(props) {
   const [username, setUsername] = useState("");
   const [products, setProducts] = useState([]);
 
+const location = useLocation();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:8000/productfetch");
         setProducts(response.data.products);
-        console.log("Headers data", response.data.products);
+        // console.log("Headers data", response.data.products);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -44,9 +52,14 @@ export default function Headers(props) {
 
     fetchData();
   }, []);
+  let userinfo= {firstname: localStorage.getItem('firstname')}
+  // console.log('dataaaa',userinfo)
 
   const handleLogout = async () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("firstname");
+    localStorage.removeItem("userId")
+    alert('logout')
     navigate("/");
   };
 
@@ -124,7 +137,7 @@ export default function Headers(props) {
           </div>
           <div className="navdiv2-3">
             <span>
-              <Link to="./Login2">
+              <Link to="/">
                 <i className="fa-regular">
                   {" "}
                   <RiAccountCircleLine />
@@ -132,13 +145,13 @@ export default function Headers(props) {
               </Link>
             </span>
             <Link to="../Likedpage">
-              <i className="fa-regular">
+              <i className="fa-regular" >
                 <FaRegHeart />
               </i>
             </Link>
             <Link to="../Cart">
               <i onClick={handleCartToggle} className="fa-regular">
-                <FaCartArrowDown />
+                <FaCartArrowDown /><sup style={{fontStyle:'normal', fontWeight:'bolder',color:'gray'}}>1</sup>
               </i>
             </Link>
             <ul>
@@ -259,13 +272,13 @@ export default function Headers(props) {
                 <ul>
                   <li>smart watches</li>
                   <li>
-                    <Link to="">smart TVs</Link>
+                    <Link to="../filters">smart TVs</Link>
                   </li>
                   <li>
-                    <Link to="">laptop & computers</Link>
+                    <Link to="../filters">laptop & computers</Link>
                   </li>
                   <li>
-                    <Link to="">Audio & video</Link>
+                    <Link to="../filters">Audio & video</Link>
                   </li>
                   <li>
                     <Link to="">molile & tablets</Link>
@@ -399,7 +412,9 @@ export default function Headers(props) {
               </Link>
             </li>
           </ul>
-          <h2 style={{ marginLeft: "150px", marginTop: "10px" }}>Welcome </h2>
+          <h2 style={{ marginLeft: "150px", marginTop: "10px",textTransform:'capitalize' }}>Welcome <span style={{color:'black'}}>{userinfo.firstname}</span></h2>
+          <ToastContainer />
+
         </div>
       </header>
     </>
