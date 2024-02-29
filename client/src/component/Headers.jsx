@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 const MyContext = React.createContext();
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { RiAccountCircleLine } from "react-icons/ri";
 import { IoCall } from "react-icons/io5";
@@ -13,8 +13,9 @@ import { SlMagnifier } from "react-icons/sl";
 import { FaBars } from "react-icons/fa6";
 import { IoIosLogOut } from "react-icons/io";
 import { useLocation } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { cartContext } from "../context/Context";
 
 import {
   FaFacebookF,
@@ -25,8 +26,6 @@ import {
   FaCartArrowDown,
 } from "react-icons/fa";
 export default function Headers(props) {
-
-
   const [isCartVisible, setIsCartVisible] = useState(false);
 
   const handleCartToggle = () => {
@@ -34,10 +33,15 @@ export default function Headers(props) {
   };
 
   const navigate = useNavigate();
+  const auth = localStorage.getItem("token");
   const [username, setUsername] = useState("");
   const [products, setProducts] = useState([]);
+  // const { cartlength } = useParams();
+  // console.log(cartlength)
+  const cart = useContext(cartContext);
+  console.log("cart valueee", cart);
 
-const location = useLocation();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,14 +56,14 @@ const location = useLocation();
 
     fetchData();
   }, []);
-  let userinfo= {firstname: localStorage.getItem('firstname')}
+  let userinfo = { firstname: localStorage.getItem("firstname") };
   // console.log('dataaaa',userinfo)
 
   const handleLogout = async () => {
     localStorage.removeItem("token");
     localStorage.removeItem("firstname");
-    localStorage.removeItem("userId")
-    alert('logout')
+    localStorage.removeItem("userId");
+    alert("logout");
     navigate("/");
   };
 
@@ -111,7 +115,18 @@ const location = useLocation();
                 <IoIosLogOut />
               </i>
             ) : (
-              <Link to='/' >  <i style={{color:'green', fontSize:'24px', cursor:'pointer'}}>  <IoIosLogOut /></i></Link>
+              <Link to="/">
+                {" "}
+                <i
+                  style={{
+                    color: "green",
+                    fontSize: "24px",
+                    cursor: "pointer",
+                  }}>
+                  {" "}
+                  <IoIosLogOut />
+                </i>
+              </Link>
             )}
           </div>
         </div>
@@ -144,14 +159,48 @@ const location = useLocation();
                 </i>
               </Link>
             </span>
-            <Link to="../Likedpage">
-              <i className="fa-regular" >
+            <Link
+              to={auth ? "../Cart" : null}
+              onClick={
+                auth
+                  ? null
+                  : () =>
+                      toast.error(
+                        <>
+                          Please login first. <Link to="/">Go to Login</Link>
+                        </>
+                        // { autoClose: false }
+                      )
+              }>
+            <i className="fa-regular">
                 <FaRegHeart />
               </i>
-            </Link>
-            <Link to="../Cart">
-              <i onClick={handleCartToggle} className="fa-regular">
-                <FaCartArrowDown /><sup style={{fontStyle:'normal', fontWeight:'bolder',color:'gray'}}>1</sup>
+              </Link>
+
+            <Link
+              to={auth ? "../Cart" : null}
+              onClick={
+                auth
+                  ? null
+                  : () =>
+                      toast.error(
+                        <>
+                          Please login first. <Link to="/">Go to Login</Link>
+                        </>
+                        // { autoClose: false }
+                      )
+              }>
+              <i className="fa-regular">
+                <FaCartArrowDown />
+                <sup
+                  style={{
+                    fontStyle: "normal",
+                    fontWeight: "bolder",
+                    color: "gray",
+                  }}>
+                  {" "}
+                  {cart || null}
+                </sup>
               </i>
             </Link>
             <ul>
@@ -412,9 +461,15 @@ const location = useLocation();
               </Link>
             </li>
           </ul>
-          <h2 style={{ marginLeft: "150px", marginTop: "10px",textTransform:'capitalize' }}>Welcome <span style={{color:'black'}}>{userinfo.firstname}</span></h2>
+          <h2
+            style={{
+              marginLeft: "150px",
+              marginTop: "10px",
+              textTransform: "capitalize",
+            }}>
+            Welcome <span style={{ color: "black" }}>{userinfo.firstname}</span>
+          </h2>
           <ToastContainer />
-
         </div>
       </header>
     </>

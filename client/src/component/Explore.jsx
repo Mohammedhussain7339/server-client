@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function Explore(props) {
   
   const Navigate = useNavigate();
+  const auth = localStorage.getItem("token");
   const [num, setNum] = useState(1);
   const plusHandler = () => {
     setNum(num + 1);
@@ -102,8 +103,13 @@ export default function Explore(props) {
           alert("Server error");
         });
     } else {
-      alert("Please login first");
-    }
+      toast.info(
+        <>
+          Please login first. <Link to="/">Go to Login</Link>
+        </>
+        // { autoClose: false }
+      )
+}
   };
     //handledisliked
   const handleDisLiked = (productId) => {
@@ -145,19 +151,34 @@ const handleCart = (productId) => {
     axios
       .post(url, data)
       .then((res) => {
-        alert('Product added to cart successfully!');
+        if (auth) {
+          toast.success('Product added to cart successfully!');
+        } else {
+          toast.error(
+            <>
+              Please! Login first. <Link to="/">Go to Login</Link>
+            </>
+          );
+        }
+        
         setcartRefresh(!cartrefresh);
         setcartProducts(res.data.cartproducts); // Update cartproducts with the new data
         console.log('Cart products length:', res.data.cartproducts.length);
 
 
       })
-      .catch((err) => {
-        alert("Server error");
-      });
+      // .catch((err) => {
+      //   toast.error(<>Please! Login first.<Link to="/">Go to Login</Link>
+      //   </>);
+      // });
   } else {
-    alert('Product not added to cart.');
-  }
+    toast.info(
+      <>
+        Product not added. 
+      </>
+      // { autoClose: false }
+    )
+}
 };
 
 

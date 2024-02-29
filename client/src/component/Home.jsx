@@ -10,9 +10,10 @@ import Page3 from "./Page3";
 import Slider from "./Slider";
 import Explorepage from "./Explorepage";
 import Footer from "./Footer";
-import { useState, useEffect } from "react";
+import { useState, useEffect,useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { cartContext } from "../context/Context";
 // import AuthCheck from '../component3/AuthCheck';
 
 const Home = () => {
@@ -112,12 +113,17 @@ const Home = () => {
     setUll({ display: "none" });
   };
 
+
   return (
     <div>
+              <cartContext.Provider   >
+
       <Headers
+      
         search={search}
         handleSearch={handleSearch}
         handleClick={handleClick}
+
       />
       <Navbar navbar="navbarrrr" />
       <div className="filteredproduct" style={ull}>
@@ -164,6 +170,8 @@ const Home = () => {
       <Slider />
       <Explorepage />
       <Footer />
+      </cartContext.Provider >
+
     </div>
   );
 };

@@ -9,6 +9,8 @@ import { IoSearchOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import { MdDelete } from "react-icons/md";
 import { RiTruckLine } from "react-icons/ri";
+import { cartContext } from '../context/Context'
+
 
 
 
@@ -17,12 +19,15 @@ export default function Cart() {
 
   const navigate= useNavigate();
 
-  useEffect(()=>{
-    if(!localStorage.getItem('token')){
-      alert ('please! login first');
-      navigate('/')
-    }
-  },[])
+    useEffect(()=>{
+      
+        if(!localStorage.getItem('token')){
+
+        alert('Please login first');
+        navigate('/')
+      }
+    
+    },[])
 
   const [products,setProducts]=useState([]);
   const [cartrefresh,setcartRefresh]=useState([]);
@@ -62,13 +67,14 @@ export default function Cart() {
       .then((res, data) => {
         setcartRefresh(!cartrefresh)
         console.log(res, data);
-        alert('dis-liked')
+        alert('del-cart')
       })
       .catch((err) => {
         alert("server err");
       });
   };
 
+  const cartlength= products.length;
 
   const quickHandler=()=>{
 
@@ -126,7 +132,8 @@ export default function Cart() {
     
       return (
     <>
-    <Headers/>
+    <cartContext.Provider value={products.length}>
+    <Headers cart={products.length}/>
     <div className="titlecart"><span><Link to='/Home'>Home</Link></span><span style={{paddingLeft:'20px'}}>Your Cart</span></div>
     <div className='Cartpage'>
       <span className='yourcart'>Your Cart</span>
@@ -175,8 +182,13 @@ Your order is eligible for <b>Free Delivery</b><br /><br />
     <b >Total</b> <b style={{paddingLeft:'200px'}}>Rs. {getTotalPrice()}</b>
     <button className='checkoutbtn'>Proceed to Checkout</button>
     </div>
+    <span style={{ paddingLeft: '20px' }}>Your Cart {cartlength}</span>
     </div>
+
     <Footer/>
+    <ToastContainer />
+
+    </cartContext.Provider>
     </>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useContext } from 'react'
 import HashLoader from "react-spinners/HashLoader";
 import Home from './component/Home';
 import About from './component/About';
@@ -17,16 +17,22 @@ import Filters from './component3/Filters';
 import Quickbox from './component3/Quickbox'
 import Likedpage from './component3/Likedpage';
 import Quickpage from './component3/Quickpage';
-// import AuthCheck from './component3/AuthCheck';
+import { cartContext } from './context/Context';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
 
 
 export default function App() {
+
+  
   let tagname='Account'
   const [loading ,setLoading]= useState(false);
   let [color, setColor] = useState("red");
+  const cart =useContext(cartContext);
+  console.log('app cart',cart)
 
   
   useEffect(()=>{
@@ -47,6 +53,8 @@ export default function App() {
         style={{position:'absolute',left:'50%',top:'10%'}}
       />
         :
+        <cartContext.Provider value={cart} >
+
         <Router>
         <Routes>
         <Route path='/' element={<Login2/>}></Route>        
@@ -66,9 +74,9 @@ export default function App() {
         <Route  path='/products/:productId' element={<Quickpage/>} ></Route> 
         {/* <Route  path='/AuthCheck' element={<AuthCheck/>} ></Route>  */}
   
-  
         </Routes>
         </Router>
+        </cartContext.Provider>
   
       }
     </div>
