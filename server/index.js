@@ -1,29 +1,44 @@
+require ('dotenv').config();
 const express = require('express');
 require('./database/connection');
-// require('./models/user')
+const cors = require('cors'); // Import the cors module
+
+const flash = require('connect-flash');
 const product1=require('./models/product1')
 const userinfo= require('./models/userinfo')
+const UserFeedModel=require('./models/userfeed')
 const File = require('./models/photo');
 var path = require('path');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
+const jwt = require('jsonwebtoken');
+const bodyParser = require('body-parser');
+const http =require('http');
+const {Server} =require('socket.io');
+// const { Socket } = require('socket.io-client');
 
 
 const app = express();
-const cors = require('cors');
+const httpserver = http.createServer(app);
+const io = new Server(httpserver,{
+  cors:{origin:'*'}
+})
+const corsOptions = {
+  origin: 'http://localhost:5173', // Replace with the actual origin of your React app
+  credentials: true,
+};
+
+app.use(cors(corsOptions)); // Use the cors middleware with options
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 
-const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: false }));
-
-//this is middleware
 app.use(bodyParser.json());
-app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(flash());
 
 app.use(session({
     secret: 'yourSecretKey', // Change this to a strong, random string
@@ -115,64 +130,44 @@ app.get('/files', async (req, res) => {
       console("Server error");
     }
   });
-
+  
   // login code is start
   app.post('/login', async (req, res) => {
-
     const { email, password } = req.body;
-    console.log(req.body)
-
+    console.log(req.body);
+  
     try {
       // Find user by email
       const user = await userinfo.findOne({ email });
-
+  
       // Check if the user exists
       if (!user) {
-        return res.status(401).json({ error: 'Invalid credentials' });
+        req.flash('error', 'Invalid email or password');
       }
-
+  
       // Compare the entered password with the hashed password
-      const passwordMatch = await bcrypt.compare(password, user.password);
-
+      const passwordMatch = bcrypt.compare(password, user.password);
+  
       if (passwordMatch) {
-        // Set the user in the session
-        req.session.user = {
-          userId: user._id,
-          firstname: user.firstname,
-          // Add other user information as needed
-        };
-        res.json({ success: true, message: 'Login successful' });
+        // Generate a token
+        const token = jwt.sign(
+          { userId: user._id, email: user.email, firstname: user.firstname }, // payload
+          'your_secret_key', // replace with your secret key
+          { expiresIn: '1h' } // optional expiration time
+        );
+  
+  
+        res.send({ success: true, message: 'Login successful',token:token, userId: user._id,firstname:user.firstname });
       } else {
-        res.status(401).json({ error: 'Invalid credentials' });
+        req.flash('error', 'Invalid email or password');
       }
     } catch (error) {
       console.error('Login error:', error);
+      req.flash('error', 'Internal Server Error');
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
-  //user info code
-  app.get('/userinfo', (req, res) => {
-    // Your logic to handle userinfo request
-    res.json({ success: true, user: { firstname: 'John' } }); // Replace with actual user data
-  });
-  //logout code
-app.post('/logout', (req, res) => {
-  try {
-    // Destroy the session to log the user out
-    req.session.destroy((err) => {
-      if (err) {
-        console.error('Logout error:', err);
-        res.status(500).json({ error: 'Internal Server Error' });
-      } else {
-        res.json({ success: true, message: 'Logout successful' });
-      }
-    });
-  } catch (error) {
-    console.error('Server error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-// Add product
+        // Add product
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/'); // Specify the upload directory
@@ -184,8 +179,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-app.post('/product1', upload.single('productImage'), async(req, res) => {
-  const { productName, productPrice, productDescription } = req.body;
+app.post('/product1', upload.array('productImage'), async(req, res) => {
+  const { productName, productPrice, productDescription,productType, colorType } = req.body;
   const productImage = req.file.filename; // Multer automatically adds 'file' property to 'req'
   console.log(productName,productPrice,productImage)
 
@@ -194,7 +189,10 @@ app.post('/product1', upload.single('productImage'), async(req, res) => {
       productName,
       productPrice,
       productDescription,
+      productType,
+      colorType,
       productImage,
+
     });
 
     await newProduct.save();
@@ -204,15 +202,114 @@ app.post('/product1', upload.single('productImage'), async(req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
   });
-//product data fetching
-app.get('/productfetch', async (req, res) => {
+
+  //productfetch data
+  app.get('/productfetch', async (req, res) => {
+    try {
+      const products = await product1.find();
+      res.json({ success: true, products });
+      console.log(products)
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+
+// likedproduct data
+app.post('/like-product',(req,res)=>{
+  let productId =req.body.productId;
+  let userId =req.body.userId;
+  console.log(productId,userId)
+
+  userinfo.updateOne({_id: userId},{$addToSet:{likedProducts : productId}})
+  .then(()=>{
+      res.send({message:'liked success'})
+  })
+  .catch(()=>{
+    res.send({message:' server Error'})
+  })
+})
+//Dislike function
+app.post('/dislike-product',(req,res)=>{
+  let productId =req.body.productId;
+  let userId =req.body.userId;
+  console.log(productId,userId)
+
+  userinfo.updateOne({_id: userId},{$pull:{likedProducts : productId}})
+  .then(()=>{
+      res.send({message:'liked success'})
+  })
+  .catch(()=>{
+    res.send({message:' server Error'})
+  })
+})
+
+//liked product data fetching
+app.post('/liked-page', async (req, res) => {
+    userinfo.findOne({_id: req.body.userId}).populate('likedProducts')
+    .then((result)=>{
+      res.send({message:'success',products: result.likedProducts})
+    })
+    .catch((err)=>{
+      res.send({message:'server error'})
+    })
+});
+
+//cart server coding is start
+// cartproduct data
+app.post('/cart-product',(req,res)=>{
+  let productId =req.body.productId;
+  let userId =req.body.userId;
+  console.log(productId,userId)
+
+  userinfo.updateOne({_id: userId},{$addToSet:{cartProducts : productId}})
+  .then(()=>{
+      res.send({message:'cart success'})
+  })
+  .catch(()=>{
+    res.send({message:' server Error'})
+  })
+})
+//Dislike function
+app.post('/discart-product',(req,res)=>{
+  let productId =req.body.productId;
+  let userId =req.body.userId;
+  console.log(productId,userId)
+
+  userinfo.updateOne({_id: userId},{$pull:{cartProducts : productId}})
+  .then(()=>{
+      res.send({message:'discart success'})
+  })
+  .catch(()=>{
+    res.send({message:' server Error'})
+  })
+})
+
+//liked product data fetching
+app.post('/cart-page', async (req, res) => {
+    userinfo.findOne({_id: req.body.userId}).populate('cartProducts')
+    .then((result)=>{
+      res.send({message:'success',products: result.cartProducts})
+    })
+    .catch((err)=>{
+      res.send({message:'server error'})
+    })
+});
+
+
+
+
+
+
+//quickdata
+app.get('/quick-page/:id', async (req, res) => {
+  console.log(req.params)
   try {
-    const products = await product1.find();
-    res.json({ success: true, products });
-    console.log(products)
-  } catch (error) {
-    console.error('Error fetching products:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    const result = await product1.findOne({ _id: req.params.id });
+    res.send({ message: 'success', product: result });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: 'server error' });
   }
 });
 
@@ -265,7 +362,33 @@ app.put('/product1/:id', upload.single('productImage'), async (req, res) => {
 });
 
 
-    
+ //userfeed
+
+app.post('/userfeed', async (req, res) => {
+  try {
+    console.log('Received data:', req.body);
+    const userfeed = req.body;
+
+    // Validate the incoming data
+    if (!userfeed || !userfeed.userfeed) {
+      return res.status(400).send('Invalid user feed data');
+    }
+
+    const userFeedInstance = new UserFeedModel(userfeed);
+
+    // Save the user to the database
+    await userFeedInstance.save();
+
+    // Respond with success
+    console.log('User info successfully registered');
+    res.status(200).send('User info successfully registered');
+  } catch (error) {
+    console.error("Error:", error.message);
+    res.status(500).send("Server error");
+  }
+});
+
+   
 
 
 
@@ -273,10 +396,34 @@ app.post('/',(req,res)=>{
 res.send('home')
 console.log('home')
 })
+let message=[];
+io.on('connection', (socket) => { //io.on is used to connection
+  console.log('Socket connected:', 'Socket_Id',socket.id); //socket.id is socketfunction it's represent socket id
+
+socket.on('message',(data)=>{
+  console.log(data)
+  socket.broadcast.emit('receive-message',data)
+  
+})
 
 
-app.listen(8000, () => {
-    console.log("server is start");
+
+//disconnect socket
+  socket.on('disconnect', () => {
+    console.log(`User disconnected:${socket.id}`);
+  });
+
+});
+//extra 
+  //io is use all user
+  //socket are use one person
+  //emit means send data
+  //on means receive data 
+  // socket.broadcast.emit('Welcome',`Welcome to the Server`)
+  // socket.broadcast.emit('Welcome',`SockedIdd:${socket.id}=join the Server`)
+
+httpserver.listen(8000, () => {
+    console.log("server is start 8000 port");
 })
 
 

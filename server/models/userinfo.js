@@ -6,6 +6,8 @@ const userinfoSchema = new mongoose.Schema({
     lastname:String,
     email: String,
     password: String,
+    likedProducts : [{ type: mongoose.Schema.Types.ObjectId, ref:'product1'}],
+    cartProducts : [{ type: mongoose.Schema.Types.ObjectId, ref:'product1'}]
   });
   
    const Userinfo = mongoose.model('User', userinfoSchema);  

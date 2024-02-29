@@ -1,7 +1,7 @@
 
 const mongoose= require('mongoose');
-
-mongoose.connect('mongodb://127.0.0.1:27017/myapp1')
+const MongoURI = process.env.MONGO_URI ;
+mongoose.connect( MongoURI)
 .then(()=>{
     console.log("database is connected")
 }).catch(()=>{
