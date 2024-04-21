@@ -6,6 +6,7 @@ const userinfoSchema = new mongoose.Schema({
     lastname:String,
     email: String,
     password: String,
+    role: { type: String, default: 'user' }, // Default role is user
     likedProducts : [{ type: mongoose.Schema.Types.ObjectId, ref:'product1'}],
     cartProducts : [{ type: mongoose.Schema.Types.ObjectId, ref:'product1'}]
   });

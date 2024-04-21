@@ -104,13 +104,13 @@ app.get('/files', async (req, res) => {
   app.post('/register', async (req, res) => {
     try {
       console.log(req.body);
-      const { firstname, lastname, email, password } = req.body;
+      const { firstname, lastname, email, password,role } = req.body;
       
       // Log the received firstname and lastname
       console.log('Received data:', firstname, lastname);
 
       // Validate input
-      if (!firstname || !lastname || !email || !password) {
+      if (!firstname || !lastname || !email || !password || !role) {
         return res.status(400).json({ error: 'Missing required fields' });
       }
 
@@ -118,7 +118,7 @@ app.get('/files', async (req, res) => {
       const hashedPassword = await bcrypt.hash(password, 10);
 
       // Assuming userinfo is your model, create a new user instance
-      const user = new userinfo({ firstname, lastname, email, password: hashedPassword });
+      const user = new userinfo({ firstname, lastname, email, password: hashedPassword, role });
 
       // Save the user to the database
       await user.save();
@@ -151,13 +151,13 @@ app.get('/files', async (req, res) => {
       if (passwordMatch) {
         // Generate a token
         const token = jwt.sign(
-          { userId: user._id, email: user.email, firstname: user.firstname }, // payload
+          { userId: user._id, email: user.email, firstname: user.firstname,userRole: user.role }, // payload
           'your_secret_key', // replace with your secret key
           { expiresIn: '1h' } // optional expiration time
         );
   
   
-        res.send({ success: true, message: 'Login successful',token:token, userId: user._id,firstname:user.firstname });
+        res.send({ success: true, message: 'Login successful',token:token, userId: user._id,firstname:user.firstname, userRole: user.role });
       } else {
         req.flash('error', 'Invalid email or password');
       }
