@@ -455,7 +455,7 @@ export default function Quickpage() {
           </div>
         )}
       </div>
-      <Footer />
+        <Footer />
     </>
   );
 }

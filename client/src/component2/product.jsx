@@ -1,9 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import AdminNav from './AdminNav';
+import Slidebar from './Slidebar';
 
 const App = () => {
   const [products, setProducts] = useState([]);
     // const [editedProduct, setEditedProduct] = useState(null);
+
+    const navigate=useNavigate();
+
+    useEffect(() => {
+      if (localStorage.getItem('userRole') !== 'admin') {
+        alert('Please login as admin first.');
+        navigate('/');
+      } else {
+        fetchData(); // Fetch data only if user is admin
+      }
+    }, []); // Empty dependency array means this effect runs only once on mount
+    
 
   
   const handleUpdate = async () => {
@@ -105,7 +120,9 @@ const App = () => {
     }
   };  return (
     <div>
-      <h1>MERN Product App</h1>
+      <AdminNav/>
+      <Slidebar/>
+        <h1>MERN Product App</h1>
       <div>
         <h2>Add New Product</h2>
         <input type="text" name="productName" placeholder="Product Name" value={Product.productName} onChange={handleInputChange} />

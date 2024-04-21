@@ -57,6 +57,10 @@ const navigate=useNavigate();
   // Clear all filters
   updatedFilteredProducts = products;
 }
+else   {
+  // Clear all filters
+  updatedFilteredProducts = products;
+}
 
   setFilteredProducts(updatedFilteredProducts);
   
@@ -65,7 +69,7 @@ const navigate=useNavigate();
   return (
     <>
     <Headers></Headers>
-    <div>
+    <div className='filterContainer'>
       <div className="swiperContainer">
     <Swiper
         slidesPerView={5}
@@ -139,8 +143,8 @@ const navigate=useNavigate();
             <div className="imgdivs">
               <img src={`http://localhost:8000/uploads/${product.productImage}`} alt={product.productName} />
             </div>
-            <li>{product.productName}</li>
-            <li>{product.productPrice}</li>
+            <li style={{marginTop:'10px'}}>{product.productName}</li>
+            <li style={{fontSize:'18px', letterSpacing:'3px',marginTop:'10px' }}>{product.productPrice}</li>
             <ul className='ul'>
               <li></li>
               <li></li>
@@ -154,6 +158,8 @@ const navigate=useNavigate();
     </div>
   </div>
 </div>
+<Footer/>
+
     </>
   )
 }

@@ -2,15 +2,20 @@ import { useState } from 'react';
 import Headers from '../component/Headers';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer,toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function Signup2({tagname}) {
   const navigate = useNavigate();
 
   const [userInfo, setUserInfo] = useState({
-    firstname: 'Mohammed',
-    lastname: 'Hussain',
+    firstname: '',
+    lastname: '',
     email: '',
     password: '',
+    role: 'user', // Default role is user
+
   });
 
   const changeHandler = (e) => {
@@ -34,12 +39,13 @@ export default function Signup2({tagname}) {
 
       // Log any response data if needed
       console.log('Response:', response.data);
-      navigate('/login2');
+      navigate('/');
 
       
     } catch (error) {
       console.error('Error during registration:', error);
-    }
+      toast.error('Please! fill out all required details')
+      }
   };
 
   return (
@@ -52,8 +58,14 @@ export default function Signup2({tagname}) {
           <input type="text" onChange={changeHandler} placeholder='Last Name' className='lname' name='lastname' />
           <input type="text" onChange={changeHandler} placeholder='Email' name='email' />
           <input type="text" onChange={changeHandler} placeholder='Password' name='password' />
+          <select name="role" onChange={changeHandler}>
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
+
           <input type="submit" onClick={submitHandler} value='SUBMIT' className='submit' />
         </div>
+      <ToastContainer />
       </div>
     </>
   );

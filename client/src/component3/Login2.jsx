@@ -38,14 +38,22 @@ export default function Login2({tagname}) {
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('userId', response.data.userId);
         localStorage.setItem('firstname', response.data.firstname);
+        const role=localStorage.setItem('userRole', response.data.userRole);
+
 
 
         console.log('Login successful');
-        // Redirect or perform additional actions upon successful login
-        navigate('/Home'); // Assuming you are using react-router
+        if (response.data.userRole === 'user') {
+          navigate('/Home');
+        } else if (response.data.userRole === 'admin') {
+          navigate('/product');
+        } else {
+          console.error('Unknown role:', response.data.userRole);
+        }
       } else {
         console.error('Login failed:', response.data.error);
       }
+          // Redirect or perform additional actions upon successful login
     } catch (error) {
       toast.error('Your! Login info is not match',{
         position:'top-center',
@@ -53,7 +61,6 @@ export default function Login2({tagname}) {
       })
     }
   };
-
 
 
   return (

@@ -135,6 +135,7 @@ export default function Headers(props) {
           <div className="navdiv2-1">
             <input
               type="text"
+              placeholder="All Product"
               value={props && props.search}
               onChange={(e) =>
                 props.handleSearch && props.handleSearch(e.target.value)
@@ -456,8 +457,8 @@ export default function Headers(props) {
               </Link>
             </li>
             <li>
-              <Link to="">
-                <span> buy now</span>
+              <Link to="/product">
+                <span> AdminPage</span>
               </Link>
             </li>
           </ul>

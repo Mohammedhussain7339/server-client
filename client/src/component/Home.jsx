@@ -125,41 +125,38 @@ const Home = () => {
         handleClick={handleClick}
 
       />
-      <Navbar navbar="navbarrrr" />
-      <div className="filteredproduct" style={ull}>
-        <button className="closefilter" onClick={closeHandler}>
-          close
-        </button>
-        <ul className="your-ul-class">
-          {/* Map through the products and display each one */}
-          {filteredProducts.map((product) => (
-            <div key={product._id}>
-              <div className="imgbox">
-                <div className="imgdivs">
-                  {Array.isArray(product.productImage) &&
-                  product.productImage.length > 0 ? (
-                    <div>
-                      {product.productImage.map((image, index) => (
-                        <img
-                          key={index}
-                          src={`http://localhost:8000/uploads/${image}`}
-                          alt={`${product.productName}-image${index}`}
-                        />
-                      ))}
-                    </div>
-                  ) : (
-                    <p>No images found for this product.</p>
-                  )}
-                </div>
-                
-                <li>{product.productName}</li>
-                <li>{product.productPrice}</li>
-                <li>{product.productDescription}</li>
-              </div>
-            </div>
-          ))}
-        </ul>
+      {/* <Navbar navbar="navbarrrr" /> */}
+<div className="filteredproduct" style={ull}>
+  <button className="closefilter" onClick={closeHandler}>
+    close
+  </button>
+  <ul className="your-ul-class">
+    {filteredProducts.map((product) => (
+      <div key={product._id}>
+        <div className="imgbox">
+          <div className="imgdivs">
+            <img src={`http://localhost:8000/uploads/${product.productImage}`} alt="" />
+          {/* {Array.isArray(product.productImage) && product.productImage.length > 0 ? (
+              product.productImage.map((image, index) => (
+                <img
+                  key={index}
+                  src={`http://localhost:8000/uploads/${image}`}
+                  alt={`${product.productName}-image${index}`}
+                />
+              ))
+            ) : (
+              <p>No images found for this product.</p>
+            )} */}
+
+          </div>
+          <li>{product.productName}</li>
+          <li>{product.productPrice}</li>
+          <li>{product.productDescription}</li>
+        </div>
       </div>
+    ))}
+  </ul>
+</div>
 
       <Mainpage />
       <Explore />
