@@ -24,29 +24,39 @@ export default function Explore(props) {
     setNum(num - 1);
   };
   const [quickbox, setQuickbox] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [filteredProduct, setFilteredProduct] = useState([]);
 
-  const quickHandler = (productId) => {
+  
+  const quickshowHandler = async (productId) => {
     setQuickbox(!quickbox);
     console.log("quick", productId);
-
-    const url = `http://localhost:8000/quick-page`;
-    const data = { productId };
-
-    console.log(url, data);
-
-    axios
-      .post(url, data)
-      .then((res) => {
-        setProducts(res.data.products);
-        // Additional handling if needed
-      })
-      .catch((err) => {
-        console.error(err);
-        alert("Server error");
-      });
+    try {
+      const response = await axios.get(`http://localhost:8000/productfetch`);
+      const filteredProduct = response.data.products.find(product => product._id === productId);
+      if (filteredProduct) {
+        setFilteredProduct([filteredProduct]);
+        console.log('Quick data show:', filteredProduct.productName);
+        // console.log(filteredProduct.productName)
+      } else {
+        console.log('Product not found with ID:', productId);
+        setProducts([]); // Clear products if no matching product found
+      }
+    } catch (error) {
+      console.error("Error fetching product details:", error);
+    }
   };
+//   const fil=filteredProduct.map((product)=>{
+//     return(product)
+//   })
+// console.log(fil)
 
-  const [products, setProducts] = useState([]);
+
+  const quickcloseHandler=()=>{
+    setQuickbox(!quickbox);
+    console.log('close')
+  }
+
   const[likedproducts, setlikedProducts]=useState([]);
   const [likerefresh, setlikeRefresh]=useState(false)
   console.log ('liked',likedproducts)
@@ -185,6 +195,7 @@ const handleCart = (productId) => {
 
   return (
     <div className="explorer">
+
       <i
         className="magnifier"
         style={{ cursor: "pointer" }}
@@ -220,7 +231,7 @@ const handleCart = (productId) => {
                       <i>
                         <IoCartOutline onClick={() => handleCart(product._id)} />
                       </i>
-                      <i onClick={() => quickHandler(product._id)}>
+                      <i onClick={() => quickshowHandler(product._id)}>
                         <IoSearchOutline />
                       </i>
                     </div>
@@ -237,18 +248,27 @@ const handleCart = (productId) => {
         )}{" "}
         {quickbox && (
           <div className="quickbox">
-            <button onClick={quickHandler} style={{ border: "none" }}>
+
+            <button onClick={quickcloseHandler} style={{ border: "none" }}>
               Close
             </button>
-            <div className="quickimg"></div>
-            <div className="quicktext">
-              <span>Dior</span>
+            {filteredProduct.length>0 &&(
+              <>
+              <div className="quickimg">
+              <img
+                  src={`http://localhost:8000/uploads/${filteredProduct[0].productImage}`}
+                  alt={filteredProduct[0].productName}
+              />
+
+              </div>
+              <div className="quicktext">
+                <span>{filteredProduct[0].productName}</span>
+                <br />
+              <br />
+              <span style={{ fontSize: "23px" }}>{filteredProduct[0].productName}</span>
               <br />
               <br />
-              <span style={{ fontSize: "23px" }}>Wooden Baby Chair</span>
-              <br />
-              <br />
-              <span style={{ fontSize: "20px" }}>Rs.16,900</span>
+              <span style={{ fontSize: "20px" }}>Rs.{filteredProduct[0].productPrice}</span>
               <br />
               <br />
               <span>
@@ -270,9 +290,13 @@ const handleCart = (productId) => {
               <div className="addtocart">Add to Cart</div>
               <br />
               <br />
-              <Link className="viewmore">view more details----</Link>
-            </div>
-            {/* ... (content of plusbox when quickbox is true) ... */}
+              <Link to='/Filters' className="viewmore">view more details----</Link>
+
+
+              </div>
+              </>
+            )}
+
           </div>
         )}
       </div>

@@ -18,6 +18,8 @@ import Quickbox from './component3/Quickbox'
 import Likedpage from './component3/Likedpage';
 import Quickpage from './component3/Quickpage';
 import { cartContext } from './context/Context';
+import Test1 from './component/Test1';
+import Explore from './component/Explore';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -71,7 +73,10 @@ export default function App() {
         <Route  path='/Filters' element={<Filters/>} ></Route>  
         <Route  path='/Quickbox' element={<Quickbox/>} ></Route> 
         <Route  path='/Likedpage' element={<Likedpage/>} ></Route> 
+        <Route  path='/Test1' element={<Test1/>} ></Route> 
+
         <Route  path='/products/:productId' element={<Quickpage/>} ></Route> 
+        <Route  path='/quickbox/:productId' element={<Explore/>} ></Route> 
         {/* <Route  path='/AuthCheck' element={<AuthCheck/>} ></Route>  */}
   
         </Routes>

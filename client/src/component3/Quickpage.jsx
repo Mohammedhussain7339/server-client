@@ -180,7 +180,7 @@ export default function Quickpage() {
                   </Swiper>
                 </div>
               </div>
-              <div className="quicktext">
+              <div className="quicktextpage">
                 <p>
                   <b>5</b> sold in last <b>15</b> hours
                 </p>
