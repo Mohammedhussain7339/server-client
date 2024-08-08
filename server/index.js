@@ -17,6 +17,7 @@ const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const http =require('http');
 const {Server} =require('socket.io');
+const checkout=require('./models/checkout')
 // const { Socket } = require('socket.io-client');
 
 
@@ -32,7 +33,9 @@ const corsOptions = {
 
 app.use(cors(corsOptions)); // Use the cors middleware with options
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static('uploads'));
+
 
 
 
@@ -60,34 +63,57 @@ app.use(function (req, res, next) {
   next();
 });
 
-// app.post('/upload', upload.single('file'), async (req, res) => {
-//   try {
-//     if (!req.file) {
-//       return res.status(400).json({ error: 'No file uploaded.' });
-//     }
+app.post('/checkout', async (req, res) => {
+  try {
+    const { userId, productId1,} = req.body;
+    console.log(productId1,'69')
+    const newOrder = new checkout({
+      userId,
+      productId1,
+      status: 'pending' // Ensure new orders are created with pending status
+    });
 
-//     const result = await cloudinary.uploader.upload_stream(
-//       { resource_type: 'auto' },
-//       async (error, result) => {
-//         if (error) {
-//           console.error('Error uploading to Cloudinary:', error);
-//           res.status(500).json({ error: 'Internal server error.' });
-//         } else {
-//           // Save Cloudinary URL to MongoDB
-//           const imageUrl = result.secure_url;
-//           const file = new File({ imageUrl });
-//           await file.save();
+    await newOrder.save();
 
-//           // Respond with the MongoDB document ID
-//           res.status(200).json({ fileId: file._id });
-//         }
-//       }
-//     ).end(req.file.buffer);
-//   } catch (error) {
-//     console.error('Error uploading file:', error);
-//     res.status(500).json({ error: 'Internal server error.' });
-//   }
-// });
+    res.json({ message: 'Order is being processed', orderId: newOrder._id });
+  } catch (error) {
+    console.error('Error during checkout', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+app.post('/admin/update-order', async (req, res) => {
+  try {
+    const { orderId, status } = req.body;
+    console.log('Updating order:', { orderId, status });
+
+    // Ensure the `orderId` and `status` are correctly received
+    const result = await checkout.findByIdAndUpdate(orderId, { status }, { new: true });
+
+    if (!result) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    res.json({ message: 'Order status updated', order: result });
+  } catch (error) {
+    console.error('Error updating order status:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+//fetch orderstatus
+app.get('/orders/status/:status', async (req, res) => {
+  try {
+    const { status } = req.params;
+    const orders = await checkout.find({ status });
+    res.json(orders);
+  } catch (error) {
+    console.error('Error fetching orders by status', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+/////////////////////////////////////////////////////////////////////////
+
 
 app.get('/files', async (req, res) => {
   try {
@@ -130,6 +156,18 @@ app.get('/files', async (req, res) => {
       console("Server error");
     }
   });
+
+  //fetch userdata
+  app.get('/users', async (req, res) => {
+    try {
+      const users = await userinfo.find(); // Fetch all users from the database
+      res.json({ success: true, users }); // Send the user data as JSON
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+  
   
   // login code is start
   app.post('/login', async (req, res) => {
@@ -167,42 +205,45 @@ app.get('/files', async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
-        // Add product
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Specify the upload directory
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
-  },
-});
 
-const upload = multer({ storage });
 
-app.post('/product1', upload.array('productImage'), async(req, res) => {
-  const { productName, productPrice, productDescription,productType, colorType } = req.body;
-  const productImage = req.file.filename; // Multer automatically adds 'file' property to 'req'
-  console.log(productName,productPrice,productImage)
-
-  try {
-    const newProduct = new product1({
-      productName,
-      productPrice,
-      productDescription,
-      productType,
-      colorType,
-      productImage,
-
-    });
-
-    await newProduct.save();
-    res.json({ success: true, product: newProduct });
-  } catch (error) {
-    console.error('Error saving product:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
+  var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, 'uploads/'); // Destination folder for uploaded files
+    },
+    filename: (req, file, cb) => {
+      cb(null, file.originalname); // Use the original filename
+    }
   });
+  
+  const upload = multer({ storage: storage });
+  
 
+  
+  app.post('/product1', upload.array('productsimg',12), async (req, res) => {
+    const { productName, productPrice, productDescription, productType, colorType,brand } = req.body;
+    console.log(productName, productPrice)
+  
+    try {
+      const newProduct = new product1({
+        productName,
+        productPrice,
+        productDescription,
+        productType,
+        colorType,
+        brand,
+        productImage: req.files // Assuming req.files contains the array of file objects
+
+      });
+  
+      await newProduct.save();
+      res.json({ success: true, product: newProduct });
+    } catch (error) {
+      console.error('Error saving product:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+    
   //productfetch data
   app.get('/productfetch', async (req, res) => {
     try {
@@ -257,25 +298,34 @@ app.post('/liked-page', async (req, res) => {
 
 //cart server coding is start
 // cartproduct data
-app.post('/cart-product',(req,res)=>{
-  let productId =req.body.productId;
-  let userId =req.body.userId;
-  console.log(productId,userId)
 
-  userinfo.updateOne({_id: userId},{$addToSet:{cartProducts : productId}})
-  .then(()=>{
-      res.send({message:'cart success'})
-  })
-  .catch(()=>{
-    res.send({message:' server Error'})
-  })
-})
-//Dislike function
-app.post('/discart-product',(req,res)=>{
-  let productId =req.body.productId;
-  let userId =req.body.userId;
-  console.log(productId,userId)
+app.post('/cart-product', async (req, res) => {
+  let { productId, userId } = req.body;
+  console.log(`Received Product ID: ${productId}, User ID: ${userId}`); // Add logging
 
+  try {
+    const result = await userinfo.updateOne(
+      { _id: userId },
+      { $addToSet: { cartProducts: productId } }
+    );
+    
+    if (result.nModified === 0) {
+      return res.status(404).send({ message: 'User not found or already updated' });
+    }
+    
+    res.send({ message: 'Cart updated successfully' });
+  } catch (error) {
+    console.error('Error updating cart:', error.message || error);
+    res.status(500).send({ message: 'Server Error', error: error.message || error });
+  }
+});
+
+
+
+app.post('/discart-product', (req, res) => {
+  const { productId, userId } = req.body;
+
+  // const user = userinfo.find(user => user._id === userId);
   userinfo.updateOne({_id: userId},{$pull:{cartProducts : productId}})
   .then(()=>{
       res.send({message:'discart success'})
@@ -283,7 +333,8 @@ app.post('/discart-product',(req,res)=>{
   .catch(()=>{
     res.send({message:' server Error'})
   })
-})
+});
+
 
 //liked product data fetching
 app.post('/cart-page', async (req, res) => {
@@ -365,21 +416,10 @@ app.put('/product1/:id', upload.single('productImage'), async (req, res) => {
  //userfeed
 
 app.post('/userfeed', async (req, res) => {
+  const {userfeed,userfirstName} = req.body;
+  const userFeedInstance = new UserFeedModel({userfeed,userfirstName});
   try {
-    console.log('Received data:', req.body);
-    const userfeed = req.body;
-
-    // Validate the incoming data
-    if (!userfeed || !userfeed.userfeed) {
-      return res.status(400).send('Invalid user feed data');
-    }
-
-    const userFeedInstance = new UserFeedModel(userfeed);
-
-    // Save the user to the database
-    await userFeedInstance.save();
-
-    // Respond with success
+    const savedfeed=await userFeedInstance.save();
     console.log('User info successfully registered');
     res.status(200).send('User info successfully registered');
   } catch (error) {
@@ -387,33 +427,44 @@ app.post('/userfeed', async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+app.get('/get/userfeed',async(req,res)=>{
+  try {
+    const getuserfeed = await UserFeedModel.find();
+    res.json({ success: true, getuserfeed });
+    console.log(getuserfeed)
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+
+})
 
    
 
 
 
-app.post('/',(req,res)=>{
-res.send('home')
-console.log('home')
-})
-let message=[];
-io.on('connection', (socket) => { //io.on is used to connection
-  console.log('Socket connected:', 'Socket_Id',socket.id); //socket.id is socketfunction it's represent socket id
+// app.post('/',(req,res)=>{
+// res.send('home')
+// console.log('home')
+// })
+// let message=[];
+// io.on('connection', (socket) => { //io.on is used to connection
+//   console.log('Socket connected:', 'Socket_Id',socket.id); //socket.id is socketfunction it's represent socket id
 
-socket.on('message',(data)=>{
-  console.log(data)
-  socket.broadcast.emit('receive-message',data)
+// socket.on('message',(data)=>{
+//   console.log(data)
+//   socket.broadcast.emit('receive-message',data)
   
-})
+// })
 
 
 
-//disconnect socket
-  socket.on('disconnect', () => {
-    console.log(`User disconnected:${socket.id}`);
-  });
+// //disconnect socket
+//   socket.on('disconnect', () => {
+//     console.log(`User disconnected:${socket.id}`);
+//   });
 
-});
+// });
 //extra 
   //io is use all user
   //socket are use one person
@@ -422,7 +473,7 @@ socket.on('message',(data)=>{
   // socket.broadcast.emit('Welcome',`Welcome to the Server`)
   // socket.broadcast.emit('Welcome',`SockedIdd:${socket.id}=join the Server`)
 
-httpserver.listen(8000, () => {
+app.listen(8000, () => {
     console.log("server is start 8000 port");
 })
 

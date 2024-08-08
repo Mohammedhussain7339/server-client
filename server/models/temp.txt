@@ -73,3 +73,603 @@
 //     </>
 //   )
 // }
+
+
+    // const url = `http://localhost:8000/quick-page`;
+    // const data = { productId };
+
+    // console.log(url, data);
+
+    // axios
+    //   .post(url, data)
+    //   .then((res) => {
+    //     setProducts(res.data.products);
+    //     // Additional handling if needed
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //     alert("Server error");
+    //   });
+
+
+
+
+  // const discartHandler = (productId) => {
+  //   let userId = localStorage.getItem("userId");
+  //   console.log(" discart successfully", productId, "and", userId);
+  //   const url = `http://localhost:8000/discart-product`;
+  //   const data = { userId, productId };
+  //   axios
+  //     .post(url, data)
+  //     .then((res, data) => {
+  //       setcartRefresh(!cartrefresh);
+  //       console.log(res, data);
+  //       alert("del-cart");
+  //     })
+  //     .catch((err) => {
+  //       alert("server err");
+  //     });
+  // };
+
+//Discart function
+// app.post('/discart-product',(req,res)=>{
+//   let productId =req.body.productId;
+//   let userId =req.body.userId;
+//   console.log(productId,userId)
+
+//   userinfo.updateOne({_id: userId},{$pull:{cartProducts : productId}})
+//   .then(()=>{
+//       res.send({message:'discart success'})
+//   })
+//   .catch(()=>{
+//     res.send({message:' server Error'})
+//   })
+// })
+// app.post('/upload', upload.single('file'), async (req, res) => {
+//   try {
+//     if (!req.file) {
+//       return res.status(400).json({ error: 'No file uploaded.' });
+//     }
+
+//     const result = await cloudinary.uploader.upload_stream(
+//       { resource_type: 'auto' },
+//       async (error, result) => {
+//         if (error) {
+//           console.error('Error uploading to Cloudinary:', error);
+//           res.status(500).json({ error: 'Internal server error.' });
+//         } else {
+//           // Save Cloudinary URL to MongoDB
+//           const imageUrl = result.secure_url;
+//           const file = new File({ imageUrl });
+//           await file.save();
+
+//           // Respond with the MongoDB document ID
+//           res.status(200).json({ fileId: file._id });
+//         }
+//       }
+//     ).end(req.file.buffer);
+//   } catch (error) {
+//     console.error('Error uploading file:', error);
+//     res.status(500).json({ error: 'Internal server error.' });
+//   }
+// });
+
+// app.post('/cart-product',(req,res)=>{
+//   let productId =req.body.productId;
+//   let userId =req.body.userId;
+//   console.log(productId,userId)
+
+//   userinfo.updateOne({_id: userId},{$addToSet:{cartProducts : productId}})
+//   .then(()=>{
+//       res.send({message:'cart success'})
+//   })
+//   .catch(()=>{
+//     res.send({message:' server Error'})
+//   })
+// })
+
+
+                      {/* <button onClick={() => minusHandler(product._id)}>-</button>
+                    <button>{num[product._id] || 0}</button>
+                    <button onClick={() => plusHandler(product._id)}>+</button> */}
+
+
+
+
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const ProductList = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/productfetch');
+        setProducts(response.data.products);
+        console.log(response.data.products);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  return (
+    <div>
+      {Array.isArray(products) && products.length > 0 ? (
+        <ul>
+          {products.map((product) => (
+            <li key={product._id}>
+              {product.productName} {product.productPrice}
+              {product.productImage && (
+  <img
+    src={`http://localhost:8000/product1/uploads/${product.productImage}`}
+    alt={product.productName}
+    onError={(e) => console.error('Error loading image:', e)}
+  />
+)}
+              <p>{product.productDescription}</p>
+              {/* Additional product details can be displayed here */}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No products found.</p>
+      )}
+    </div>
+  );
+};
+
+export default ProductList;
+
+
+// import React, { useState, useEffect } from "react";
+// import axios from "axios";
+// import { useNavigate } from "react-router-dom";
+// import AdminNav from "./AdminNav";
+// import Slidebar from "./Sidebar";
+// import Orderstatus from "./Orderstatus";
+
+// const App = () => {
+//   const [products, setProducts] = useState([]);
+//   // const [editedProduct, setEditedProduct] = useState(null);
+
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     if (localStorage.getItem("userRole") !== "admin") {
+//       alert("Please login as admin first.");
+//       navigate("/");
+//     } else {
+//       fetchData(); // Fetch data only if user is admin
+//     }
+//   }, []); // Empty dependency array means this effect runs only once on mount
+
+//   const handleUpdate = async () => {
+//     try {
+//       const formData = new FormData();
+//       formData.append("productName", editedProduct.productName);
+//       formData.append("productPrice", editedProduct.productPrice);
+//       formData.append("productDescription", editedProduct.productDescription);
+//       if (editedProduct.productImage) {
+//         formData.append("productImage", editedProduct.productImage);
+//       }
+
+//       const response = await axios.put(
+//         `http://localhost:8000/product1/${editedProduct._id}`,
+//         formData,
+//         {
+//           headers: {
+//             "Content-Type": "multipart/form-data",
+//           },
+//         }
+//       );
+
+//       console.log(response.data);
+
+//       // Reset the editing mode and fetch updated product list
+//       setEditingMode(false);
+//       setEditedProduct(null);
+//       fetchData();
+//     } catch (error) {
+//       console.error("Error updating product:", error);
+//     }
+//   };
+
+//   const handleDelete = async (productId) => {
+//     try {
+//       await axios.delete(`http://localhost:8000/product1/${productId}`);
+//       // Fetch updated product list after successful deletion
+//       fetchData();
+//     } catch (error) {
+//       console.error("Error deleting product:", error);
+//     }
+//   };
+
+//   const fetchData = async () => {
+//     try {
+//       const response = await axios.get("http://localhost:8000/productfetch");
+//       setProducts(response.data.products);
+//       console.log(response.data.products);
+//       console.log('this is img', response.data.products.map(product => product.productImage));
+//     } catch (error) {
+//       console.error("Error fetching products:", error);
+//     }
+//   };
+
+//   useEffect(() => {
+//     // Fetch initial product data when the component mounts
+//     fetchData();
+//   }, []);
+
+//   const [Product, setProduct] = useState({
+//     productName: "",
+//     productPrice: "",
+//     productDescription: "",
+//     productType: "", // Add productType to the state
+//     colorType: "",
+//     brand: "" // Add colorType to the state
+//   });
+
+//   const handleInputChange = (e) => {
+//     setProduct({ ...Product, [e.target.name]: e.target.value });
+//     console.log(Product);
+//   };
+
+//   const [productImage, setProductImage] = useState([]);
+
+//   const handleImageChange = (e) => {
+//     setProductImage(e.target.files);
+//   };
+  
+//   const handleUpload = async () => {
+//     try {
+//       const formData = new FormData();
+//       formData.append("productName", Product.productName);
+//       formData.append("productPrice", Product.productPrice);
+//       formData.append("productDescription", Product.productDescription);
+//       formData.append("productType", Product.productType);
+//       formData.append("colorType", Product.colorType);
+//       formData.append("brand", Product.brand);
+//       Array.from(productImage).forEach((item) => {
+//         formData.append("productsimg", item);
+//       });
+  
+//       const response = await axios.post(
+//         "http://localhost:8000/product1",
+//         formData,
+//         // {
+//         //   headers: {
+//         //     "Content-Type": "multipart/form-data",
+//         //   },
+//         // }
+//       );
+  
+//       console.log(response.data);
+//       // Fetch updated product list after successful upload
+//       fetchData();
+//     } catch (error) {
+//       console.error("Error uploading product:", error);
+//     }
+//   };
+//     return (
+//     <div>
+//       <AdminNav />
+//       <Slidebar />
+//       <Orderstatus/>
+//       <h1>MERN Product App</h1>
+//       <div>
+//         <h2>Add New Product</h2>
+//         <input
+//           type="text"
+//           name="productName"
+//           placeholder="Product Name"
+//           value={Product.productName}
+//           onChange={handleInputChange}
+//         />
+//         <input
+//           type="text"
+//           name="productPrice"
+//           placeholder="Product Price"
+//           value={Product.productPrice}
+//           onChange={handleInputChange}
+//         />
+//         <input
+//           type="text"
+//           name="productDescription"
+//           placeholder="Product Description"
+//           value={Product.productDescription}
+//           onChange={handleInputChange}
+//         />
+//               {
+//         Array.from(productImage).map(item => {
+//           return (
+//             <span>
+//               <img
+//                 style={{ padding: '10px' }}
+//                 width={150} height={100}
+//                 src={item ? URL.createObjectURL(item) : null} />
+//             </span>
+//           )
+//         })
+//       }
+
+//         <input type="file" multiple accept="image/*" onChange={handleImageChange} />
+//         <select
+//           className="selectinput"
+//           name="productType"
+//           value={Product.productType}
+//           onChange={handleInputChange}>
+//           <option value="">Select Product Type</option>
+//           <option value="Chair">Chair</option>
+//           <option value="Table">Table</option>
+//           <option value="Lalten">Lalten</option>
+//           <option value="Sofa">Sofa</option>
+//           <option value="FlowerPort">FlowerPort</option>
+//           {/* Add other product types as needed */}
+//         </select><br />
+//         <select
+//                   className="selectinput"
+
+//           name="colorType"
+//           value={Product.colorType}
+//           onChange={handleInputChange}>
+//           <option value="">Select Color Type</option>
+//           <option value="Red">Red</option>
+//           <option value="Blue">Blue</option>
+//           <option value="White">White</option>
+//           <option value="Black">Black</option>
+//           <option value="Brown">Brown</option>
+//           <option value="Yellow">Yellow</option>
+//           <option value="Green">Green</option>
+//           {/* Add other color types as needed */}
+//         </select><br />
+//         <select
+//                   className="selectinput"
+
+//           name="brand"
+//           value={Product.brand}
+//           onChange={handleInputChange}>
+//           <option value="">Select Brand Type</option>
+//           <option value="Godrej Interio">Godrej Interio</option>
+//           <option value="Zuari Furniture">Zuari Furniture</option>
+//           <option value="Durian">Durian</option>
+//           <option value="Damro">Damro</option>
+//           <option value="IKEA">IKEA</option>
+//           <option value="Wipro Furniture">Wipro Furniture</option>
+//         </select><br />
+//         <button className="uploadbtn" onClick={handleUpload}>Upload Product</button>
+//       </div>
+//       <div>
+//         <h2>Product List</h2>
+//         <div className="table">
+//           {Array.isArray(products) && products.length > 0 ? (
+//             <ul>
+//               <tr>
+//                 {" "}
+//                 <th>ProductName</th>
+//                 <th>ProuductPrice</th>
+//                 <th>ProuductDescription</th>
+//                 <th>ProductType</th>
+//                 <th>ColorType</th>
+//                 <th>ProductImage</th>
+//               </tr>
+//               {products.map((product) => (
+//                 <li key={product._id} className="productdata" >
+//                   <tr  style={{}}>
+//                     <td>{product.productName}</td>
+//                     <td>{product.productPrice}</td>
+//                     <td>{product.productDescription.split(' ').slice(0, 10).join(' ')}...</td>
+//                     <td>{product.productType}</td>
+//                     <td>{product.colorType}</td>
+//                     <td >
+//                       {" "}
+//                 {product.productImage && product.productImage.length > 0 && (
+//               <img
+//                 src={`http://localhost:8000/uploads/${product.productImage[0].originalname}`} // Assuming first image in the array
+//                 alt={product.productName}
+//                 style={{ width: '50px', height: '50px' }}
+//               />
+//             )}
+//                 {product.productImage.length > 1 && (
+//                   <img
+//                     src={`http://localhost:8000/uploads/${product.productImage[1].originalname}`} // Second image
+//                     alt={product.productName}
+//                     style={{ width: '50px', height: '50px' }}
+//                     />
+//                 )}
+
+//                     </td>
+//                     <td>
+//                       {" "}
+//                       <button onClick={handleUpdate}>Update</button>
+//                     </td>
+//                     <td>
+//                       <button onClick={() => handleDelete(product._id)}>
+//                         Delete
+//                       </button>
+//                     </td>
+//                   </tr>
+//                 </li>
+//               ))}
+//             </ul>
+//           ) : (
+//             <p>No products found.</p>
+//           )}
+
+//           {/* </table> */}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default App;
+
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const Orderstatus = () => {
+  const [orderId, setOrderId] = useState('');
+  const [orders, setOrders] = useState([]);
+  const [statusFilter, setStatusFilter] = useState('pending'); // You can set the default status filter here
+
+  const handleUpdateOrder = async () => {
+    try {
+      console.log('Sending update request with:', { orderId, status: 'success' });
+      const response = await axios.post('http://localhost:8000/admin/update-order', {
+        orderId,
+        status: 'success',
+      });
+  
+      // Log the response for debugging
+      console.log('Response from server:', response.data);
+  
+      alert('Order status updated to success');
+      fetchOrders(statusFilter); // Refresh the orders after updating
+    } catch (error) {
+      // Log error details for debugging
+      console.error('Error updating order status:', error.response ? error.response.data : error.message);
+    }
+  };
+  
+  const fetchOrders = async (status) => {
+    try {
+      const response = await axios.get(`http://localhost:8000/orders/status/${status}`);
+      console.log(response.data); // Log the response data to verify the structure
+      setOrders(response.data);
+    } catch (error) {
+      console.error('Error fetching orders', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders(statusFilter);
+  }, [statusFilter]);
+  const handleStatusFilterChange = (e) => {
+    setStatusFilter(e.target.value);
+    console.log("Selected status:", e.target.value); // Print selected status to console
+  };
+
+
+  return (
+    <div className='orderstatuspage'>
+      <h1 style={{ textAlign: 'center' }}>Order Checkout</h1>
+      <br /><br />
+      <input
+        style={{ width: '400px', height: '40px', paddingLeft: '10px', marginLeft: '400px' }}
+        type="text"
+        value={orderId}
+        onChange={(e) => setOrderId(e.target.value)}
+        placeholder="Enter Order ID"
+      />
+      <button className='checkout checkbtn' onClick={handleUpdateOrder}>
+        Mark as Success
+      </button>
+      <br /><br />
+      <label style={{ marginLeft: '400px' }}>Filter by Status: </label>
+      <select
+        style={{ width: '200px', height: '40px', marginLeft: '10px' }}
+        onChange={handleStatusFilterChange} // Add change handler here
+        
+      >
+        <option value="pending">Pending</option>
+        <option value="success">Success</option>
+      </select>
+      <table className='orderdetails'>
+        <thead>
+          <tr style={{ height: '35px' }}>
+            <th>OrderId</th>
+            <th>ProductId</th>
+            <th>UserId</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {orders.map(order => (
+            <tr key={order._id} style={{ textAlign: 'center' }}>
+              <td>{order._id}</td>
+              <td>{order.productId1}</td> {/* Access productId correctly */}
+              <td>{order.userId}</td>
+              <td>{order.productName}</td>
+              <td>{order.status}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default Orderstatus;
+
+import React, { useState,useEffect } from 'react';
+import axios from 'axios'
+
+export default function Userdata() {
+  const [products, setProducts] = useState([
+  ]);
+  const [img , setImg]=useState([])
+  useEffect(() => {
+    axios.get('http://localhost:8000/productShow')
+      .then(response => {
+        setProducts(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
+  const [files, setFiles] = useState([]);
+
+  useEffect(() => {
+    const fetchFiles = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/files');
+        if (!response.ok) {
+          throw new Error('Failed to fetch files');
+        }
+
+        const filesData = await response.json();
+        setFiles(filesData);
+      } catch (error) {
+        console.error('Error fetching files:', error.message);
+      }
+    };
+
+  }, []);
+
+
+
+  return (
+    <div>
+      <table>
+        <thead>
+          
+            <th>Product Info</th>
+            {products.map((product, index) => (
+            <tr key={index}>
+              <td>{product.pname}</td>
+              <td>{product.pprice}</td>
+              <td>{product.pdescription}</td>
+              {/* Add more columns as needed based on your product data */}
+            </tr> 
+         ))}
+        {files.map((file) => (
+          <li key={file._id}>
+            <img src={file.imageUrl} alt={`File ${file._id}`} style={{ maxWidth: '100px' }} />
+          </li>
+        ))}
+              {/* Add more columns as needed based on your product data */}
+            
+
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
