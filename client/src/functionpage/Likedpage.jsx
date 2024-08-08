@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
-import Headers from '../component/Headers'
-import Footer from '../component/Footer'
+import Headers from '../homepage/Headers'
+import Footer from '../homepage/Footer'
 import { useState } from 'react';
 import axios from 'axios';
 import { IoMdHeartEmpty } from 'react-icons/io';
@@ -32,7 +32,7 @@ export default function Likedpage() {
             let data= {userId: localStorage.getItem('userId')}
           const response = await axios.post('http://localhost:8000/liked-page',data);
           setProducts(response.data.products);
-          console.log(response.data.products);
+          // console.log(response.data.products);
         } catch (error) {
           console.error('Error fetching products:', error);
         }
@@ -54,7 +54,7 @@ export default function Likedpage() {
             <div className='productbox'>
             <li key={product._id}>
               <div className="imgdiv">
-              <img src={`http://localhost:8000/uploads/${product.productImage}`} alt={product.productName} />
+              <img src={`http://localhost:8000/uploads/${product.productImage[0].originalname}`} alt={product.productName} />
 
                 <div className="icondiv">
                 <i onClick={()=>handleLiked(product._id)}><IoMdHeartEmpty /></i>

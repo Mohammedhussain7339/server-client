@@ -23,7 +23,7 @@ export default function Quickbox() {
     const quickHandler = async (productId) => {
         try {
           const response = await axios.get(`http://localhost:8000/productfetch`);
-          console.log('Full response:', response);
+          // console.log('Full response:', response);
       
           // Assuming the response structure includes brand, productName, productPrice, and description
           setSelectedProduct(response.data);

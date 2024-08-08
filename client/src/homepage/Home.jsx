@@ -14,6 +14,7 @@ import { useState, useEffect,useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { cartContext } from "../context/Context";
+import Topfooter from "./Topfooter";
 // import AuthCheck from '../component3/AuthCheck';
 
 const Home = () => {
@@ -159,13 +160,14 @@ const Home = () => {
 </div>
 
       <Mainpage />
-      <Explore />
+      <Explore/>
       <Popular />
       <Salepage />
       <Sofas />
       <Page3 />
       <Slider />
       <Explorepage />
+      <Topfooter/>
       <Footer />
       </cartContext.Provider >
 

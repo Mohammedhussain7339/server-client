@@ -1,11 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Headers from '../component/Headers';
+import Headers from '../homepage/Headers';
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Footer from '../homepage/Footer';
 
 
 
@@ -91,8 +92,8 @@ export default function Login2({tagname}) {
         </div>
         </div>
 
-      
     </div>
+      <Footer/>
     </>
   )
 }

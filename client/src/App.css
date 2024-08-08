@@ -3,10 +3,32 @@
   list-style: none;
   font-family: Arial, Helvetica, sans-serif;
 }
+/* For Webkit browsers (Chrome, Safari, etc.) */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #333333;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ebecf1;
+  border-radius: 10px; /* Rounded corners for the track */
+
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9d9c9a;
+}
+
+/* For Firefox */
+/* Using pseudo-element selectors */
+
 body{
   width: 100%;
   height: 100vh;
-  background-color: aliceblue;
+  overflow-x: hidden;
 }
 .alert{
   color: red;
@@ -251,7 +273,7 @@ padding-left: 40px;
 
 /* -----------------------------main styling start------------------------- */
 .main{
-  width: 1519px;
+  width: 100%;
   height: 100vh;
   background-image:url(img/img1.jpg);
   background-position: center;
@@ -344,12 +366,12 @@ footer{
   height: 50px;
 }
 
-.explorer{
+/* .explorer{
   width: 100%;
   height: 122vh;
-  background-color: rgb(235, 231, 231);
-  overflow: hidden;
-}
+  background-color: rgb(235, 231, 231); */
+  /* overflow: hidden; */
+/* } */
 .explorer h1{
   text-align: center;
 
@@ -360,6 +382,11 @@ table{
   margin: 30%;
   border: 1px solid gray;
 }
+.productdata {
+  height: 100px;
+  font-size: 15px;
+  display: flex;
+}
 .expcontainer{
   position: relative;
   width: 100%;
@@ -368,19 +395,33 @@ table{
   text-transform: capitalize;
   font-family: karla;
   display: flex;
-  padding: 30px;
+  align-items: center;
+  padding: 30px 60px;
 }
-.exphidden{
+/* .exphidden{
   overflow: hidden;
   width: auto;
   height: auto;
-}
+} */
 .likepage{
   width: 100%;
   height: auto;
   display: flex;
   flex-wrap: wrap;
   padding: 50px;
+}
+.selectinput{
+  margin-left: 20px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  width: 400px;
+  height: 40px;
+}
+.uploadbtn{
+  width: 200px;
+  height: 40px;
+  margin-left: 20px;
+  cursor: pointer;
 }
 .quickbox{
   position: absolute;
@@ -391,6 +432,15 @@ table{
   background-color: white;
   display: flex;
 }
+/* .showfullbody{
+  width: 100%;
+  min-height: 100vh;
+  background-color: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 99;
+} */
 .quickimg{
   margin: 10px;
   width: 50%;
@@ -426,6 +476,21 @@ table{
 .btnbox button:hover{
   background-color: rgb(243, 237, 237);
 }
+.mobilenav{
+  position: absolute;
+  top: 0;
+  right: -300px;
+  padding-left: 30px;
+  width: 300px;
+  height: 0vh;
+  background-color: #e2e0e7;
+   transition: transform 0.3s ease-in-out;
+  transform: translateX(0);
+  
+}
+.mobilenav.open{
+  transform: translateX(-300px); 
+}
 .addtocart{
   width: 100%;
   height: 40px;
@@ -457,7 +522,6 @@ table{
   position: relative;
   border: 1px rgb(186, 182, 182) solid;
   padding: 6;
-  color: red;
   text-align: center;
 }
 .productbox .imgdiv{
@@ -465,6 +529,9 @@ table{
   width: 285px;
   height: 280px;
   border: 1px solid black;
+}
+.productbox:hover .pimg1{
+  opacity: 0;
 }
 .imgdiv:hover .icondiv i{
   opacity: 1;
@@ -503,6 +570,103 @@ table{
 .icondiv i:hover{
   background-color: rgb(146, 102, 45);
 }
+.cartContainer{
+  margin: 0;
+  padding: 0;
+  width: 400px;
+  height: 600px;
+  overflow: scroll;
+  overflow-x: hidden;
+  background-color: thistle;
+
+  position: absolute;
+  right: 0;
+  top: 1000px;
+  padding: 10px 0px;
+}
+.freedelbox{
+  margin: 0 auto;
+  width: 93%;
+  height: 50px;
+  background-color: rgb(213, 144, 144);
+}
+.quickcartbox img{
+  width: 110px;
+  margin:  10px 15px;
+  border-radius: 10px;
+}
+.quickcartpname{
+  position: relative;
+  bottom: 120px;
+  left: 140px;
+  font-size: 15px;
+}
+.quickcarttotal{
+  position: relative;
+  bottom: 85px;
+  left: 10px;
+}
+.quickcartbtn{
+  position: relative;
+  left: 140px;
+  bottom: 70px;
+  cursor: pointer;
+}
+.quickcartbtn button{
+width: 35px;
+height: 35px;
+}
+.closecart{
+position: absolute;
+right: 0;
+margin: 4px;
+font-size: 25px;
+cursor: pointer;
+}
+.expall{
+  margin: 0 auto;
+  font-size: 17px;
+  width: 150px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+  cursor: pointer;
+  transition: 1s ;
+}
+.expall a{
+  color:black;
+}
+.expall:hover a{
+color: white;
+}
+
+.expall:hover{
+background-color: black;
+color: white;
+}
+/* -------------------------------gallarybox css------------------------- */
+.gallarybox{
+  width: 100%;
+  min-height: 100vh;
+  background-color: gray;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+}
+/* .subgalbox{
+  position:absolute;
+  width: 320px;
+  height: 300px;
+  background-color: rgb(158, 95, 95);
+}
+.subgalbox img{
+  display: inline-flex;
+  width: 100%;
+} */
+
+
 /* -----------------------------quick page design--------------------------- */
 .quickpage{
   width: 100%;
@@ -513,18 +677,20 @@ table{
 .quickimgbox{
   width: 800px;
   height: 550px;
-  background-color: green;
 }
 .quickimg1,.quickimg2{
   width: 100px;
   height: 100px;
-  background-color: red;
   margin-bottom: 10px;
+
+}
+.quickimg1 img,.quickimg2 img{
+  border-radius: 4px;
+  border: 1px solid black;
 }
 .quickimg3{
   width: 660px;
   height: 530px;
-  background-color: blue;
   position: absolute;
   top: 293px;
   left: 220px;
@@ -551,12 +717,39 @@ table{
   cursor: pointer;
 }
 .cartbtn{
-  width: 500px;
+  width: 230px;
   height: 50px;
   background-color: black;
   color: white;
   text-align: center;
   line-height: 50px;
+  display: inline-block;
+  cursor: pointer;
+
+}
+.cartbtn:hover{
+  background-color:white;
+  border: 1px solid black;
+  color: black;
+}
+.checkout{
+  font-size: 17px;
+  margin-left: 10px;
+  display: inline-block;
+  width: 230px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  background-color:black;
+  color: white;
+  cursor: pointer;
+  border: none;
+
+}
+.checkout:hover{
+  background-color:white;
+  border: 1px solid black;
+  color: black;
 }
 .dspg{
   width: 100%;
@@ -610,7 +803,28 @@ table{
   top: 8px;
   cursor: pointer;
 }
+
+/* ----------------------------orderstatupage--------------------------- */
+.orderstatuspage{
+  width: 100%;
+  height: 100vh; 
+}
+.checkbtn{
+  position: absolute;
+  line-height: 20px;
+  width: 200px;
+  height: 40px;
+  left: 1100px;
+}
+.orderdetails{
+  position: relative;
+  left: -200px;
+  bottom: 300px;
+  width: 80%;
+  background-color: rgb(140, 191, 249);
+}
 /* --------------------------filtered desing-------------------------- */
+
 .filteredproduct{
   width: 100%;
   height: auto;
@@ -664,7 +878,7 @@ table{
 /* ----------------------------populer page--------------------------- */
 .populer-category{
   position: relative;
-  top: 0px;
+  top: 20px;
   width: 100%;
   /* height: 100vh; */
   background-color:#FFF6F6 ;
@@ -1095,9 +1309,9 @@ padding-top: 10px;
 .order{
   width: 100%;
   height: 150px;
-  background-color: #333333;
+  background-color: black;
   position: relative;
-  top: 350px;
+  top: 150px;
   display: flex;
   gap:50px;
   padding-left: 70px;
@@ -1109,11 +1323,11 @@ padding-top: 10px;
   font-size: 23px;
 }
 .subfooter{
+  border: 1px solid rgb(231, 224, 224);
   width: 100%;
-  height: 350px;
-  background-color: #FFFFFF;
+  height: 450px;
   position: relative;
-  top: 0px;
+  top: 150px;
   display: flex;
   gap: 0px;
   padding-left: 0px;
@@ -1121,10 +1335,14 @@ padding-top: 10px;
   font-family: Arial, Helvetica, sans-serif;
 }
 .subftr{
-
+  
   width: 450px;
   margin-top: 70px;
   margin-left: 30px;
+  padding: 50px 0px;
+}
+.subftr h5,h4,span{
+  margin:10px 0;
 }
 .feedback{
   position: relative;
@@ -1138,7 +1356,7 @@ padding-top: 10px;
 .subftr .submit{
   position: absolute;
   height: 38px;
-  top: 194px;
+  top: 264px;
   right: 31px;
   width: 104px;
   display: inline;
@@ -1154,9 +1372,10 @@ padding-top: 10px;
 }
 .lastftr{
   width: 100%;
-  height: 70px;
+  height: 80px;
   position: relative;
-  top: 0px;
+  top: 150px;
+  box-shadow: 0px -1px 2px gray;
   background-color: #FFFFFF;
   position: relative;
   display: flex;
@@ -1170,7 +1389,7 @@ padding-top: 10px;
 /* -----------------login page css start------------------------- */
 .loginpage{
   width: 100%;
-  min-height: 100vh;
+  min-height: 70vh;
   /* background-color: #c0defb; */
 }
 .home{
@@ -1236,7 +1455,7 @@ padding-top: 10px;
 /* ---------------------sign up styling start--------------------------- */
 .signuppage{
   width: 100%;
-  height: 100vh;
+  height: 50vh;
 }
 .createacc{
   width: 500px;
@@ -1272,22 +1491,29 @@ width: 200px;
   cursor: pointer;
 }
 .table{
-  width: auto;
+
+  width: 80%;
   height: auto;
-  background-color: gainsboro;
   position: absolute;
   padding: 20px;
+  border-radius: 10px;
+  background-color: #dae9f8;
+
+  
 }
 .table th{
   width: 200px;
-  height: 20px;
+  height: 40px;
+  border: none;
 }
 .table td{
   width: 200px;
-  height: 40px;
-  border: 1px solid;
+  height: 60px;
+  line-height: 60px;
+
   text-align: center;
   line-height: 40px;
+
 }
 /* --------------------cart styling start-------------------------------- */
 .cart{
@@ -1309,7 +1535,7 @@ width: 200px;
 }
 .Cartpage{
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
   background-color: white;
 }
@@ -1357,7 +1583,7 @@ width: 200px;
 .cartbtnbox{
   position: relative;
   bottom: 160px;
-  left: 930px;
+  right: -930px;
 }
 .carttotal{
   position: relative;
@@ -1365,8 +1591,8 @@ width: 200px;
   left: 1380px;
 }
 .checkoutBox{
-  position: absolute;
-  top: 1200px;
+  position: relative;
+  top: -300px;
   left: 1000px;
   width: 450px;
   height: 310px;
@@ -1544,7 +1770,7 @@ width: 200px;
 .adminnav{
   width: 100%;
   height: 75px;
-  background-color: #c0defb;
+  background-color: #cdcece;
   display: flex;
   align-items: center;
 }
@@ -1566,21 +1792,143 @@ width: 200px;
 /* ------------------------------------------slidebar------------------------------------- */
 .slidebar{
   width: 300px;
-  height: 100vh;
-  background-color:#dae8f4;
-  
-
+  height: 89vh;
+  background-color:#FFFFFF;
+  overflow: scroll;
+  padding-left: 20px;
+  border-right: 1px solid rgb(232, 229, 229);
 }
-.sideoption{
-  width: 300px;
-  height: 50px;
+.slidebar::-webkit-scrollbar {
+  display: none;
+}
+
+.sideoption {
+  width: auto;
+  min-height: 50px;
   border: 1px solid gray;
   border-radius: 10px;
   display: flex;
   align-items: center;
   padding: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: height 0.3s ease; /* Smooth transition for height change */
+  border: none;
+}
+.sidebararrow{
+  display: inline;
+  position: sticky;
+  left: 220px;
+  
+}
+.sideoption.clicked {
+  background-color: #9ba3b2; /* Change this to the desired color */
+  color: rgb(70, 72, 75); /* Change the text color if necessary */
+}
+.sidebarh3{
+display: inline;
+padding-left: 7px;
+}
+.sidebar2ul{
+}
+.sidebar2ul a{
+  color: black;
+  margin: 10px;
+  font-size: 16px;
+}
+.slidebar2ul :hover{
+  color: blue;
+}
+.sidebariconul{
+  font-size: 20px;
+}
+.sidebariconul li{
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid gray;
+  margin-bottom: 10px;
+  line-height: 1px;
   cursor: pointer;
 }
-.sideoption:active{
-  box-shadow: inset 0 0 05px rgb(14, 17, 18);
+.sidebariconul li:hover{
+  color: #83b2fc;
+}
+/* Styles for the details element when expanded */
+details[open] .sideoption {
+  height: auto; /* Automatically adjust height */
+}
+
+/* Additional styling to ensure proper layout adjustment */
+details {
+  width: 100%;
+  height: 30px;
+}
+
+details[open] {
+  height: auto; /* Allow height to adjust when open */
+}
+.childimg{
+  background-image: url('img/childimg.png');
+  width: 100%;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 170px;
+}
+.contactbox{
+width: 100%;
+height: auto;
+border: 2px silver solid;
+}
+/* -------------------------------------------admin page css-------------------------- */
+.adminpage{
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #eff4fd;
+  
+}
+main{
+  width: 100%;
+  height: 90vh;
+  background-color: #eff4fd;
+  color: #333333;
+  margin: 20px;
+}
+.home1{
+  width: 100%;
+  height: 90vh;
+}
+.reportbox{
+  width: 280px;
+  height: 210px;
+  border: 2px solid black;
+  border-radius: 10px;
+}
+.report1box{
+  width: 370px;
+  height: 370px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+.userlisttable{
+  background-color: #83b2fc;
+  width: 70%;
+  position: absolute;
+  top: -300px;
+  left: -100px;
+}
+.userlisttable th{
+  text-align: left;
+  padding-left: 20px;
+}
+.userlisttable tr{
+  height: 40px;
+}
+.userlisttable td{
+  text-align: left;
+  padding-left: 20px;
+}
+.userlisttable td li{
+  list-style: 1;
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import Headers from '../component/Headers'
+import Headers from '../homepage/Headers'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { BsFillGrid3X3GapFill } from "react-icons/bs";
 import { PiListChecksFill } from "react-icons/pi";
@@ -8,7 +8,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import { Pagination } from 'swiper/modules';
 import { useState,useEffect } from 'react';
-import Footer from '../component/Footer';
+import Footer from '../homepage/Footer';
 import axios from 'axios';
 
 export default function Filters() {
@@ -21,7 +21,7 @@ const navigate=useNavigate();
     }
   },[])
 
-
+  
   const [products,setProducts]=useState([])
   const [filteredProducts, setFilteredProducts] = useState([]);
   useEffect(() => {
@@ -31,7 +31,7 @@ const navigate=useNavigate();
         setProducts(response.data.products);
         setFilteredProducts(response.data.products); // Initialize filteredProducts with all products
 
-        console.log('filters data',response.data.products);
+        // console.log('filters data',response.data.products);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -80,15 +80,15 @@ else   {
         modules={[Pagination]}
         className="mySwiper"
       >
-        <SwiperSlide><img src="https://vogal-demos.myshopify.com/cdn/shop/files/demo13-decoration.jpg?v=1678096072" alt="" /><h4>DECORATION</h4></SwiperSlide>
-        <SwiperSlide><img src="https://vogal-demos.myshopify.com/cdn/shop/files/bookcase.jpg?v=1678096021" alt="" /><h4>BOOKCASE</h4></SwiperSlide>
-        <SwiperSlide><img src="https://vogal-demos.myshopify.com/cdn/shop/files/demo13-sofa.jpg?v=1678095884" alt="" /><h4>SOFAS</h4></SwiperSlide>
-        <SwiperSlide><img src="https://vogal-demos.myshopify.com/cdn/shop/files/dem013-set.jpg?v=1678096290" alt="" /><h4>FURNITURE SETS</h4></SwiperSlide>
-        <SwiperSlide><img src="https://vogal-demos.myshopify.com/cdn/shop/files/demo13-table.jpg?v=1678095973" alt="" /><h4>TABLES</h4></SwiperSlide>
-        <SwiperSlide><img src="https://vogal-demos.myshopify.com/cdn/shop/files/demo13-table.jpg?v=1678095973" alt="" /><h4>CABINETS</h4></SwiperSlide>
-        <SwiperSlide><img src="https://vogal-demos.myshopify.com/cdn/shop/files/demo13-cabinet.jpg?v=1678096228" alt="" /><h4>RUGS & CARPETS</h4></SwiperSlide>
-        <SwiperSlide><img src="https://vogal-demos.myshopify.com/cdn/shop/files/demo13-table.jpg?v=1678095973" alt="" /><h4>DECORATION</h4></SwiperSlide>
-        <SwiperSlide><img src="https://vogal-demos.myshopify.com/cdn/shop/files/rugs.jpg?v=1678096161" alt="" /><h4>SOFAS</h4></SwiperSlide>
+        <SwiperSlide><img loading='lazy' src="https://vogal-demos.myshopify.com/cdn/shop/files/demo13-decoration.jpg?v=1678096072" alt="" /><h4>DECORATION</h4></SwiperSlide>
+        <SwiperSlide><img loading='lazy' src="https://vogal-demos.myshopify.com/cdn/shop/files/bookcase.jpg?v=1678096021" alt="" /><h4>BOOKCASE</h4></SwiperSlide>
+        <SwiperSlide><img loading='lazy' src="https://vogal-demos.myshopify.com/cdn/shop/files/demo13-sofa.jpg?v=1678095884" alt="" /><h4>SOFAS</h4></SwiperSlide>
+        <SwiperSlide><img loading='lazy' src="https://vogal-demos.myshopify.com/cdn/shop/files/dem013-set.jpg?v=1678096290" alt="" /><h4>FURNITURE SETS</h4></SwiperSlide>
+        <SwiperSlide><img loading='lazy' src="https://vogal-demos.myshopify.com/cdn/shop/files/demo13-table.jpg?v=1678095973" alt="" /><h4>TABLES</h4></SwiperSlide>
+        <SwiperSlide><img loading='lazy' src="https://vogal-demos.myshopify.com/cdn/shop/files/demo13-table.jpg?v=1678095973" alt="" /><h4>CABINETS</h4></SwiperSlide>
+        <SwiperSlide><img loading='lazy' src="https://vogal-demos.myshopify.com/cdn/shop/files/demo13-cabinet.jpg?v=1678096228" alt="" /><h4>RUGS & CARPETS</h4></SwiperSlide>
+        <SwiperSlide><img loading='lazy' src="https://vogal-demos.myshopify.com/cdn/shop/files/demo13-table.jpg?v=1678095973" alt="" /><h4>DECORATION</h4></SwiperSlide>
+        <SwiperSlide><img loading='lazy' src="https://vogal-demos.myshopify.com/cdn/shop/files/rugs.jpg?v=1678096161" alt="" /><h4>SOFAS</h4></SwiperSlide>
       </Swiper>
       </div>
 
@@ -105,18 +105,18 @@ else   {
         <br />
         <input type="checkbox" onChange={() => handleCheckboxChange('productType', 'Chair')} /><span>Chair</span>
         <input type="checkbox" onChange={()=>handleCheckboxChange('productType', 'Sofa')}style={{marginLeft:'60px'}}/><span>Sofa</span><br />
-        <input type="checkbox" /><span>Flower</span>
-        <input type="checkbox" /><span>Vase</span><br />
-        <input type="checkbox" /><span>Flower</span>
-        <input type="checkbox" /><span>Vase</span><br />
+        <input type="checkbox" onClick={() => handleCheckboxChange('brand', 'Chair')} /><span>Flower</span>
+        <input type="checkbox" onClick={() => handleCheckboxChange('brand', 'Chair')} /><span>Vase</span><br />
+        <input type="checkbox" onClick={() => handleCheckboxChange('brand', 'Chair')} /><span>Flower</span>
+        <input type="checkbox" onClick={() => handleCheckboxChange('brand', 'Chair')} /><span>Vase</span><br />
         </div>
         </div>
         <div className="producttype">
           <p style={{margin:'10px'}}>BRAND</p>
           <div>
-        <input type="checkbox" /><span>Chair</span>
-        <input type="checkbox" style={{marginLeft:'60px'}}/><span>Sofa</span><br />
-        <input type="checkbox" /><span>Flower</span>
+        <input type="checkbox" name='' onChange={() => handleCheckboxChange('brand', 'Zuari Furniture')}  /><span >Zuari Furniture</span><br />
+        <input type="checkbox" onChange={() => handleCheckboxChange('brand', 'Godrej Interio')} style={{marginLeft:'60px'}}/><span>Godrej Interio</span><br />
+        <input type="checkbox" /><span>Godrej Interio</span>
         <input type="checkbox" /><span>Vase</span><br />
         <input type="checkbox" /><span>Flower</span>
         <input type="checkbox" /><span>Vase</span><br />
@@ -141,7 +141,9 @@ else   {
         <div key={product._id}>
           <div className="showbox">
             <div className="imgdivs">
-              <img src={`http://localhost:8000/uploads/${product.productImage}`} alt={product.productName} />
+              <img 
+                    src={`http://localhost:8000/uploads/${product.productImage[0].originalname}`} // Second image
+                    />
             </div>
             <li style={{marginTop:'10px'}}>{product.productName}</li>
             <li style={{fontSize:'18px', letterSpacing:'3px',marginTop:'10px' }}>{product.productPrice}</li>

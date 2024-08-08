@@ -39,15 +39,46 @@ export default function Headers(props) {
   // const { cartlength } = useParams();
   // console.log(cartlength)
   const cart = useContext(cartContext);
-  console.log("cart valueee", cart);
+  // console.log("cart valueee", cart);
 
   const location = useLocation();
+
+
+  const [cartrefresh, setcartRefresh] = useState([0]);
+  const [productPrices, setProductPrices] = useState([]);
+  const [cartlength,setCartlength]=useState(0)
+  const [num, setNum]=useState(0)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let data = { userId: localStorage.getItem("userId") };
+        const response = await axios.post("http://localhost:8000/cart-page", data);
+        
+        if (response.data && response.data.products) {
+          setProducts(response.data.products);
+          // console.log('headers60',response.data.products);
+          setCartlength(response.data.products.length)
+          setcartRefresh(!cartrefresh);
+        } else {
+          setProducts([]);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        setProducts([]);
+      }
+    };
+
+    fetchData();
+  }, []);
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:8000/productfetch");
         setProducts(response.data.products);
+
         // console.log("Headers data", response.data.products);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -56,6 +87,7 @@ export default function Headers(props) {
 
     fetchData();
   }, []);
+
   let userinfo = { firstname: localStorage.getItem("firstname") };
   // console.log('dataaaa',userinfo)
 
@@ -64,7 +96,7 @@ export default function Headers(props) {
     localStorage.removeItem("firstname");
     localStorage.removeItem("userId");
     alert("logout");
-    navigate("/");
+    navigate("../Login2");
   };
 
   const contextValue = useContext(MyContext);
@@ -153,7 +185,7 @@ export default function Headers(props) {
           </div>
           <div className="navdiv2-3">
             <span>
-              <Link to="/">
+              <Link to="/Login2">
                 <i className="fa-regular">
                   {" "}
                   <RiAccountCircleLine />
@@ -161,14 +193,14 @@ export default function Headers(props) {
               </Link>
             </span>
             <Link
-              to={auth ? "../Cart" : null}
+              to={auth ? "../Likedpage" : null}
               onClick={
                 auth
                   ? null
                   : () =>
                       toast.error(
                         <>
-                          Please login first. <Link to="/">Go to Login</Link>
+                          Please login first. <Link to="../Login2">Go to Login</Link>
                         </>
                         // { autoClose: false }
                       )
@@ -186,29 +218,29 @@ export default function Headers(props) {
                   : () =>
                       toast.error(
                         <>
-                          Please login first. <Link to="/">Go to Login</Link>
+                          Please login first. <Link to="../Login2">Go to Login</Link>
                         </>
                         // { autoClose: false }
                       )
               }>
               <i className="fa-regular">
                 <FaCartArrowDown />
-                <sup
+                <sup 
                   style={{
                     fontStyle: "normal",
                     fontWeight: "bolder",
                     color: "gray",
                   }}>
                   {" "}
-                  {cart || null}
+                  {cartlength}
                 </sup>
               </i>
             </Link>
             <ul>
               <li className="li">ACCOUNT</li>
-              <li style={{ paddingLeft: "20px" }}>WHISLIST</li>
+             <label htmlFor="cart"> <li style={{ paddingLeft: "20px" }}>WHISLIST</li></label>
               {isCartVisible && (
-                <div className="cart">
+                <div className="cart" name='cart'>
                   <button onClick={handleCartToggle}>Close Cart</button>
                   {/* <Cart /> */}
                 </div>
@@ -457,7 +489,7 @@ export default function Headers(props) {
               </Link>
             </li>
             <li>
-              <Link to="/product">
+              <Link to="/adminPage">
                 <span> AdminPage</span>
               </Link>
             </li>

@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import Headers from '../component/Headers';
+import Headers from '../homepage/Headers';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Footer from '../homepage/Footer';
 
 
 export default function Signup2({tagname}) {
@@ -67,6 +68,7 @@ export default function Signup2({tagname}) {
         </div>
       <ToastContainer />
       </div>
+      <Footer/>
     </>
   );
 }

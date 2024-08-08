@@ -1,6 +1,6 @@
-import React, { useEffect, useState,useMemo } from "react";
-import Headers from "../component/Headers";
-import Footer from "../component/Footer";
+import React, { useEffect, useState, useMemo } from "react";
+import Headers from "../homepage/Headers";
+import Footer from "../homepage/Footer";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { FaRegEye } from "react-icons/fa";
@@ -13,6 +13,13 @@ import io from "socket.io-client";
 // import React, { useRef} from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { increment, decrement } from "../redux/slices/counter/incDecrement";
+import { incrementAsync } from "../redux/slices/counter/incrementAsync";
+import { removeAsync } from "../redux/slices/counter/decrementAsync";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Import Swiper styles
 import "swiper/css";
@@ -23,6 +30,10 @@ import "swiper/css/navigation";
 import { Pagination, Navigation } from "swiper/modules";
 
 export default function Quickpage() {
+  const cartQuantities = useSelector((state) => state.incDec.cart);
+  const [cartrefresh, setcartRefresh] = useState(false);
+  const dispatch = useDispatch();
+
   const buttonStyle = {
     textDecoration: "underline",
   };
@@ -50,7 +61,9 @@ export default function Quickpage() {
   const plusHandler = () => {};
   const [product, setProduct] = useState();
   const p = useParams();
-  console.log('Product ID',p.productId);
+  const productId1=p.productId;
+  console.log(productId1,'65')
+  // console.log('Product ID',p.productId);
 
   useEffect(() => {
     const url = `http://localhost:8000/quick-page/` + p.productId;
@@ -60,13 +73,13 @@ export default function Quickpage() {
         console.log(res);
         if (res.data.product) {
           setProduct(res.data.product);
-          localStorage.setItem('productId1',res.data.product._id)
+          localStorage.setItem("productId1", res.data.product._id);
         }
       })
       .catch((err) => {
         alert("Server error");
       });
-  }, []);
+  }, [cartrefresh]);
 
   // socket.io coding is start
   const [msg, setMsg] = useState("");
@@ -74,37 +87,96 @@ export default function Quickpage() {
 
   let username = { firstname: localStorage.getItem("firstname") };
   // console.log("usernameee", username);
-  const newSocket = useMemo(() => io("http://localhost:8000"), []);
-  const [socket, setSocket] = useState(null);
+  // const newSocket = useMemo(() => io("http://localhost:8000"), []);
+  // const [socket, setSocket] = useState(null);
 
+  // const sendHandler = (e) => {
+  //   e.preventDefault();
+  //   const data = {
+  //     username,
+  //     msg,
+  //     productId: localStorage.getItem("productId1"),
+  //   };
+  //   newSocket.emit("message", data);
+  //   setMsg(""); // Clear the input field after sending the message
+  // };
 
-  const sendHandler = (e) => {
-    e.preventDefault();
-      const data = { username, msg, productId: localStorage.getItem('productId1') };
-      newSocket.emit("message", data);
-      setMsg(""); // Clear the input field after sending the message
-  };
+  // useEffect(() => {
+  //   newSocket.on("connect", () => {
+  //     console.log("Connection successful");
+  //     console.log("SocketId:", newSocket.id);
+  //   });
+  //   newSocket.on("receive-message", (data) => {
+  //     console.log(data);
+  //   });
 
+  //   return () => {
+  //     newSocket.disconnect();
+  //   };
+  // }, []);
+  const auth = localStorage.getItem("token");
+  const [isCartVisible, setIsCartVisible] = useState(false);
 
-  useEffect(() => {
-    newSocket.on("connect", () => {
-      console.log("Connection successful");
-      console.log('SocketId:',newSocket.id)
-    });
-    newSocket.on('receive-message',(data)=>{
-      console.log(data)
-    })
-
-    return ()=>{
-      newSocket.disconnect();
+  const handleCart = (id, name, price) => {
+    if (auth) {
+      const item = { _id: id, name: name, amount: price, quantity: 1 };
+      setIsCartVisible(!isCartVisible);
+      dispatch(incrementAsync(item));
+      toast.success("Product added to cart successfully!");
+    } else {
+      toast.error(
+        <>
+          Please! Login first. <Link to="/Login2">Go to Login</Link>
+        </>
+      );
     }
-  }, []);
-   // Empty dependency array ensures that the effect runs only once
-      
-  //extra
-  // newSocket.on('Welcome',(welcomemsg)=>{
-  //   console.log(welcomemsg)
-  // })
+  };
+//checkout code start
+const [orderStatus, setOrderStatus] = useState(null);
+const [orderId, setOrderId] = useState(null);
+
+const handleCheckout = async (productId) => {
+  const userId = localStorage.getItem("userId");
+
+  // Debugging: Check if userId and productId are correct
+  console.log("userId:", userId);
+  console.log("productId:", productId);
+
+  if (!userId) {
+    console.error('User ID not found in localStorage');
+    setOrderStatus('error');
+    return;
+  }
+
+  try {
+    const response = await axios.post('http://localhost:8000/checkout', {
+      userId,
+      productId1,
+    });
+
+    // Debugging: Check the response data
+    console.log("response.data:", response.data);
+
+    if (response.data && response.data.orderId) {
+      setOrderId(response.data.orderId);
+      setOrderStatus('processing');
+      console.log('Checkout success');
+    } else {
+      throw new Error('Order ID not found in response');
+    }
+  } catch (error) {
+    console.error('Error during checkout', error);
+    setOrderStatus('error');
+  }
+};
+const checkOrderStatus = async () => {
+  try {
+    const response = await axios.get(`http://localhost:5000/order-status/${orderId}`);
+    setOrderStatus(response.data.status);
+  } catch (error) {
+    console.error('Error checking order status', error);
+  }
+};
 
 
   return (
@@ -119,14 +191,14 @@ export default function Quickpage() {
                 <div className="quickimg1">
                   <img
                     style={{ width: "100%", height: "100%" }}
-                    src={`http://localhost:8000/uploads/${product.productImage}`}
+                    src={`http://localhost:8000/uploads/${product.productImage[0].originalname}`} // Second image
                     alt={product.productName}
                   />
                 </div>
                 <div className="quickimg2">
                   <img
                     style={{ width: "100%", height: "100%" }}
-                    src={`http://localhost:8000/uploads/${product.productImage}`}
+                    src={`http://localhost:8000/uploads/${product.productImage[1].originalname}`} // Second image
                     alt={product.productName}
                   />
                 </div>
@@ -149,31 +221,13 @@ export default function Quickpage() {
                     className="mySwiper">
                     <SwiperSlide>
                       <img
-                        src={`http://localhost:8000/uploads/${product.productImage}`}
+                        src={`http://localhost:8000/uploads/${product.productImage[0].originalname}`} // Second image
                         alt={product.productName}
                       />
                     </SwiperSlide>
                     <SwiperSlide>
                       <img
-                        src={`http://localhost:8000/uploads/${product.productImage}`}
-                        alt={product.productName}
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <img
-                        src={`http://localhost:8000/uploads/${product.productImage}`}
-                        alt={product.productName}
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <img
-                        src={`http://localhost:8000/uploads/${product.productImage}`}
-                        alt={product.productName}
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <img
-                        src={`http://localhost:8000/uploads/${product.productImage}`}
+                        src={`http://localhost:8000/uploads/${product.productImage[1].originalname}`} // Second image
                         alt={product.productName}
                       />
                     </SwiperSlide>
@@ -205,12 +259,38 @@ export default function Quickpage() {
                 <p>In Stock- Ready to Ship</p>
                 <br />
                 <div className="qbtnbox">
-                  <button onClick={minusHandler(product._id)}>-</button>
-                  <button>{num}</button>
-                  <button onClick={plusHandler(product._id)}>+</button>
+                  <button onClick={() => dispatch(decrement(product._id))}>
+                    -
+                  </button>
+                  <button>{cartQuantities[product._id] || 0}</button>
+                  <button onClick={() => dispatch(increment(product._id))}>
+                    +
+                  </button>
                 </div>
                 <br />
-                <div className="cartbtn">Add To Cart</div>
+                <div
+                  className="cartbtn"
+                  onClick={() =>
+                    handleCart(
+                      product._id,
+                      product.productName,
+                      product.productPrice
+                    )
+                  }>
+                  <p style={{ cursor: "pointer" }}>Add To Cart</p>
+                </div>
+
+                {orderStatus === null ? (
+            <button className="checkout" onClick={() => handleCheckout(product.id)}>
+              Checkout
+            </button>
+          ) : (
+            <div>
+              <h1>Your order is {orderStatus}</h1>
+              {orderStatus === 'processing' && <p>Processing your order...</p>}
+              {orderStatus === 'success' && <p>Your order was successful!</p>}
+            </div>
+          )}
                 <br />
                 <br />
                 <br />
@@ -234,24 +314,36 @@ export default function Quickpage() {
         </div>
         <div className="quickmsg">
           <div className="showmsg">
-            {msgs && msgs.map((item, index) => (
-              <p
-                key={index}
-                style={{
-                  color:
-                    item.username.firstname === msgs[0].username.firstname
-                      ? "red"
-                      : "blue",
+            {msgs &&
+              msgs.map((item, index) => (
+                <p
+                  key={index}
+                  style={{
+                    color:
+                      item.username.firstname === msgs[0].username.firstname
+                        ? "red"
+                        : "blue",
                     textAlign:
-                    item.username.firstname === msgs[0].username.firstname
-                    ? 'left':'right',
+                      item.username.firstname === msgs[0].username.firstname
+                        ? "left"
+                        : "right",
                     paddingRight:
-                    item.username.firstname === msgs[0].username.firstname
-                    ? '0px':'5px',
-                }}>
-                <p style={{color:'black',textTransform:'capitalize',borderRadius:'5px',background:'white'}}>{item.username.firstname}</p><br/> {item.msg}
-              </p>
-            ))}
+                      item.username.firstname === msgs[0].username.firstname
+                        ? "0px"
+                        : "5px",
+                  }}>
+                  <p
+                    style={{
+                      color: "black",
+                      textTransform: "capitalize",
+                      borderRadius: "5px",
+                      background: "white",
+                    }}>
+                    {item.username.firstname}
+                  </p>
+                  <br /> {item.msg}
+                </p>
+              ))}
           </div>
           <label>Write Your Comment</label>
           <input
@@ -261,7 +353,7 @@ export default function Quickpage() {
             value={msg}
             onChange={(e) => setMsg(e.target.value)}
           />
-          <span className="sendbtn" onClick={sendHandler}>
+          <span className="sendbtn" >
             <button>
               <IoSendSharp />
             </button>
@@ -455,7 +547,7 @@ export default function Quickpage() {
           </div>
         )}
       </div>
-        <Footer />
+      <Footer />
     </>
   );
 }
