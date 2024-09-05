@@ -6,7 +6,7 @@ export const incrementAsync = createAsyncThunk(
   'counter/incrementAsync',
   async (item, { rejectWithValue }) => {
     try {
-      const response = await axios.post("http://localhost:8000/cart-product", {
+      const response = await axios.post(`${BASE_URL}/cart-product`, {
         userId: localStorage.getItem('userId'),
         productId: item._id,
         productQuantity: item.productQuantity
