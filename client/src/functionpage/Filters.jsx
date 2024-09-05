@@ -21,7 +21,13 @@ const navigate=useNavigate();
     }
   },[])
 
-  
+  const [selectedFilters, setSelectedFilters] = useState({
+    productType: [],
+    brand: [],
+    availability: [],
+    colorType: [],
+  });
+
   const [products,setProducts]=useState([])
   const [filteredProducts, setFilteredProducts] = useState([]);
   useEffect(() => {
@@ -39,32 +45,66 @@ const navigate=useNavigate();
 
     fetchData();
   }, []);
-  
-  const handleCheckboxChange = (filterType, value) => {
+    const handleCheckboxChange = (filterType, value) => {
+    const filters = { ...selectedFilters };
 
-  let updatedFilteredProducts = [...products];
+    if (filters[filterType].includes(value)) {
+      filters[filterType] = filters[filterType].filter((item) => item !== value);
+    } else {
+      filters[filterType].push(value);
+    }
 
-  if (filterType === 'productType') {
-    updatedFilteredProducts = products.filter(product => product.productType === value);
-  } else if (filterType === 'brand') {
-    updatedFilteredProducts = products.filter(product => product.brand === value);
-  } else if (filterType === 'availability') {
-    updatedFilteredProducts = products.filter(product => (value === 'In Stock' && product.inStock) || (value === 'Out Of Stock' && !product.inStock));
-  }
- else if (filterType === 'colorType') {
-  updatedFilteredProducts = products.filter((product) => product.colorType === value);
-} else if (filterType === 'All') {
-  // Clear all filters
-  updatedFilteredProducts = products;
-}
-else   {
-  // Clear all filters
-  updatedFilteredProducts = products;
-}
+    setSelectedFilters(filters);
+    applyFilters(filters);
+  };
 
-  setFilteredProducts(updatedFilteredProducts);
-  
-};
+  const applyFilters = (filters) => {
+    let updatedFilteredProducts = [...products];
+
+    if (filters.productType.length > 0) {
+      updatedFilteredProducts = updatedFilteredProducts.filter((product) =>
+        filters.productType.includes(product.productType)
+      );
+    }
+
+    if (filters.brand.length > 0) {
+      updatedFilteredProducts = updatedFilteredProducts.filter((product) =>
+        filters.brand.includes(product.brand)
+      );
+    }
+
+    if (filters.availability.length > 0) {
+      updatedFilteredProducts = updatedFilteredProducts.filter((product) =>
+        filters.availability.includes(
+          product.inStock ? 'In Stock' : 'Out Of Stock'
+        )
+      );
+    }
+
+    if (filters.colorType.length > 0) {
+      updatedFilteredProducts = updatedFilteredProducts.filter((product) =>
+        filters.colorType.includes(product.colorType)
+      );
+    }
+
+    setFilteredProducts(updatedFilteredProducts);
+  };
+  const handleShowAll = () => {
+    setSelectedFilters({
+      productType: [],
+      brand: [],
+      availability: [],
+      colorType: [],
+    });
+    applyFilters({
+      productType: [],
+      brand: [],
+      availability: [],
+      colorType: [],
+    });
+  };
+    
+
 
   return (
     <>
@@ -93,34 +133,34 @@ else   {
       </div>
 
       <div className="filtercheckbox">
-        <p>COLORS</p><hr style={{border:'0.1px solid white', margin:'10px'}} />
+        <h2>COLORS</h2><hr style={{border:'0.1px solid white', margin:'10px'}} />
         <div className="color" style={{ background: 'white' }} onClick={() => handleCheckboxChange('colorType', 'White')}></div>
         <div className="color" style={{ background: 'blue' }} onClick={() => handleCheckboxChange('colorType', 'Blue')}></div>
         <div className="color" style={{ background: 'red' }} onClick={() => handleCheckboxChange('colorType', 'Red')}></div>
         <div className="color" style={{ background: 'pink' }} onClick={() => handleCheckboxChange('colorType', 'Pink')}></div>
         <div className="producttype">
-          <p style={{margin:'10px'}}>PRODUCT TYPE</p>
+          <h2 style={{margin:'10px'}}>PRODUCT TYPE</h2>
           <div>
-        <span style={{padding:'07px',margin:'-97px',background:'black',border:'2px solid black', borderRadius:'5px'}}><a style={{color:'white'}}href="filters">All</a></span>
+        <span><button className='allproductbtn'onClick={handleShowAll}>All</button></span>
         <br />
-        <input type="checkbox" onChange={() => handleCheckboxChange('productType', 'Chair')} /><span>Chair</span>
-        <input type="checkbox" onChange={()=>handleCheckboxChange('productType', 'Sofa')}style={{marginLeft:'60px'}}/><span>Sofa</span><br />
-        <input type="checkbox" onClick={() => handleCheckboxChange('brand', 'Chair')} /><span>Flower</span>
-        <input type="checkbox" onClick={() => handleCheckboxChange('brand', 'Chair')} /><span>Vase</span><br />
-        <input type="checkbox" onClick={() => handleCheckboxChange('brand', 'Chair')} /><span>Flower</span>
-        <input type="checkbox" onClick={() => handleCheckboxChange('brand', 'Chair')} /><span>Vase</span><br />
+        <span className='checkbox'><input type="checkbox" onChange={() => handleCheckboxChange('productType', 'Chair')} /><span>Chair</span></span>
+        <span className='checkbox'><input type="checkbox" onChange={()=>handleCheckboxChange('productType', 'Sofa')}/><span>Sofa</span><br /></span>
+        <span className='checkbox'><input type="checkbox" onClick={() => handleCheckboxChange('productType', 'FlowerPort')} /><span>FlowerPort</span></span>
+        <span className='checkbox'><input type="checkbox" onClick={() => handleCheckboxChange('productType', 'Table')} /><span>Table</span></span>
+        <span className='checkbox'><input type="checkbox" onClick={() => handleCheckboxChange('productType', 'Watch')} /><span>Watch</span></span>
+        <span className='checkbox'><input type="checkbox" onClick={() => handleCheckboxChange('productType', 'Bed')} /><span>Bed</span><br /></span>
         </div>
         </div>
         <div className="producttype">
-          <p style={{margin:'10px'}}>BRAND</p>
-          <div>
-        <input type="checkbox" name='' onChange={() => handleCheckboxChange('brand', 'Zuari Furniture')}  /><span >Zuari Furniture</span><br />
-        <input type="checkbox" onChange={() => handleCheckboxChange('brand', 'Godrej Interio')} style={{marginLeft:'60px'}}/><span>Godrej Interio</span><br />
-        <input type="checkbox" /><span>Godrej Interio</span>
-        <input type="checkbox" /><span>Vase</span><br />
-        <input type="checkbox" /><span>Flower</span>
-        <input type="checkbox" /><span>Vase</span><br />
-        <input type="checkbox" /><span>Vase</span><br />
+          <h2 style={{margin:'10px'}}>BRAND</h2>
+          <div><br />
+        <span className='checkbox2'> <input type="checkbox" name='' onChange={() => handleCheckboxChange('brand', 'Zuari Furniture')}  /><span >Zuari Furniture</span></span>
+       <span className='checkbox2'> <input type="checkbox" onChange={() => handleCheckboxChange('brand', 'Godrej Interio')} /><span>Godrej Interio</span></span>
+       <span className='checkbox2'> <input type="checkbox" onChange={() => handleCheckboxChange('brand', 'IKEA')} /><span>IKEA</span></span>
+       <span className='checkbox2'> <input type="checkbox" onChange={() => handleCheckboxChange('brand', 'Wipro Furniture')} /><span>Wipro Furniture</span></span>
+       <span className='checkbox2'> <input type="checkbox" onChange={() => handleCheckboxChange('brand', 'Damro')} /><span>Damro</span></span>
+       <span className='checkbox2'> <input type="checkbox" onChange={() => handleCheckboxChange('brand', 'Durian')} /><span>Durian</span></span>
+       <span className='checkbox2'> <input type="checkbox" onChange={() => handleCheckboxChange('brand', 'Samsung Furniture')} /><span>Samsung Furniture</span></span>
         </div>
         </div>
         <div className="producttype">

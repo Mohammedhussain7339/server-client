@@ -672,4 +672,58 @@ export default function Userdata() {
     </div>
   );
 }
+//   const handleCheckboxChange = (filterType, value) => {
 
+//   let updatedFilteredProducts = [...products];
+
+//   if (filterType === 'productType') {
+//     updatedFilteredProducts = products.filter(product => product.productType === value);
+//   } else if (filterType === 'brand') {
+//     updatedFilteredProducts = products.filter(product => product.brand === value);
+//   } else if (filterType === 'availability') {
+//     updatedFilteredProducts = products.filter(product => (value === 'In Stock' && product.inStock) || (value === 'Out Of Stock' && !product.inStock));
+//   }
+//  else if (filterType === 'colorType') {
+//   updatedFilteredProducts = products.filter((product) => product.colorType === value);
+// } else if (filterType === 'All') {
+//   // Clear all filters
+//   updatedFilteredProducts = products;
+// }
+// else   {
+//   // Clear all filters
+//   updatedFilteredProducts = products;
+// }
+
+//   setFilteredProducts(updatedFilteredProducts);
+  
+// };
+
+// app.post('/',(req,res)=>{
+// res.send('home')
+// console.log('home')
+// })
+// let message=[];
+// io.on('connection', (socket) => { //io.on is used to connection
+//   console.log('Socket connected:', 'Socket_Id',socket.id); //socket.id is socketfunction it's represent socket id
+
+// socket.on('message',(data)=>{
+//   console.log(data)
+//   socket.broadcast.emit('receive-message',data)
+  
+// })
+
+
+
+// //disconnect socket
+//   socket.on('disconnect', () => {
+//     console.log(`User disconnected:${socket.id}`);
+//   });
+
+// });
+//extra 
+  //io is use all user
+  //socket are use one person
+  //emit means send data
+  //on means receive data 
+  // socket.broadcast.emit('Welcome',`Welcome to the Server`)
+  // socket.broadcast.emit('Welcome',`SockedIdd:${socket.id}=join the Server`)

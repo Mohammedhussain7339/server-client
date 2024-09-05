@@ -18,16 +18,16 @@ const bodyParser = require('body-parser');
 const http =require('http');
 const {Server} =require('socket.io');
 const checkout=require('./models/checkout')
-// const { Socket } = require('socket.io-client');
-
+const BASE_URL =process.env.BASE_URL;
+const Url=process.env.PORT||8000;
 
 const app = express();
-const httpserver = http.createServer(app);
-const io = new Server(httpserver,{
-  cors:{origin:'*'}
-})
+// const httpserver = http.createServer(app);
+// const io = new Server(httpserver,{
+//   cors:{origin:'*'}
+// })
 const corsOptions = {
-  origin: 'http://localhost:5173', // Replace with the actual origin of your React app
+  origin: {BASE_URL}, // Replace with the actual origin of your React app
   credentials: true,
 };
 
@@ -130,13 +130,13 @@ app.get('/files', async (req, res) => {
   app.post('/register', async (req, res) => {
     try {
       console.log(req.body);
-      const { firstname, lastname, email, password,role } = req.body;
+      const { firstname, lastname, email, password,pincode, address,contact,role } = req.body;
       
       // Log the received firstname and lastname
       console.log('Received data:', firstname, lastname);
 
       // Validate input
-      if (!firstname || !lastname || !email || !password || !role) {
+      if (!firstname || !lastname || !email || !password || !role||!pincode||!address||!contact) {
         return res.status(400).json({ error: 'Missing required fields' });
       }
 
@@ -144,7 +144,7 @@ app.get('/files', async (req, res) => {
       const hashedPassword = await bcrypt.hash(password, 10);
 
       // Assuming userinfo is your model, create a new user instance
-      const user = new userinfo({ firstname, lastname, email, password: hashedPassword, role });
+      const user = new userinfo({ firstname, lastname, email, password: hashedPassword, role,contact,pincode,address });
 
       // Save the user to the database
       await user.save();
@@ -153,7 +153,7 @@ app.get('/files', async (req, res) => {
       res.json({ success: true });
       console.log('User info successfully register')
     } catch  {
-      console("Server error");
+      console.log("Server error");
     }
   });
 
@@ -443,37 +443,8 @@ app.get('/get/userfeed',async(req,res)=>{
 
 
 
-// app.post('/',(req,res)=>{
-// res.send('home')
-// console.log('home')
-// })
-// let message=[];
-// io.on('connection', (socket) => { //io.on is used to connection
-//   console.log('Socket connected:', 'Socket_Id',socket.id); //socket.id is socketfunction it's represent socket id
 
-// socket.on('message',(data)=>{
-//   console.log(data)
-//   socket.broadcast.emit('receive-message',data)
-  
-// })
-
-
-
-// //disconnect socket
-//   socket.on('disconnect', () => {
-//     console.log(`User disconnected:${socket.id}`);
-//   });
-
-// });
-//extra 
-  //io is use all user
-  //socket are use one person
-  //emit means send data
-  //on means receive data 
-  // socket.broadcast.emit('Welcome',`Welcome to the Server`)
-  // socket.broadcast.emit('Welcome',`SockedIdd:${socket.id}=join the Server`)
-
-app.listen(8000, () => {
+app.listen(Url, () => {
     console.log("server is start 8000 port");
 })
 

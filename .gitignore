@@ -1,1 +1,2 @@
-notemodules
+node_modules
+.env

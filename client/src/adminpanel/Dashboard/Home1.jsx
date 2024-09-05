@@ -1,6 +1,17 @@
 import React from 'react'
-
+import { useEffect } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 function Home1() {
+  const navigate =useNavigate();
+  useEffect(() => {
+    if (localStorage.getItem("userRole") !== "admin") {
+      alert("Please login as admin first.");
+      navigate("/");
+    } else {
+      fetchData(); // Fetch data only if user is admin
+    }
+  }, []); // Empty dependency array means this effect runs only once on mount
+
   return (
     <div className='home1'>
       <div style={{display:'flex',gap:'25px'}}>

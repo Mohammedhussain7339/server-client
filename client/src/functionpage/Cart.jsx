@@ -16,7 +16,7 @@ import { removeAsync } from "../redux/slices/counter/decrementAsync";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { increment , decrement } from "../redux/slices/counter/incDecrement";
-
+import { BASE_URL } from "../services/url";
 export default function Cart() {
   const cartQuantities = useSelector((state) => state.incDec.cart);
 
@@ -41,7 +41,7 @@ export default function Cart() {
       try {
         let data = { userId: localStorage.getItem("userId") };
         const response = await axios.post(
-          "http://localhost:8000/cart-page",
+          `${BASE_URL}/cart-page`,
           data
         );
 
@@ -115,7 +115,7 @@ export default function Cart() {
       let userfirstName = localStorage.getItem("firstname");
 
       const response = await axios.post(
-        "http://localhost:8000/userfeed",
+        `${BASE_URL}/userfeed`,
         { userfeed, userfirstName },
         {
           headers: {
@@ -167,7 +167,7 @@ export default function Cart() {
                 <li key={product._id}>
                   <div className="cartdiv">
                     <img
-                      src={`http://localhost:8000/uploads/${product.productImage[0].originalname}`}
+                      src={`${BASE_URL}/uploads/${product.productImage[0].originalname}`}
                       alt={product.productName}
                     />
                   </div>

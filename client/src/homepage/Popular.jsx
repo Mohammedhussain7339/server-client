@@ -8,12 +8,15 @@ const Popular = () => {
         <h3>Impressive Collection for your Dream Home</h3>
       </div>
       <div className="p-main">
-        <div className="p-box">
+        <div>        <div className="p-box">
           <img
             className="p-img"
             src="https://vogal-demos.myshopify.com/cdn/shop/files/lighting_360x.jpg?v=1677929519"
             alt=""
           />
+          <div>Modern Sofas</div>
+          </div>
+
         </div>
         <div className="p-box">
           <img

@@ -24,7 +24,7 @@ import { incrementAsync } from "../redux/slices/counter/incrementAsync";
 import { removeAsync } from "../redux/slices/counter/decrementAsync";
 import { increment, decrement } from "../redux/slices/counter/incDecrement";
 import { DNA } from 'react-loader-spinner';
-
+import { BASE_URL } from "../services/url";
 export default function Explore(props) {
   const cartQuantities = useSelector((state) => state.incDec.cart);
 
@@ -50,7 +50,7 @@ export default function Explore(props) {
     // console.log("quick", productId);
 
     try {
-      const response = await axios.get(`http://localhost:8000/productfetch`);
+      const response = await axios.get(`${BASE_URL}/productfetch`);
       const filteredProduct = response.data.products.find(
         (product) => product._id === productId
       );
@@ -92,7 +92,7 @@ export default function Explore(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/productfetch");
+        const response = await axios.get(`${BASE_URL}/productfetch`);
         setProducts(shuffleArray(response.data.products).slice(0, 8));
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -107,10 +107,7 @@ export default function Explore(props) {
     const fetchData = async () => {
       try {
         let data = { userId: localStorage.getItem("userId") };
-        const response = await axios.post(
-          "http://localhost:8000/liked-page",
-          data
-        );
+        const response = await axios.post(`${BASE_URL}/liked-page`,data);
         if (response.data.products) {
           setlikedProducts(response.data.products);
           // console.log("Liked products:", response.data.products, data);
@@ -128,7 +125,7 @@ export default function Explore(props) {
     if (userId) {
       // console.log("liked successfully", productId, "by user:", userId );
       console.log(userId);
-      const url = `http://localhost:8000/like-product`;
+      const url = `${BASE_URL}/like-product`;
       const data = { userId, productId };
 
       axios
@@ -153,7 +150,7 @@ export default function Explore(props) {
   const handleDisLiked = (productId) => {
     let userId = localStorage.getItem("userId");
     // console.log("liked successfully", productId, "and", userId);
-    const url = `http://localhost:8000/dislike-product`;
+    const url = `${BASE_URL}/dislike-product`;
     const data = { userId, productId };
     axios
       .post(url, data)
@@ -184,7 +181,7 @@ export default function Explore(props) {
       try {
         let data = { userId: localStorage.getItem("userId") };
         const response = await axios.post(
-          "http://localhost:8000/cart-page",
+          `${BASE_URL}/cart-page`,
           data
         );
         if (response.data.products) {
@@ -310,7 +307,7 @@ export default function Explore(props) {
                         <img
                           className="pimg2"
                           onClick={() => handleProduct(product._id)}
-                          src={`http://localhost:8000/uploads/${product.productImage[1].originalname}`} // Second image
+                          src={`${BASE_URL}/uploads/${product.productImage[1].originalname}`} // Second image
                           alt={product.productName}
                         />
                       )}
@@ -319,7 +316,7 @@ export default function Explore(props) {
                           <img
                             className="pimg1"
                             onClick={() => handleProduct(product._id)}
-                            src={`http://localhost:8000/uploads/${product.productImage[0].originalname}`} // Assuming first image in the array
+                            src={`${BASE_URL}/uploads/${product.productImage[0].originalname}`} // Assuming first image in the array
                             alt={product.productName}
                           />
                         )}
@@ -386,7 +383,7 @@ export default function Explore(props) {
                     {filteredProduct[0].productImage &&
                     filteredProduct[0].productImage.length > 0 ? (
                       <img
-                        src={`http://localhost:8000/uploads/${filteredProduct[0].productImage[0].originalname}`} // Assuming first image in the array
+                        src={`${BASE_URL}/uploads/${filteredProduct[0].productImage[0].originalname}`} // Assuming first image in the array
                         alt={filteredProduct[0].productName}
                         onError={(e) => {
                           e.target.onerror = null;
@@ -474,7 +471,7 @@ export default function Explore(props) {
                     <li key={product._id}>
                       <div className="quickcartbox">
                         <img
-                          src={`http://localhost:8000/uploads/${product.productImage[0].originalname}`}
+                          src={`${BASE_URL}/uploads/${product.productImage[0].originalname}`}
                           alt={product.productName}
                         />
                       </div>

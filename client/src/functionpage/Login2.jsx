@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from '../homepage/Footer';
-
+import { BASE_URL } from '../services/url';
 
 
 export default function Login2({tagname}) {
@@ -30,7 +30,7 @@ export default function Login2({tagname}) {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8000/login', credentials);
+      const response = await axios.post(`${BASE_URL}/login`, credentials);
 
       if (response.data.success) {
         const token = response.data.token;

@@ -9,7 +9,7 @@ import { IoSearchOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { BASE_URL } from '../services/url';
 
 export default function Likedpage() {
 
@@ -30,7 +30,7 @@ export default function Likedpage() {
       const fetchData = async () => {
         try {
             let data= {userId: localStorage.getItem('userId')}
-          const response = await axios.post('http://localhost:8000/liked-page',data);
+          const response = await axios.post(`${BASE_URL}/liked-page`,data);
           setProducts(response.data.products);
           // console.log(response.data.products);
         } catch (error) {
@@ -54,7 +54,7 @@ export default function Likedpage() {
             <div className='productbox'>
             <li key={product._id}>
               <div className="imgdiv">
-              <img src={`http://localhost:8000/uploads/${product.productImage[0].originalname}`} alt={product.productName} />
+              <img src={`${BASE_URL}/uploads/${product.productImage[0].originalname}`} alt={product.productName} />
 
                 <div className="icondiv">
                 <i onClick={()=>handleLiked(product._id)}><IoMdHeartEmpty /></i>

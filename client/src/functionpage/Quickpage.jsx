@@ -28,6 +28,7 @@ import "swiper/css/navigation";
 
 // import required modules
 import { Pagination, Navigation } from "swiper/modules";
+import { BASE_URL } from "../services/url";
 
 export default function Quickpage() {
   const cartQuantities = useSelector((state) => state.incDec.cart);
@@ -66,7 +67,7 @@ export default function Quickpage() {
   // console.log('Product ID',p.productId);
 
   useEffect(() => {
-    const url = `http://localhost:8000/quick-page/` + p.productId;
+    const url = `${BASE_URL}/quick-page/` + p.productId;
     axios
       .get(url)
       .then((res) => {
@@ -149,7 +150,7 @@ const handleCheckout = async (productId) => {
   }
 
   try {
-    const response = await axios.post('http://localhost:8000/checkout', {
+    const response = await axios.post(`${BASE_URL}/checkout`, {
       userId,
       productId1,
     });
@@ -171,7 +172,7 @@ const handleCheckout = async (productId) => {
 };
 const checkOrderStatus = async () => {
   try {
-    const response = await axios.get(`http://localhost:5000/order-status/${orderId}`);
+    const response = await axios.get(`${BASE_URL}/order-status/${orderId}`);
     setOrderStatus(response.data.status);
   } catch (error) {
     console.error('Error checking order status', error);
@@ -191,14 +192,14 @@ const checkOrderStatus = async () => {
                 <div className="quickimg1">
                   <img
                     style={{ width: "100%", height: "100%" }}
-                    src={`http://localhost:8000/uploads/${product.productImage[0].originalname}`} // Second image
+                    src={`${BASE_URL}/uploads/${product.productImage[0].originalname}`} // Second image
                     alt={product.productName}
                   />
                 </div>
                 <div className="quickimg2">
                   <img
                     style={{ width: "100%", height: "100%" }}
-                    src={`http://localhost:8000/uploads/${product.productImage[1].originalname}`} // Second image
+                    src={`${BASE_URL}/uploads/${product.productImage[1].originalname}`} // Second image
                     alt={product.productName}
                   />
                 </div>
@@ -221,13 +222,13 @@ const checkOrderStatus = async () => {
                     className="mySwiper">
                     <SwiperSlide>
                       <img
-                        src={`http://localhost:8000/uploads/${product.productImage[0].originalname}`} // Second image
+                        src={`${BASE_URL}/uploads/${product.productImage[0].originalname}`} // Second image
                         alt={product.productName}
                       />
                     </SwiperSlide>
                     <SwiperSlide>
                       <img
-                        src={`http://localhost:8000/uploads/${product.productImage[1].originalname}`} // Second image
+                        src={`${BASE_URL}/uploads/${product.productImage[1].originalname}`} // Second image
                         alt={product.productName}
                       />
                     </SwiperSlide>

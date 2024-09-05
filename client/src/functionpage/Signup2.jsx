@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from '../homepage/Footer';
-
+import { BASE_URL } from '../services/url';
 
 export default function Signup2({tagname}) {
   const navigate = useNavigate();
@@ -15,6 +15,9 @@ export default function Signup2({tagname}) {
     lastname: '',
     email: '',
     password: '',
+    pincode: '',
+    address: '',
+    contact: '',
     role: 'user', // Default role is user
 
   });
@@ -27,28 +30,44 @@ export default function Signup2({tagname}) {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    const ispincode = /^\d+$/.test(userInfo.pincode);
+    if(!ispincode){
+      toast.error('Only Allowed Number value in Pincode')
+      return;
+    }
 
-    // Log the input data before making the request
-    console.log('Input data before request:', userInfo);
+    const isNumeric = /^\d+$/.test(userInfo.contact);
 
+  if (!isNumeric) {
+    toast.error('Only Allowed Number value in Contact')
+    return; // Stop form submission
+  }
+
+    // Check if the contact number is exactly 10 digits
+    if (userInfo.contact.length !== 10) {
+      toast.error('Contact number must be exactly 10 digits');
+      return; // Stop form submission
+    }
+  
     try {
-      const response = await axios.post('http://localhost:8000/register', userInfo, {
+      const response = await axios.post(`${BASE_URL}/register`, userInfo, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
-
-      // Log any response data if needed
+  
       console.log('Response:', response.data);
       navigate('/');
-
-      
     } catch (error) {
       console.error('Error during registration:', error);
-      toast.error('Please! fill out all required details')
+      if (error.response && error.response.data) {
+        toast.error(error.response.data.message || 'An error occurred during registration');
+      } else {
+        toast.error('Please! fill out all required details');
       }
+    }
   };
-
+  
   return (
     <>
       <Headers />
@@ -57,8 +76,11 @@ export default function Signup2({tagname}) {
           <span>CREATE AN ACCOUNT</span><br /><br />
           <input type="text" onChange={changeHandler} placeholder='First Name' className='fname' name='firstname' />
           <input type="text" onChange={changeHandler} placeholder='Last Name' className='lname' name='lastname' />
-          <input type="text" onChange={changeHandler} placeholder='Email' name='email' />
-          <input type="text" onChange={changeHandler} placeholder='Password' name='password' />
+          <input type="text" onChange={changeHandler} placeholder='Email'  name='email' />
+          <input type="password" onChange={changeHandler} placeholder='Password' name='password' />
+          <input type="text" onChange={changeHandler} placeholder='Pincode' className='fname' value={userInfo.pincode}name='pincode' />
+          <input type="text" onChange={changeHandler} placeholder='Address' className='lname' name='address' />
+          <input type="text" onChange={changeHandler} placeholder='Contact No' name='contact'  value={userInfo.contact} maxLength={10}  />
           <select name="role" onChange={changeHandler}>
           <option value="user">User</option>
           <option value="admin">Admin</option>

@@ -372,75 +372,104 @@ footer{
   background-color: rgb(235, 231, 231); */
   /* overflow: hidden; */
 /* } */
-.explorer h1{
+/* General Styles */
+.explorer h1 {
   text-align: center;
-
 }
-table{
+
+table {
   background-color: rgb(68, 135, 194);
-  width: 500px;
-  margin: 30%;
+  width: 80%; /* Changed from a fixed width to a percentage */
+  margin: 20px auto; /* Centered with margin auto and reduced margin for better responsiveness */
   border: 1px solid gray;
 }
+
 .productdata {
   height: 100px;
   font-size: 15px;
   display: flex;
 }
-.expcontainer{
+
+.expcontainer {
   position: relative;
   width: 100%;
-  height: 120vh;
+  height: auto; /* Adjust height to auto for better responsiveness */
   background-color: #FFFFFF;
   text-transform: capitalize;
   font-family: karla;
   display: flex;
   align-items: center;
-  padding: 30px 60px;
+  padding: 20px; /* Adjusted padding for better responsiveness */
+  flex-direction: column; /* Changed to column for better stacking on smaller screens */
 }
-/* .exphidden{
-  overflow: hidden;
-  width: auto;
-  height: auto;
-} */
-.likepage{
+
+.likepage {
   width: 100%;
   height: auto;
   display: flex;
   flex-wrap: wrap;
-  padding: 50px;
+  padding: 30px; /* Reduced padding for better mobile view */
+  justify-content: center; /* Center content */
 }
-.selectinput{
-  margin-left: 20px;
-  margin-bottom: 10px;
-  margin-top: 10px;
-  width: 400px;
+
+.selectinput {
+  margin: 10px 0; /* Adjusted margins for better responsiveness */
+  width: 100%; /* Full width for smaller screens */
   height: 40px;
 }
-.uploadbtn{
-  width: 200px;
+
+.uploadbtn {
+  width: 100%; /* Full width for smaller screens */
   height: 40px;
-  margin-left: 20px;
+  margin: 10px 0; /* Adjusted margins for better responsiveness */
   cursor: pointer;
 }
-.quickbox{
-  position: absolute;
-  left: 380px;
-  top: 100px;
-  width: 900px;
-  height: 470px;
+
+.quickbox {
+  position: relative; /* Changed to relative for better positioning on smaller screens */
+  left: auto;
+  top: auto;
+  width: 100%; /* Full width for smaller screens */
+  height: auto; /* Adjusted height for better responsiveness */
   background-color: white;
   display: flex;
+  flex-direction: column; /* Stack content vertically on smaller screens */
+  align-items: center; /* Center content */
 }
-/* .showfullbody{
-  width: 100%;
-  min-height: 100vh;
-  background-color: rgba(0, 0, 0, 0.2);
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 99;
-} */
+
+/* Responsive Styles */
+@media (min-width: 768px) {
+  .expcontainer {
+    padding: 30px 60px;
+    flex-direction: row; /* Row layout for medium and larger screens */
+  }
+
+  .quickbox {
+    position: absolute;
+    left: 50%;
+    top: 100px;
+    transform: translateX(-50%);
+    width: 80%; /* Adjust width for medium and larger screens */
+    height: 470px;
+  }
+
+  .selectinput, .uploadbtn {
+    width: 400px; /* Original width for medium and larger screens */
+  }
+}
+
+@media (min-width: 1024px) {
+  table {
+    width: 500px; /* Fixed width for larger screens */
+  }
+
+  .quickbox {
+    left: 380px;
+    width: 900px; /* Original width for larger screens */
+    height: 470px;
+  }
+}
+
 .quickimg{
   margin: 10px;
   width: 50%;
@@ -458,9 +487,6 @@ table{
   height: 85%;
   margin: 10px;
   font-family: Arial;
-  /* position: absolute;
-  left: 100px;
-  background-color: blue; */
 }
 .quicktext h4{
   font-family: Arial;
@@ -824,7 +850,10 @@ color: white;
   background-color: rgb(140, 191, 249);
 }
 /* --------------------------filtered desing-------------------------- */
-
+.filterContainer{
+  width: 100%;
+  min-height: 100vh;
+}
 .filteredproduct{
   width: 100%;
   height: auto;
@@ -874,6 +903,37 @@ color: white;
   top: 262px;
   font-size: 20px;
   text-transform: capitalize;
+}
+.allproductbtn{
+  background-color: black;
+  color: white;
+  width: 40px;height: 40px;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  margin-left: -80px;
+  font-size: 16px;
+}
+.allproductbtn:hover{
+  background-color: #333333;
+}
+.filtercheckbox{
+  
+}
+.checkbox{
+  position: relative;
+  width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  font-size: 20px;
+}
+.checkbox2{
+  width: 270px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  font-size: 20px;
 }
 /* ----------------------------populer page--------------------------- */
 .populer-category{
@@ -1322,67 +1382,121 @@ padding-top: 10px;
 .order span{
   font-size: 23px;
 }
-.subfooter{
+.subfooter {
   border: 1px solid rgb(231, 224, 224);
   width: 100%;
-  height: 450px;
+  height: auto; /* Adjust height to content */
   position: relative;
   top: 150px;
   display: flex;
-  gap: 0px;
-  padding-left: 0px;
-  /* align-items: center; */
+  flex-wrap: wrap; /* Wrap content on smaller screens */
+  gap: 20px; /* Add space between sections */
+  padding: 20px; /* Adjust padding for responsiveness */
+  box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
 }
-.subftr{
-  
-  width: 450px;
-  margin-top: 70px;
-  margin-left: 30px;
-  padding: 50px 0px;
+
+.subftr {
+  flex: 1 1 250px; /* Allow sections to grow/shrink based on screen size */
+  margin-top: 20px;
+  padding: 20px; /* Adjust padding for responsiveness */
+  box-sizing: border-box;
 }
-.subftr h5,h4,span{
-  margin:10px 0;
+
+.subftr h5, .subftr h4, .subftr span {
+  margin: 10px 0;
 }
-.feedback{
+
+.feedback {
   position: relative;
-  width: 320px;
-  top: 50px;
-  left: -20px;
-  padding-left: 30px;
+  width: 100%; /* Make input responsive */
+  max-width: 320px;
+  margin-top: 20px; /* Add margin for spacing */
+  padding-left: 10px; /* Adjust padding for responsiveness */
   height: 40px;
   background-color: rgb(232, 230, 230);
+  box-sizing: border-box;
 }
-.subftr .submit{
-  position: absolute;
+
+.subftr .submit {
+  position: relative;
   height: 38px;
-  top: 264px;
-  right: 31px;
-  width: 104px;
-  display: inline;
+  margin-top: 10px; /* Add margin for spacing */
+  width: 100%;
+  max-width: 104px; /* Limit the button width */
   background-color: black;
   color: white;
   cursor: pointer;
   border: none;
-
 }
-.subfooter h6{
+
+.subfooter h6 {
   display: inline;
   font-size: 16px;
 }
-.lastftr{
+
+.lastftr {
   width: 100%;
-  height: 80px;
+  height: 60px; /* Adjust height for responsiveness */
   position: relative;
-  top: 150px;
+  top: 50px;
   box-shadow: 0px -1px 2px gray;
   background-color: #FFFFFF;
-  position: relative;
   display: flex;
-  justify-content:space-between;
+  justify-content: space-between;
   align-items: center;
-  padding-left: 50px;
+  padding: 0 20px; /* Adjust padding for responsiveness */
   font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+}
+
+/* Media Queries for Responsiveness */
+
+/* Tablet */
+@media (max-width: 768px) {
+  .subfooter {
+    padding: 20px;
+    flex-direction: column; /* Stack sections vertically */
+    gap: 30px; /* Add more space between sections */
+  }
+
+  .subftr {
+    margin-left: 0;
+    padding: 20px;
+    text-align: center; /* Center content on smaller screens */
+  }
+
+  .feedback, .subftr .submit {
+    max-width: 100%; /* Full width for inputs and button */
+  }
+
+  .lastftr {
+    padding: 10px 20px;
+    flex-direction: column; /* Stack footer content vertically */
+    height: auto;
+    text-align: center; /* Center text */
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .subfooter {
+    padding: 10px;
+  }
+
+  .subftr {
+    padding: 10px;
+  }
+
+  .feedback {
+    padding-left: 10px;
+  }
+
+  .lastftr {
+    padding: 10px;
+    flex-direction: column;
+    height: auto;
+  }
 }
 
 
@@ -1455,7 +1569,7 @@ padding-top: 10px;
 /* ---------------------sign up styling start--------------------------- */
 .signuppage{
   width: 100%;
-  height: 50vh;
+  height: 60vh;
 }
 .createacc{
   width: 500px;

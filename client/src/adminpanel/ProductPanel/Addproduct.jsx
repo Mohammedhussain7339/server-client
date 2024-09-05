@@ -196,6 +196,7 @@ function Addproduct() {
           <option value="Damro">Damro</option>
           <option value="IKEA">IKEA</option>
           <option value="Wipro Furniture">Wipro Furniture</option>
+          <option value="Samsung Furniture">Samsung Furniture</option>
         </select><br />
         <button className="uploadbtn" onClick={handleUpload}>Upload Product</button>
       </div>
