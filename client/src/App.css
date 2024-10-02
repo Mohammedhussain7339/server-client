@@ -29,6 +29,7 @@ body{
   width: 100%;
   height: 100vh;
   overflow-x: hidden;
+  position: relative;
 }
 .alert{
   color: red;
@@ -69,7 +70,7 @@ input{
   /* position: sticky;
   top: 0px; */
   z-index: 1;
-  width: 100%;
+  width: 1550px;
   height: 40px;
   background-color: #333333;
   font-size: 12px;
@@ -92,7 +93,7 @@ input{
   /* position: sticky;
   top: 0px; */
 
-  width: 100%;
+  width: 1550px;
   height: 100px;
   background-color: #FFFFFF;
   color: black;
@@ -158,7 +159,7 @@ top: -22px;
 }
 /* --------------------mainnav styling start---------------------------- */
 .mainnav {
-  width: 100%;
+  width: 1550px;
   height: 50px;
   padding-left: 60px;
   background-color: rgb(162, 162, 162);
@@ -273,25 +274,26 @@ padding-left: 40px;
 
 /* -----------------------------main styling start------------------------- */
 .main{
-  width: 100%;
-  height: 100vh;
+  width: 1550px;
+  min-height: 100vh;
   background-image:url(img/img1.jpg);
   background-position: center;
   background-size: cover;
   display: flex;
-  align-items:self-end;
   justify-content: center;
+  align-items: center;
 }
 .textbox{
-  color:white;
+  color:#133A61 ;
   width: 500px;
   height: 400px;
   text-align: center;
+  padding:90px 0;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 .textbox a{
   text-decoration: none;
-  color: black;
+  color: white;
   font-size: 15px;
 }
 .textbox div{
@@ -299,10 +301,11 @@ padding-left: 40px;
   left: 160px;
   width: 150px;
   height: 50px;
-  background-color: rgb(250, 247, 247);
+  background-color: #20466c;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 0 10px rgb(72, 80, 168);
 }
 .textbox div:hover{
   background-color: black;
@@ -313,11 +316,9 @@ padding-left: 40px;
 
 /* ------------------footer styling start -------------------------- */
 footer{
-  /* position: absolute;  */
-  width: 100%;
+  width: 1550px;
   height: 400px;
   display: flex;
-  /* justify-content: space-around; */
   color: black;
   font-family: karla;
   background-color: red;
@@ -354,7 +355,7 @@ footer{
   font-size: 15px;
 }
 .lastfooter{
-  width: 100%;
+  width: 1550px;
   height: 50px;
   position: relative;
   top: 400px;
@@ -365,14 +366,8 @@ footer{
   width: 100%;
   height: 50px;
 }
-
-/* .explorer{
-  width: 100%;
-  height: 122vh;
-  background-color: rgb(235, 231, 231); */
-  /* overflow: hidden; */
-/* } */
-/* General Styles */
+.explorer{  width: 1550px;
+}
 .explorer h1 {
   text-align: center;
 }
@@ -425,51 +420,16 @@ table {
   cursor: pointer;
 }
 
-.quickbox {
-  position: relative; /* Changed to relative for better positioning on smaller screens */
-  left: auto;
-  top: auto;
-  width: 100%; /* Full width for smaller screens */
-  height: auto; /* Adjusted height for better responsiveness */
+.quickbox{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 900px;
+  height: 470px;
   background-color: white;
   display: flex;
-  flex-direction: column; /* Stack content vertically on smaller screens */
-  align-items: center; /* Center content */
 }
-
-/* Responsive Styles */
-@media (min-width: 768px) {
-  .expcontainer {
-    padding: 30px 60px;
-    flex-direction: row; /* Row layout for medium and larger screens */
-  }
-
-  .quickbox {
-    position: absolute;
-    left: 50%;
-    top: 100px;
-    transform: translateX(-50%);
-    width: 80%; /* Adjust width for medium and larger screens */
-    height: 470px;
-  }
-
-  .selectinput, .uploadbtn {
-    width: 400px; /* Original width for medium and larger screens */
-  }
-}
-
-@media (min-width: 1024px) {
-  table {
-    width: 500px; /* Fixed width for larger screens */
-  }
-
-  .quickbox {
-    left: 380px;
-    width: 900px; /* Original width for larger screens */
-    height: 470px;
-  }
-}
-
 .quickimg{
   margin: 10px;
   width: 50%;
@@ -487,6 +447,9 @@ table {
   height: 85%;
   margin: 10px;
   font-family: Arial;
+  /* position: absolute;
+  left: 100px;
+  background-color: blue; */
 }
 .quicktext h4{
   font-family: Arial;
@@ -502,6 +465,7 @@ table {
 .btnbox button:hover{
   background-color: rgb(243, 237, 237);
 }
+
 .mobilenav{
   position: absolute;
   top: 0;
@@ -596,6 +560,20 @@ table {
 .icondiv i:hover{
   background-color: rgb(146, 102, 45);
 }
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Adjust opacity */
+  z-index: 1; /* Ensure it stays above everything */
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
 .cartContainer{
   margin: 0;
   padding: 0;
@@ -604,11 +582,13 @@ table {
   overflow: scroll;
   overflow-x: hidden;
   background-color: thistle;
-
-  position: absolute;
+  position: absolute; /* Fixed to keep it in view when scrolling */
+  z-index: 2000; /* Higher than the overlay */
   right: 0;
   top: 1000px;
   padding: 10px 0px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: add some shadow for better visibility */
+
 }
 .freedelbox{
   margin: 0 auto;
@@ -843,16 +823,22 @@ color: white;
   left: 1100px;
 }
 .orderdetails{
+  border-radius: 10px;
+  box-shadow: 0 0 2px black;
   position: relative;
-  left: -200px;
-  bottom: 300px;
   width: 80%;
   background-color: rgb(140, 191, 249);
 }
 /* --------------------------filtered desing-------------------------- */
 .filterContainer{
-  width: 100%;
+  width: 1550px;
   min-height: 100vh;
+}
+@media (max-width:800px) {
+  .filterContainer{
+    min-height: 450vh;
+
+  }
 }
 .filteredproduct{
   width: 100%;
@@ -939,7 +925,7 @@ color: white;
 .populer-category{
   position: relative;
   top: 20px;
-  width: 100%;
+  width: 1550px;
   /* height: 100vh; */
   background-color:#FFF6F6 ;
 }
@@ -956,12 +942,16 @@ justify-content: space-around;
   background-color: #000;
   overflow: hidden;
   position: relative;
+  filter: drop-shadow(2px 2px 20px black);
+  border-radius: 20px;
 }
 
 .p-img{
   width: 320px;
   height: 390px;
   transition: 0.5s;
+  box-shadow:0 0 10px black;
+  /* filter: drop-shadow(2px 2px 20px rgb(186, 75, 75)); */
 
 }
 .p-img:hover{
@@ -1001,7 +991,7 @@ justify-content: space-around;
 .sale-page{
   position: relative;
   top: 0px;
-  width: 100%;
+  width: 1550px;
   height: 500px;
   background-color: #DCCFD6;
   display: flex;
@@ -1045,8 +1035,8 @@ margin: 15px;
 .sofas-page{
   position: relative;
   top: 0px;
-  width: 100%;
-  height: 100vh;
+  width: 1550px;
+  min-height: 100vh;
   background-image: url(img/sofa.jpg);
   background-size: cover;
   background-position: center;
@@ -1091,7 +1081,7 @@ margin: 15px;
 
 /* ---------------------page 3 is start---------------------- */
 .preorder-page{
-  width: 100%;
+  width: 1550px;
   height: 500px;
   position: relative;
   top: 0px;
@@ -1115,9 +1105,10 @@ margin-bottom: 10px;
 }
 /* ------------------------------------start shop page---------------- */
 .shop-page{
-  width: 100%;
-  height: 100vh;
+  width: 1550px;
+  min-height: 100vh;
   position: relative;
+  padding: 0;
   top: 0px;
   background-image: url(img/oceans.jpg);
   background-size: cover;
@@ -1126,6 +1117,17 @@ margin-bottom: 10px;
   display:flex;
   align-items: center;
   justify-content: center;
+}
+@media (max-width:800px) {
+  body{
+  }
+  .shop-page{
+    padding: 50%;
+  }
+  .slider{
+    position: relative;
+    top: 900px;
+  }
 }
 .s-tbox{
   width: 450px;
@@ -1158,7 +1160,7 @@ margin-bottom: 10px;
 }
 /* -------------------------start add product page--------------------- */
 .addproduct{
-  width: 100%;
+  width: 1550px;
   height: 100vh;
   position: relative;
   top: 0px;
@@ -1257,7 +1259,7 @@ margin-bottom: 10px;
 
 /* --------------------------slider page--------------------------------- */
 .slider{
-  width: 100%;
+  width: 1550px;
   height: 450px;
   background-color: #c0defb;
   position: relative;
@@ -1298,7 +1300,7 @@ margin-bottom: 10px;
   background-color: rgb(3, 3, 3);
 }
 .date{
-  width: 100%;
+  width: 1550px;
   height: 150px;
   background-image: url(img/mirror.jpg);
   position: relative;
@@ -1322,10 +1324,9 @@ margin-bottom: 10px;
 }
 
 .explorepage{
-  width: 100%;
+  width: 1550px;
   min-height: 100vh;
-  background-image: linear-gradient(to right,rgb(76,209,249), rgb(250, 230, 236), rgb(76, 209, 249));
-  /* background-color: pink; */
+  background-color: rgb(194, 200, 234);
   position: relative;
   top: 150px;
   display: flex;
@@ -1333,41 +1334,60 @@ margin-bottom: 10px;
   text-align: center;
   /* gap: 50px; */
 }
+
 .explorepage h1{
   position: absolute;top: -30px;
+  /* margin: 50%; */
+  left: 700px;
 }
 .div{
   width: 400px;
-  height: 500px;
-  background-color: red;
+  height: 505px;
   margin: 50px;
   position: relative;
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 10px black;
+  border-radius: 10px;
 }
 .div img{
   width: 100%;
-  height: 80%;
+  height: 8%;
+  border-radius: 10px;
 }
-.div img:hover{
-  opacity: 0.6;
-  height: 100%;
+.textbox1{
+  width: 100%;
+  height: 100px;
+  line-height: 50px;
+  background-color:rgb(194, 200, 234);
+  border-radius: 10px;
+}
+.div::after {
+  content: ""; /* Ensure the ::after element is created */
+  width: 0; /* Start with 0 width */
+  height: 0;
+  line-height: 400px;
   position: absolute;
   left: 0;
-  z-index: 20;
+  top: 0;
+  text-align: center;
+  font-size: 50px;
+  background-color: rgba(105, 104, 104, 0.5);
+  transition: width 0.4s ease; /* Smooth transition */
+  cursor: pointer;
+  overflow: hidden; /* Prevent content overflow */
+}
 
-}
-.div h4,h5{
-padding-right: 100px;
-padding-top: 10px;
-}
-.box2,.box7,.box9,.box5{
-  height: 600px;
-  background-color: blueviolet;
+.div:hover::after {
+  content: "+"; /* Add the '+' when hovered */
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
 }
 
 /* footer...................... */
 
 .order{
-  width: 100%;
+  width: 1550px;
   height: 150px;
   background-color: black;
   position: relative;
@@ -1384,7 +1404,7 @@ padding-top: 10px;
 }
 .subfooter {
   border: 1px solid rgb(231, 224, 224);
-  width: 100%;
+  width: 1550px;
   height: auto; /* Adjust height to content */
   position: relative;
   top: 150px;
@@ -1410,7 +1430,8 @@ padding-top: 10px;
 .feedback {
   position: relative;
   width: 100%; /* Make input responsive */
-  max-width: 320px;
+  max-width: 250px;
+  left: -20px;
   margin-top: 20px; /* Add margin for spacing */
   padding-left: 10px; /* Adjust padding for responsiveness */
   height: 40px;
@@ -1420,14 +1441,17 @@ padding-top: 10px;
 
 .subftr .submit {
   position: relative;
+  left: -20px;
   height: 38px;
-  margin-top: 10px; /* Add margin for spacing */
-  width: 100%;
-  max-width: 104px; /* Limit the button width */
+  width: 80%;
   background-color: black;
   color: white;
   cursor: pointer;
   border: none;
+  border-radius: 4px;
+}
+.submit:hover{
+  background-color: rgb(67, 65, 65);
 }
 
 .subfooter h6 {
@@ -1436,75 +1460,35 @@ padding-top: 10px;
 }
 
 .lastftr {
-  width: 100%;
+  width: 1550px;
   height: 60px; /* Adjust height for responsiveness */
   position: relative;
-  top: 50px;
+  top: 150px;
   box-shadow: 0px -1px 2px gray;
   background-color: #FFFFFF;
   display: flex;
+  line-height: 0px;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px; /* Adjust padding for responsiveness */
+  padding: 0 20px; 
   font-family: Arial, Helvetica, sans-serif;
   box-sizing: border-box;
 }
 
-/* Media Queries for Responsiveness */
-
-/* Tablet */
-@media (max-width: 768px) {
-  .subfooter {
-    padding: 20px;
-    flex-direction: column; /* Stack sections vertically */
-    gap: 30px; /* Add more space between sections */
-  }
-
-  .subftr {
-    margin-left: 0;
-    padding: 20px;
-    text-align: center; /* Center content on smaller screens */
-  }
-
-  .feedback, .subftr .submit {
-    max-width: 100%; /* Full width for inputs and button */
-  }
-
-  .lastftr {
-    padding: 10px 20px;
-    flex-direction: column; /* Stack footer content vertically */
-    height: auto;
-    text-align: center; /* Center text */
-  }
-}
-
-/* Mobile */
-@media (max-width: 480px) {
-  .subfooter {
-    padding: 10px;
-  }
-
-  .subftr {
-    padding: 10px;
-  }
-
-  .feedback {
-    padding-left: 10px;
-  }
-
-  .lastftr {
-    padding: 10px;
-    flex-direction: column;
-    height: auto;
-  }
-}
 
 
 /* -----------------login page css start------------------------- */
 .loginpage{
-  width: 100%;
+  width: 1550px;
   min-height: 70vh;
-  /* background-color: #c0defb; */
+}
+@media (max-width:800px) {
+  .loginpage{
+    min-height: 150vh;
+  }
+  .signuppage{
+    min-height: 150vh;
+  }
 }
 .home{
   width: 100%;
@@ -1568,7 +1552,7 @@ padding-top: 10px;
 }
 /* ---------------------sign up styling start--------------------------- */
 .signuppage{
-  width: 100%;
+  width: 1550px;
   height: 60vh;
 }
 .createacc{
@@ -1639,8 +1623,29 @@ width: 200px;
   top: 192px;
   right: 0;
 }
+@media (max-width:800px) {
+  .slider{
+    top: 310px;
+    z-index: 4;
+  }
+  .date{
+    top: 310px;
+    z-index: 5;
+  }
+  .explorepage{
+    top: 310px;
+  }.subfooter{
+    top: 310px;
+  }
+  .order{
+    top: 310px;
+  }
+  .lastftr{
+    top: 310px;
+  }
+}
 .titlecart{
-  width: 100%;
+  width: 1550px;
   height: 40px;
   background-color: #dae8f4;
   padding-left: 100px;
@@ -1648,10 +1653,15 @@ width: 200px;
   font-family: Arial, Helvetica, sans-serif;
 }
 .Cartpage{
-  width: 100%;
+  width: 1550px;
   height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
   background-color: white;
+}
+.maincartdiv{
+  /* display: grid;
+  align-items: center; */
+  /* justify-content:space-evenly; */
 }
 .yourcart{
   font-size: 30px;
@@ -1666,7 +1676,7 @@ width: 200px;
   background-color: #dae8f4;
   margin: 40px;
   display: flex;
-  gap: 385px;
+  gap: 340px;
   padding-left: 20px;
   text-transform: capitalize;
 }
@@ -1681,28 +1691,42 @@ width: 200px;
 }
 .cartpname{
   position: relative;
-  bottom: 150px;
-  left: 170px;
+  text-align: center;
+  /* bottom: 150px; */
+  /* left: 170px; */
 }
 .cartpcolor{
   position: relative;
-  bottom: 125px;
-  left: 130px;
+  bottom: 30px;
+  left: -95px;
+  font-size: 17px;
 }
 .cartprice{
   position: relative;
-  bottom: 130px;
-  left: 430px;
+  /* bottom: 130px; */
+  /* left: 430px; */
 }
 .cartbtnbox{
   position: relative;
-  bottom: 160px;
-  right: -930px;
+  /* bottom: 160px; */
+  /* right: -930px; */
+}
+.maincartdiv{
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  gap: 260px;
+  /* justify-content:space-around; */
+  padding-right: 20px;
+}
+.yourCart{
+  width: 1550px;
+  height: 30px;
+  background-color: red;
 }
 .carttotal{
   position: relative;
-  bottom: 180px;
-  left: 1380px;
 }
 .checkoutBox{
   position: relative;
@@ -1727,7 +1751,7 @@ width: 200px;
 /* ------------------filter style is start------------------------ */
 .swiperContainer{
   /* position: absolute; */
-  width: 100%;
+  width: 1550px;
   height:270vh;
 }
 .swiper {
@@ -1882,7 +1906,7 @@ width: 200px;
 }
 /* ------------------------------------admin nav css start----------------------------- */
 .adminnav{
-  width: 100%;
+  width: 1550px;
   height: 75px;
   background-color: #cdcece;
   display: flex;
@@ -1996,21 +2020,29 @@ border: 2px silver solid;
 }
 /* -------------------------------------------admin page css-------------------------- */
 .adminpage{
-  width: 100%;
-  height: 100vh;
+  width: 1550px;
+  min-height: 100vh;
   overflow: hidden;
   background-color: #eff4fd;
-  
+}
+@media (max-width: 800px) {
+  .adminpage {
+    overflow: visible; /* Corrected from 'none' */
+  }
+  .slidebar{
+    min-height: 100vh;
+    overflow: visible;
+  }
 }
 main{
-  width: 100%;
+  width: 1550px;
   height: 90vh;
   background-color: #eff4fd;
   color: #333333;
   margin: 20px;
 }
 .home1{
-  width: 100%;
+  width: 1550px;
   height: 90vh;
 }
 .reportbox{
@@ -2027,11 +2059,11 @@ main{
 }
 .userlisttable{
   background-color: #83b2fc;
-  width: 70%;
-  position: absolute;
-  top: -300px;
-  left: -100px;
+  width: 80%;
+  position: relative;
+  border-radius: 10px;
 }
+
 .userlisttable th{
   text-align: left;
   padding-left: 20px;

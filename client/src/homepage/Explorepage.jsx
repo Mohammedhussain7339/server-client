@@ -1,25 +1,108 @@
-import React from 'react'
-import {SlideshowLightbox} from 'lightbox.js-react'
-import 'lightbox.js-react/dist/index.css'
-
-
+import React, { useState } from 'react';
+import walimg1 from '../../public/wal1.jpg'
+import walimg2 from '../../public/wal2.jpg'
+import walimg3 from '../../public/wal3.jpeg'
+import walimg4 from '../../public/wal4.jpeg'
+import walimg5 from '../../public/wal5.jpeg'
+import walimg6 from '../../public/wal6.jpeg'
+import walimg7 from '../../public/wal7.jpeg'
+import walimg8 from '../../public/wal8.jpeg'
+import walimg9 from '../../public/wal9.jpeg'
 export default function Explorepage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  // Array of images
+  const images = [
+    walimg1,walimg2,walimg3,walimg4,
+    walimg5,walimg6,walimg7,walimg8,walimg9
+  ];
+
+  // Function to open the modal and set the clicked image
+  const openModal = (image) => {
+    setSelectedImage(image);
+    setIsModalOpen(true);
+  };
+
+  // Function to close the modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedImage(null);
+  };
+
   return (
     <div className='explorepage'>
-        <h1 style={{textAlign:'center',marginLeft:'700px', paddingTop:'40px', fontFamily:'arial'}}>Explore All</h1>
-      <>
-<div className="box1 div"><img className='w-full rounded' src="https://vogal-demos.myshopify.com/cdn/shop/files/BEDROOM_f62cc0ee-5bc4-47ca-9ecb-2d4563afc842.jpg?v=1678091959" alt="" /><div className="textbox"><h4>Office Style</h4><h5>Get more ideas about office room design</h5></div></div>
-<div className="box2 div"><img className='w-full rounded' src="https://vogal-demos.myshopify.com/cdn/shop/files/bedroom.jpg?v=1677934092" alt="" /><div className="textbox"><h4>Office Style</h4><h5>Get more ideas about office room design</h5></div></div>
-<div className="box3 div"><img className='w-full rounded' src="https://vogal-demos.myshopify.com/cdn/shop/files/CHILD-BEDROOM.jpg?v=1678092062" alt="" /><div className="textbox"><h4>Office Style</h4><h5>Get more ideas about office room design</h5></div></div>
-<div className="box4 div"><img className='w-full rounded' src="https://vogal-demos.myshopify.com/cdn/shop/files/bedroom.jpg?v=1677934092" alt="" /><div className="textbox"><h4>Office Style</h4><h5>Get more ideas about office room design</h5></div></div>
-<div className="box5 div"><img className='w-full rounded' src="https://vogal-demos.myshopify.com/cdn/shop/files/modern-sofas.jpg?v=1677933347" alt="" /><div className="textbox"><h4>Office Style</h4><h5>Get more ideas about office room design</h5></div></div>
-<div className="box6 div"><img className='w-full rounded' src="https://vogal-demos.myshopify.com/cdn/shop/files/COFFEE-TABLE.jpg?v=1677933707" alt="" /><div className="textbox"><h4>Office Style</h4><h5>Get more ideas about office room design</h5></div></div>
-<div className="box7 div"><img className='w-full rounded' src="https://vogal-demos.myshopify.com/cdn/shop/files/LIVING-ROOM.jpg?v=1678092553" alt="" /><div className="textbox"><h4>Office Style</h4><h5>Get more ideas about office room design</h5></div></div>
-<div className="box8 div"><img className='w-full rounded' src="https://vogal-demos.myshopify.com/cdn/shop/files/DINING.jpg?v=1678092708" alt="" /><div className="textbox"><h4>Office Style</h4><h5>Get more ideas about office room design</h5></div></div>
-<div className="box9 div"><img className='w-full rounded' src="https://vogal-demos.myshopify.com/cdn/shop/files/single-chair.jpg?v=1678092991" alt="" /><div className="textbox"><h4>Office Style</h4><h5>Get more ideas about office room design</h5></div></div>
+      <h1 style={{ textAlign: 'center', paddingTop: '40px', fontFamily: 'arial' }}>Explore All</h1>
+      
+      {/* Display image gallery */}
+      <div className="image-gallery">
+        {images.map((image, index) => (
+          <div className="box div" key={index} style={{ position: 'relative', margin: '20px' }}onClick={() => openModal(image)}>               
 
-      </>
+            <img className='w-full rounded' src={image} alt={`Design ${index + 1}`} style={{ width: '400px', height: '400px' }} />
+            <div className="textbox1">
+              <h4>Office Style</h4>
+              <h5>Get more ideas about office room design</h5>
+            </div>
+          </div>
+        ))}
+      </div>
 
+      {/* Modal to show full-size image */}
+      {isModalOpen && (
+        <div className="modal" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <span className="close" onClick={closeModal}>&times;</span>
+            <img src={selectedImage} alt="Full Size" className="full-image" />
+          </div>
+        </div>
+      )}
+
+      {/* Styles */}
+      <style jsx>{`
+        .image-gallery{
+        display:flex;
+        flex-wrap:wrap;
+        gap:50px;
+        margin:60px;
+        }
+        .modal {
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.8);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .modal-content {
+          position: relative;
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 5px;
+          max-width: 80%;
+          max-height: 80%;
+          overflow: hidden;
+        }
+
+        .close {
+          position: absolute;
+          top: 10px;
+          right: 20px;
+          font-size: 30px;
+          cursor: pointer;
+        }
+
+        .full-image {
+          max-width: 100%;
+          max-height: 50%;
+        }
+
+      `}</style>
     </div>
-  )
+  );
 }

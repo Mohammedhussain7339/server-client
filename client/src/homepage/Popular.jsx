@@ -1,6 +1,10 @@
 import React from 'react';
-
+import table1 from '../../public/table1.jpeg'
+import table2 from '../../public/table2.jpeg'
+import table5 from '../../public/table5.jpeg'
+import table3 from '../../public/table3.jpeg'
 const Popular = () => {
+  
   return (
     <div className="populer-category">
       <div style={{ textAlign: 'center', paddingTop: '100px' }}>
@@ -11,7 +15,7 @@ const Popular = () => {
         <div>        <div className="p-box">
           <img
             className="p-img"
-            src="https://vogal-demos.myshopify.com/cdn/shop/files/lighting_360x.jpg?v=1677929519"
+            src={table1}
             alt=""
           />
           <div>Modern Sofas</div>
@@ -21,21 +25,21 @@ const Popular = () => {
         <div className="p-box">
           <img
             className="p-img"
-            src="https://vogal-demos.myshopify.com/cdn/shop/files/office-fur_360x.jpg?v=1677929529"
+            src={table2}
             alt=""
           />
         </div>
         <div className="p-box">
           <img
             className="p-img"
-            src="https://vogal-demos.myshopify.com/cdn/shop/files/sofas_360x.jpg?v=1677929483"
+            src={table3}
             alt=""
           />
         </div>
-        <div className="p-box">
+        <div className="p-box" >
           <img
             className="p-img"
-            src="https://vogal-demos.myshopify.com/cdn/shop/files/study-table_360x.jpg?v=1677933470"
+            src={table5}
             alt=""
           />
         </div>

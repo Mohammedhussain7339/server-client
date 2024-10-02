@@ -26,9 +26,9 @@ function Userfeed() {
   }, []);
 
   return (
-    <div>
+    <div style={{width:"1550px",height:'100vh'}}>
       <h1 style={{textAlign:'center'}}>USER FEEDBACK</h1>
-      <table style={{position:'absolute',top:'-300px',left:'-90px',width:'70%',background:'#83b2fc'}}>
+      <table style={{position:'relative',width:'80%',background:'#83b2fc',borderRadius:"10px"}}>
       <thead>
         <tr>
           <th style={{textAlign:'left',paddingLeft:'10px'}}>UserName</th>

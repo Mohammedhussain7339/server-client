@@ -66,6 +66,7 @@ export default function Quickpage() {
   console.log(productId1,'65')
   // console.log('Product ID',p.productId);
 
+  
   useEffect(() => {
     const url = `${BASE_URL}/quick-page/` + p.productId;
     axios
@@ -87,34 +88,6 @@ export default function Quickpage() {
   const [msgs, setMsgs] = useState([]);
 
   let username = { firstname: localStorage.getItem("firstname") };
-  // console.log("usernameee", username);
-  // const newSocket = useMemo(() => io("http://localhost:8000"), []);
-  // const [socket, setSocket] = useState(null);
-
-  // const sendHandler = (e) => {
-  //   e.preventDefault();
-  //   const data = {
-  //     username,
-  //     msg,
-  //     productId: localStorage.getItem("productId1"),
-  //   };
-  //   newSocket.emit("message", data);
-  //   setMsg(""); // Clear the input field after sending the message
-  // };
-
-  // useEffect(() => {
-  //   newSocket.on("connect", () => {
-  //     console.log("Connection successful");
-  //     console.log("SocketId:", newSocket.id);
-  //   });
-  //   newSocket.on("receive-message", (data) => {
-  //     console.log(data);
-  //   });
-
-  //   return () => {
-  //     newSocket.disconnect();
-  //   };
-  // }, []);
   const auth = localStorage.getItem("token");
   const [isCartVisible, setIsCartVisible] = useState(false);
 
@@ -178,6 +151,60 @@ const checkOrderStatus = async () => {
     console.error('Error checking order status', error);
   }
 };
+const [index,setindex] = useState(0)
+
+const index1Handler=()=>{
+  setindex(1)
+}
+const index2Handler=()=>{
+  setindex(0)
+
+}
+const [userId, setUserId] = useState(localStorage.getItem('userId') || '');
+const [viewCount, setViewCount] = useState(0);
+
+// Function to check if the user is visiting for the first time and update view count
+const checkFirstVisitAndUpdateCount = async () => {
+  try {
+    // Check if the user has already visited
+    const visitedUsers = JSON.parse(localStorage.getItem('visitedUsers')) || [];
+
+    if (!visitedUsers.includes(userId)) {
+      // If it's the user's first visit, add the user ID to the visited users list
+      visitedUsers.push(userId);
+      localStorage.setItem('visitedUsers', JSON.stringify(visitedUsers));
+
+      // Call the API to update the view count
+      await axios.post('http://localhost:8000/updateViewCount', {
+        userId: userId, // Assuming you want to log the user ID
+      });
+    }
+
+    // Fetch the updated view count
+    fetchViewCount();
+  } catch (error) {
+    console.error("Error updating view count:", error);
+  }
+};
+
+// Function to fetch the current view count
+const fetchViewCount = async () => {
+  try {
+    const response = await axios.get('http://localhost:8000/getViewCount');
+    setViewCount(response.data.viewCount); // Update state with the fetched view count
+  } catch (error) {
+    console.error("Error fetching view count:", error);
+  }
+};
+
+// Use effect to check the first visit when component mounts
+useEffect(() => {
+  if (userId) {
+    checkFirstVisitAndUpdateCount();
+  }
+}, [userId]);
+
+
 
 
   return (
@@ -191,16 +218,21 @@ const checkOrderStatus = async () => {
               <div className="quickimgbox">
                 <div className="quickimg1">
                   <img
-                    style={{ width: "100%", height: "100%" }}
-                    src={`${BASE_URL}/uploads/${product.productImage[0].originalname}`} // Second image
+                    style={{cursor:'pointer', width: "100%", height: "100%" }}
+                    src={`${product.productImage[0].url}`} // Second image
                     alt={product.productName}
-                  />
+                    onClick={index1Handler}
+                    
+                  />  
                 </div>
                 <div className="quickimg2">
                   <img
-                    style={{ width: "100%", height: "100%" }}
-                    src={`${BASE_URL}/uploads/${product.productImage[1].originalname}`} // Second image
+                    style={{cursor:'pointer', width: "100%", height: "100%" }}
+                    src={`${product.productImage[1].url}`} // Second image
                     alt={product.productName}
+                    onClick={index2Handler}
+                    
+
                   />
                 </div>
                 <div className="quickimg3">
@@ -222,14 +254,14 @@ const checkOrderStatus = async () => {
                     className="mySwiper">
                     <SwiperSlide>
                       <img
-                        src={`${BASE_URL}/uploads/${product.productImage[0].originalname}`} // Second image
-                        alt={product.productName}
+                    src={`${product.productImage[index].url}`} // Second image
+                    alt={product.productName}
                       />
                     </SwiperSlide>
                     <SwiperSlide>
                       <img
-                        src={`${BASE_URL}/uploads/${product.productImage[1].originalname}`} // Second image
-                        alt={product.productName}
+                    src={`${product.productImage[1].url}`} // Second image
+                    alt={product.productName}
                       />
                     </SwiperSlide>
                   </Swiper>
@@ -297,7 +329,7 @@ const checkOrderStatus = async () => {
                 <br />
                 <p>
                   <FaRegEye />
-                  <b>8</b>people look this product
+                  <b>{viewCount}</b>people look this product
                 </p>
                 <br />
                 <p>

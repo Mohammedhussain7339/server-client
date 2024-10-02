@@ -16,7 +16,6 @@ import { useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { cartContext } from "../context/Context";
-
 import {
   FaFacebookF,
   FaInstagram,
@@ -43,50 +42,50 @@ export default function Headers(props) {
 
   const location = useLocation();
 
-
   const [cartrefresh, setcartRefresh] = useState([0]);
   const [productPrices, setProductPrices] = useState([]);
-  const [cartlength,setCartlength]=useState(0)
-  const [num, setNum]=useState(0)
+  const [cartlength, setCartlength] = useState(0);
+  const [num, setNum] = useState(0);
+  const goToFilters = () => {
+    navigate("../filters");
+  };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       let data = { userId: localStorage.getItem("userId") };
+  //       const response = await axios.post("http://localhost:8000/cart-page", data);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let data = { userId: localStorage.getItem("userId") };
-        const response = await axios.post("http://localhost:8000/cart-page", data);
-        
-        if (response.data && response.data.products) {
-          setProducts(response.data.products);
-          // console.log('headers60',response.data.products);
-          setCartlength(response.data.products.length)
-          setcartRefresh(!cartrefresh);
-        } else {
-          setProducts([]);
-        }
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        setProducts([]);
-      }
-    };
+  //       if (response.data && response.data.products) {
+  //         setProducts(response.data.products);
+  //         // console.log('headers60',response.data.products);
+  //         setCartlength(response.data.products.length)
+  //         setcartRefresh(!cartrefresh);
+  //       } else {
+  //         setProducts([]);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching products:", error);
+  //       setProducts([]);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get("http://localhost:8000/productfetch");
+  //       setProducts(response.data.products);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:8000/productfetch");
-        setProducts(response.data.products);
+  //       // console.log("Headers data", response.data.products);
+  //     } catch (error) {
+  //       console.error("Error fetching products:", error);
+  //     }
+  //   };
 
-        // console.log("Headers data", response.data.products);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   let userinfo = { firstname: localStorage.getItem("firstname") };
   // console.log('dataaaa',userinfo)
@@ -165,18 +164,19 @@ export default function Headers(props) {
         {/* <!-- --------------------------------------------nav-1 complete------------------- --> */}
         <div className="nav-2">
           <div className="navdiv2-1">
-            <input
-              type="text"
-              placeholder="All Product"
-              value={props && props.search}
-              onChange={(e) =>
-                props.handleSearch && props.handleSearch(e.target.value)
-              }
-            />
+            <input type="text" placeholder="Search" list="suggesstion" />
+            <datalist
+              id="suggesstion"
+              style={{ color: "red", background: "red" }}>
+              <option value="sofa"></option>
+              <option value="chair"></option>
+              <option value="table"></option>
+              <option value="flower port"></option>
+            </datalist>
             <i
               className="magnifier"
               style={{ cursor: "pointer" }}
-              onClick={() => props.handleClick && props.handleClick()}>
+              onClick={goToFilters}>
               <SlMagnifier />
             </i>
           </div>
@@ -200,15 +200,16 @@ export default function Headers(props) {
                   : () =>
                       toast.error(
                         <>
-                          Please login first. <Link to="../Login2">Go to Login</Link>
+                          Please login first.{" "}
+                          <Link to="../Login2">Go to Login</Link>
                         </>
                         // { autoClose: false }
                       )
               }>
-            <i className="fa-regular">
+              <i className="fa-regular">
                 <FaRegHeart />
               </i>
-              </Link>
+            </Link>
 
             <Link
               to={auth ? "../Cart" : null}
@@ -218,14 +219,15 @@ export default function Headers(props) {
                   : () =>
                       toast.error(
                         <>
-                          Please login first. <Link to="../Login2">Go to Login</Link>
+                          Please login first.{" "}
+                          <Link to="../Login2">Go to Login</Link>
                         </>
                         // { autoClose: false }
                       )
               }>
               <i className="fa-regular">
                 <FaCartArrowDown />
-                <sup 
+                <sup
                   style={{
                     fontStyle: "normal",
                     fontWeight: "bolder",
@@ -238,9 +240,12 @@ export default function Headers(props) {
             </Link>
             <ul>
               <li className="li">ACCOUNT</li>
-             <label htmlFor="cart"> <li style={{ paddingLeft: "20px" }}>WHISLIST</li></label>
+              <label htmlFor="cart">
+                {" "}
+                <li style={{ paddingLeft: "20px" }}>WHISLIST</li>
+              </label>
               {isCartVisible && (
-                <div className="cart" name='cart'>
+                <div className="cart" name="cart">
                   <button onClick={handleCartToggle}>Close Cart</button>
                   {/* <Cart /> */}
                 </div>

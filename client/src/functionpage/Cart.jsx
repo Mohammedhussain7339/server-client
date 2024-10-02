@@ -15,7 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { removeAsync } from "../redux/slices/counter/decrementAsync";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { increment , decrement } from "../redux/slices/counter/incDecrement";
+import { increment, decrement } from "../redux/slices/counter/incDecrement";
 import { BASE_URL } from "../services/url";
 export default function Cart() {
   const cartQuantities = useSelector((state) => state.incDec.cart);
@@ -40,10 +40,7 @@ export default function Cart() {
     const fetchData = async () => {
       try {
         let data = { userId: localStorage.getItem("userId") };
-        const response = await axios.post(
-          `${BASE_URL}/cart-page`,
-          data
-        );
+        const response = await axios.post(`${BASE_URL}/cart-page`, data);
 
         if (response.data && response.data.products) {
           setProducts(response.data.products);
@@ -155,7 +152,7 @@ export default function Cart() {
           <span className="yourcart">Your Cart</span>
           <div className="ppqt">
             <h3>product</h3>
-            <h3>price</h3>
+            <h3 style={{paddingLeft:'110px'}}>price</h3>
             <h3>quantity</h3>
             <h4>total</h4>
           </div>
@@ -165,21 +162,39 @@ export default function Cart() {
               {products.map((product) => (
                 // <div className='productbox'>
                 <li key={product._id}>
-                  <div className="cartdiv">
-                    <img
-                      src={`${BASE_URL}/uploads/${product.productImage[0].originalname}`}
-                      alt={product.productName}
-                    />
-                  </div>
-                  <span className="cartpname">{product.productName}</span>
-                  <p style={{ marginLeft: "70px" }} className="cartpcolor">
-                    {product.colorType}
-                  </p>
-                  <span className="cartprice"> Rs:{product.productPrice}</span>
-                  <div className="btnbox cartbtnbox">
-                    <button onClick={() => dispatch(decrement(product._id))}>-</button>
+                  <div className="maincartdiv">
+                    <div className="box" style={{textAlign:"center",width:'350px',display:'flex',alignItems:'center',gap:'10px'}}>
+                      <div className="cartdiv" >
+                        <img
+          key={product.productImage[0].public_id} // Access the first image's public_id
+          src={product.productImage[0].url} // Access the first image's URL
+                          alt={product.productName}
+                        />
+                                                </div>
+
+                        <div className="cartpname" style={{width:'300px'}}>{product.productName}</div>
+                        <div
+                          className="cartpcolor">
+                          {product.colorType}
+                      </div>
+                    </div>
+
+                    <div className="box">
+                      {" "}
+                      <span className="cartprice">
+                        {" "}
+                        Rs:{product.productPrice}
+                      </span>
+                    </div>
+                    <div className="box">
+                    <div className="btnbox cartbtnbox">
+                    <button onClick={() => dispatch(decrement(product._id))}>
+                      -
+                    </button>
                     <button>{cartQuantities[product._id] || 0}</button>
-                    <button onClick={() => dispatch(increment(product._id))}>+</button>
+                    <button onClick={() => dispatch(increment(product._id))}>
+                      +
+                    </button>
 
                     <span
                       // onClick={() => discartHandler(product._id)}
@@ -188,10 +203,16 @@ export default function Cart() {
                       <MdDelete />
                     </span>
                   </div>
-                  <span className="carttotal">
+
+                    </div>
+                    <div className="box">
+                    <span className="carttotal">
                     {" "}
                     Rs:{product.productPrice}.00
                   </span>
+
+                    </div>
+                  </div>
                 </li>
                 // </div>
               ))}
@@ -265,7 +286,7 @@ export default function Cart() {
           <div style={{ position: "relative", bottom: "300px" }}>
             <Footer />
           </div>
-        <ToastContainer />
+          <ToastContainer />
         </div>
       </cartContext.Provider>
     </>

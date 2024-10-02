@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-
+import { BASE_URL } from '../../../services/url';
 // Async thunk to handle increment action with API call
 export const incrementAsync = createAsyncThunk(
   'counter/incrementAsync',

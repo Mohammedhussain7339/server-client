@@ -7,9 +7,7 @@ function Home1() {
     if (localStorage.getItem("userRole") !== "admin") {
       alert("Please login as admin first.");
       navigate("/");
-    } else {
-      fetchData(); // Fetch data only if user is admin
-    }
+    } 
   }, []); // Empty dependency array means this effect runs only once on mount
 
   return (

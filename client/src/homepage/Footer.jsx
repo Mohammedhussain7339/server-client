@@ -1,34 +1,43 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import { ToastContainer,toast } from "react-toastify";
 export default function Footer() {
-  const [userfeed, setuserFeed] = useState("");
+  const [userfeed, setuserFeed] = useState(" ");
   const feedHandler = (e) => {
     setuserFeed(e.target.value);
     console.log(userfeed);
   };
 
-  const feedbackSender = async(e)=>{
-    e.preventDefault();
+  const feedbackSender = async (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
+
     try {
-      let userfirstName = localStorage.getItem("firstname");
+      let userfirstName = localStorage.getItem("firstname"); // Get user's first name from local storage
 
+      // Send POST request to server
       const response = await axios.post('http://localhost:8000/userfeed',
-        { userfeed, userfirstName },
-        console.log(userfeed,userfirstName),
-
+        { userfeed, userfirstName }, // Data to be sent
+        
         {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+          headers: {
+            'Content-Type': 'application/json', // Specify content type
+          },
+        }
+      );
+      setuserFeed(" ");
+
+      // Show success toast if the request was successful
+      toast.success("Feedback submitted successfully");
+      
+      // Clear the input after submission (optional)
 
     } catch (error) {
-      console.log("Error submitting user feed:", error);
+      toast.error("Error submitting feedback"); // Show error toast
     }
-
+  };
+  
       
-  }
+  
   return (
     <>
       <div className="subfooter">

@@ -45,8 +45,12 @@ export default function Explore(props) {
   const [filteredProduct, setFilteredProduct] = useState([]);
   const cart = useContext(cartContext);
 
-  const quickshowHandler = async (productId) => {
-    setQuickbox(!quickbox);
+  const closequickAnyway=()=>{
+    setQuickbox(false)
+  }
+  const quickshowHandler = async (productId,e) => {
+    e.stopPropagation(); // Prevent event bubbling
+    setQuickbox(true);
     // console.log("quick", productId);
 
     try {
@@ -194,10 +198,23 @@ export default function Explore(props) {
     };
     fetchData();
   }, [cartrefresh]);
-
-  const handleCart = (id, name, price) => {
+  const closeCartAnyway=()=>{
+    setIsCartVisible(false);
+    console.log('close')
+  }
+  useEffect(() => {
+    if (isCartVisible) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
+  }, [isCartVisible]);
+  
+  const handleCart = (id, name, price,e) => {
     if (auth) {
-      setIsCartVisible(!isCartVisible);
+      e.stopPropagation(); // Prevent event bubbling
+      setIsCartVisible(true);
+      console.log('true')
       const item = { _id: id, name: name, amount: price, quantity: 1 };
       dispatch(incrementAsync(item));
       toast.success("Product added to cart successfully!");
@@ -238,43 +255,12 @@ export default function Explore(props) {
       }
     });
   };
-
-  // const handleCart = (productId) => {
-
-  //   setIsCartVisible(!isCartVisible);
-
-  //   console.log("Adding product to cart:", productId, "for user:", userId);
-
-  //   const url = `http://localhost:8000/cart-product`;
-  //   const data = { userId, productId };
-
-  //   axios
-  //     .post(url, data)
-  //     .then((res) => {
-  //       if (auth) {
-  //         toast.success('Product added to cart successfully!');
-  //         // Dispatch increment action to add product to cart in Redux store
-  //         dispatch(increment({ ...res.data.product, quantity: 1 }));
-  //       } else {
-  //         toast.error(
-  //           <>
-  //             Please! Login first. <Link to="/">Go to Login</Link>
-  //           </>
-  //         );
-  //       }
-
-  //       setcartRefresh(!cartrefresh);
-  //       setcartProducts(res.data.cartproducts); // Update cartproducts with the new data
-  //       console.log('Cart products length:', res.data.cartproducts.length);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error adding product to cart:", error);
-  //       toast.error('Error adding product to cart. Please try again.');
-  //     });
-  // };
-
+  const clickhandler=()=>{
+    closeCartAnyway();
+    closequickAnyway();
+  }
   return (
-    <div className="explorer">
+    <div className="explorer" onClick={clickhandler}>
       <i
         className="magnifier"
         style={{ cursor: "pointer" }}
@@ -303,23 +289,15 @@ export default function Explore(props) {
                 <div className="productbox" key={product._id}>
                   <li>
                     <div className="imgdiv">
-                      {product.productImage.length > 1 && (
-                        <img
-                          className="pimg2"
-                          onClick={() => handleProduct(product._id)}
-                          src={`${BASE_URL}/uploads/${product.productImage[1].originalname}`} // Second image
-                          alt={product.productName}
-                        />
-                      )}
-                      {product.productImage &&
-                        product.productImage.length > 0 && (
-                          <img
-                            className="pimg1"
-                            onClick={() => handleProduct(product._id)}
-                            src={`${BASE_URL}/uploads/${product.productImage[0].originalname}`} // Assuming first image in the array
-                            alt={product.productName}
-                          />
-                        )}
+                    {product.productImage.map((image) => (
+                  <img
+                  style={{cursor:'pointer'}}
+                    onClick={()=>handleProduct(product._id)}
+                    key={image.public_id} // Assuming each image has a unique public_id
+                    src={image.url}
+                    alt={product.productName}
+                  />
+                ))}
                       <div className="icondiv">
                         <i>
                           {likedproducts.find(
@@ -335,16 +313,16 @@ export default function Explore(props) {
                         </i>
                         <i>
                           <IoCartOutline
-                            onClick={() =>
+                            onClick={(e) =>
                               handleCart(
                                 product._id,
                                 product.productName,
-                                product.productPrice
+                                product.productPrice,e
                               )
                             }
                           />
                         </i>
-                        <i onClick={() => quickshowHandler(product._id)}>
+                        <i onClick={(e) => quickshowHandler(product._id,e)}>
                           <IoSearchOutline />
                         </i>
                       </div>
@@ -379,17 +357,19 @@ export default function Explore(props) {
 
               {filteredProduct.length > 0 && (
                 <>
-                  <div className="quickimg">
-                    {filteredProduct[0].productImage &&
-                    filteredProduct[0].productImage.length > 0 ? (
-                      <img
-                        src={`${BASE_URL}/uploads/${filteredProduct[0].productImage[0].originalname}`} // Assuming first image in the array
+                    <div className="quickimg">
+                      {filteredProduct[0].productImage &&
+                      filteredProduct[0].productImage.length > 0 ? (
+                        <img
+                        key={filteredProduct[0].productImage[0].public_id} // Accessing the first image's public_id
+                        src={filteredProduct[0].productImage[0].url} // Accessing the first image's url
                         alt={filteredProduct[0].productName}
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = "defaultImagePath";
-                        }} // Optional: Set a default image if the src fails
-                      />
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = "defaultImagePath";
+                          }} // Optional: Set a default image if the src fails
+                        />
+                        
                     ) : (
                       <p>No image available</p>
                     )}
@@ -469,12 +449,17 @@ export default function Explore(props) {
                   {cartproducts.map((product) => (
                     // <div className='productbox'>
                     <li key={product._id}>
-                      <div className="quickcartbox">
-                        <img
-                          src={`${BASE_URL}/uploads/${product.productImage[0].originalname}`}
-                          alt={product.productName}
-                        />
-                      </div>
+    <div className="quickcartbox">
+      {product.productImage && product.productImage.length > 0 ? (
+        <img
+          key={product.productImage[0].public_id} // Access the first image's public_id
+          src={product.productImage[0].url} // Access the first image's URL
+          alt={product.productName} // Set the alt attribute with the product name
+        />
+      ) : (
+        <p>No image available</p> // Fallback if no images are available
+      )}
+    </div>
                       <span className="quickcartpname">
                         {product.productName}
                       </span>

@@ -8,14 +8,13 @@ const productSchema = new mongoose.Schema({
     productType:String,
     colorType: String,
     brand:String,
-    productImage: [{
-        originalname: String,
-        encoding: String,
-        mimetype: String,
-        size: Number,
-        path: String // File path where the file is saved
-      }]
-        // productImage1: String,
+    productImage: [
+      {
+        url: { type: String, required: true },
+        public_id: { type: String, required: true }
+      }
+    ]
+            // productImage1: String,
     });
    const product1 = mongoose.model('product1', productSchema);  
    module.exports = product1;

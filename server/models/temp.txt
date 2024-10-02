@@ -727,3 +727,98 @@ export default function Userdata() {
   //on means receive data 
   // socket.broadcast.emit('Welcome',`Welcome to the Server`)
   // socket.broadcast.emit('Welcome',`SockedIdd:${socket.id}=join the Server`)
+  // const handleCart = (productId) => {
+
+  //   setIsCartVisible(!isCartVisible);
+
+  //   console.log("Adding product to cart:", productId, "for user:", userId);
+
+  //   const url = `http://localhost:8000/cart-product`;
+  //   const data = { userId, productId };
+
+  //   axios
+  //     .post(url, data)
+  //     .then((res) => {
+  //       if (auth) {
+  //         toast.success('Product added to cart successfully!');
+  //         // Dispatch increment action to add product to cart in Redux store
+  //         dispatch(increment({ ...res.data.product, quantity: 1 }));
+  //       } else {
+  //         toast.error(
+  //           <>
+  //             Please! Login first. <Link to="/">Go to Login</Link>
+  //           </>
+  //         );
+  //       }
+
+  //       setcartRefresh(!cartrefresh);
+  //       setcartProducts(res.data.cartproducts); // Update cartproducts with the new data
+  //       console.log('Cart products length:', res.data.cartproducts.length);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error adding product to cart:", error);
+  //       toast.error('Error adding product to cart. Please try again.');
+  //     });
+  // };
+
+  // const handleCart = (productId) => {
+
+  //   setIsCartVisible(!isCartVisible);
+
+  //   console.log("Adding product to cart:", productId, "for user:", userId);
+
+  //   const url = `http://localhost:8000/cart-product`;
+  //   const data = { userId, productId };
+
+  //   axios
+  //     .post(url, data)
+  //     .then((res) => {
+  //       if (auth) {
+  //         toast.success('Product added to cart successfully!');
+  //         // Dispatch increment action to add product to cart in Redux store
+  //         dispatch(increment({ ...res.data.product, quantity: 1 }));
+  //       } else {
+  //         toast.error(
+  //           <>
+  //             Please! Login first. <Link to="/">Go to Login</Link>
+  //           </>
+  //         );
+  //       }
+
+  //       setcartRefresh(!cartrefresh);
+  //       setcartProducts(res.data.cartproducts); // Update cartproducts with the new data
+  //       console.log('Cart products length:', res.data.cartproducts.length);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error adding product to cart:", error);
+  //       toast.error('Error adding product to cart. Please try again.');
+  //     });
+  // };
+  // console.log("usernameee", username);
+  // const newSocket = useMemo(() => io("http://localhost:8000"), []);
+  // const [socket, setSocket] = useState(null);
+
+  // const sendHandler = (e) => {
+  //   e.preventDefault();
+  //   const data = {
+  //     username,
+  //     msg,
+  //     productId: localStorage.getItem("productId1"),
+  //   };
+  //   newSocket.emit("message", data);
+  //   setMsg(""); // Clear the input field after sending the message
+  // };
+
+  // useEffect(() => {
+  //   newSocket.on("connect", () => {
+  //     console.log("Connection successful");
+  //     console.log("SocketId:", newSocket.id);
+  //   });
+  //   newSocket.on("receive-message", (data) => {
+  //     console.log(data);
+  //   });
+
+  //   return () => {
+  //     newSocket.disconnect();
+  //   };
+  // }, []);

@@ -26,7 +26,7 @@ function Userlist() {
 
 
   return (
-    <div>
+    <div style={{width:'100%',height:'100vh'}}>
       <h1 style={{textAlign:'center'}}>User Information</h1>
       <table className='userlisttable'>
         <tr>
@@ -41,10 +41,10 @@ function Userlist() {
               </td>
               <td>{user.firstname}</td>
               <td>{user.lastname}</td>
-              <td>73898293</td>
+              <td>{user.contact}</td>
               <td> {user.email}</td>
-              <td>341505</td>
-              <td>Makrana</td>
+              <td>{user.pincode}</td>
+              <td>{user.address}</td>
                  
         </tr>
           ))

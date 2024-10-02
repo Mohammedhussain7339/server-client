@@ -40,7 +40,8 @@ function Adminpage() {
 
   return (
     <div className="adminpage">
-      <AdminNav />
+      <AdminNav />      
+
       <div style={{ display: "flex" }}>
         <aside>
           <Sidebar setPage={setCurrentPage} />

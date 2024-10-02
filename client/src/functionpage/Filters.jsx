@@ -10,7 +10,7 @@ import { Pagination } from 'swiper/modules';
 import { useState,useEffect } from 'react';
 import Footer from '../homepage/Footer';
 import axios from 'axios';
-
+import { BASE_URL } from '../services/url';
 export default function Filters() {
 const navigate=useNavigate();
 
@@ -33,7 +33,7 @@ const navigate=useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/productfetch');
+        const response = await axios.get(`${BASE_URL}/productfetch`);
         setProducts(response.data.products);
         setFilteredProducts(response.data.products); // Initialize filteredProducts with all products
 
@@ -182,7 +182,9 @@ const navigate=useNavigate();
           <div className="showbox">
             <div className="imgdivs">
               <img 
-                    src={`http://localhost:8000/uploads/${product.productImage[0].originalname}`} // Second image
+                              key={product.productImage[0].public_id} // Access the first image's public_id
+                              src={product.productImage[0].url} // Access the first image's URL
+                     // Second image
                     />
             </div>
             <li style={{marginTop:'10px'}}>{product.productName}</li>

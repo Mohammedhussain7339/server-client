@@ -47,7 +47,7 @@ export default function Login2({tagname}) {
         if (response.data.userRole === 'user') {
           navigate('/Home');
         } else if (response.data.userRole === 'admin') {
-          navigate('/product');
+          navigate('/Adminpage');
         } else {
           console.error('Unknown role:', response.data.userRole);
         }

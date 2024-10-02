@@ -13,6 +13,7 @@ const session = require('express-session');
 const bcrypt = require('bcrypt');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const http =require('http');
@@ -20,7 +21,7 @@ const {Server} =require('socket.io');
 const checkout=require('./models/checkout')
 const BASE_URL =process.env.BASE_URL;
 const Url=process.env.PORT||8000;
-
+const Userview=require('./models/viewuser')
 const app = express();
 // const httpserver = http.createServer(app);
 // const io = new Server(httpserver,{
@@ -55,7 +56,16 @@ app.use(session({
     api_secret: 'OTjVgcLiMORbbKJO8v-1hRr11Gg',
   });
   
+  const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+      folder: 'products', // Folder in your Cloudinary account where images will be uploaded
+      allowed_formats: ['jpg', 'png'], // Allowed file types
+    },
+  });
+  const upload = multer({ storage });
 
+  
 // CORS middleware to allow cross-origin requests
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -207,24 +217,41 @@ app.get('/files', async (req, res) => {
   });
 
 
-  var storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, 'uploads/'); // Destination folder for uploaded files
-    },
-    filename: (req, file, cb) => {
-      cb(null, file.originalname); // Use the original filename
-    }
-  });
+  // var storage = multer.diskStorage({
+  //   destination: (req, file, cb) => {
+  //     cb(null, 'uploads/'); // Destination folder for uploaded files
+  //   },
+  //   filename: (req, file, cb) => {
+  //     cb(null, file.originalname); // Use the original filename
+  //   }
+  // });
   
-  const upload = multer({ storage: storage });
+  // const upload = multer({ storage: storage });
   
 
   
-  app.post('/product1', upload.array('productsimg',12), async (req, res) => {
-    const { productName, productPrice, productDescription, productType, colorType,brand } = req.body;
-    console.log(productName, productPrice)
+
+  app.post('/product1', upload.array('productsimg', 12), async (req, res) => {
+    const { productName, productPrice, productDescription, productType, colorType, brand } = req.body;
   
     try {
+      // Array to hold upload results from Cloudinary
+      const imageUploadResults = [];
+  
+      // Loop through each uploaded file and upload to Cloudinary
+      for (const file of req.files) {
+        const result = await cloudinary.uploader.upload(file.path, {
+          folder: 'products', // Optional: Set a folder in Cloudinary
+        });
+  
+        // Push the uploaded image's URL and public_id to array
+        imageUploadResults.push({
+          url: result.secure_url, // The URL of the uploaded image
+          public_id: result.public_id, // The public_id of the uploaded image
+        });
+      }
+  
+      // Create a new product with the uploaded image URLs and public_ids
       const newProduct = new product1({
         productName,
         productPrice,
@@ -232,30 +259,87 @@ app.get('/files', async (req, res) => {
         productType,
         colorType,
         brand,
-        productImage: req.files // Assuming req.files contains the array of file objects
-
+        productImage: imageUploadResults, // Save the image URLs and public_ids
       });
   
+      // Save the product in the database
       await newProduct.save();
+  
+      // Send a success response with the new product
       res.json({ success: true, product: newProduct });
     } catch (error) {
       console.error('Error saving product:', error);
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
+
+    // update product data
+    app.put('/product1/:id', upload.array('productsimg', 12), async (req, res) => {
+      const { productName, productPrice, productDescription, productType, colorType, brand } = req.body;
+      const productId = req.params.id; // Get product ID from URL
     
-  //productfetch data
+      try {
+        // Find the product by ID
+        const productToUpdate = await product1.findById(productId);
+        if (!productToUpdate) {
+          return res.status(404).json({ error: 'Product not found' });
+        }
+    
+        // Array to hold new image upload results from Cloudinary
+        const imageUploadResults = [];
+    
+        // Loop through each uploaded file and upload to Cloudinary
+        if (req.files) {
+          for (const file of req.files) {
+            const result = await cloudinary.uploader.upload(file.path, {
+              folder: 'products', // Optional: Set a folder in Cloudinary
+            });
+    
+            // Push the uploaded image's URL and public_id to array
+            imageUploadResults.push({
+              url: result.secure_url, // The URL of the uploaded image
+              public_id: result.public_id, // The public_id of the uploaded image
+            });
+          }
+        }
+    
+        // Optionally: You can delete old images from Cloudinary if needed (add logic here)
+    
+        // Update the product's fields
+        productToUpdate.productName = productName || productToUpdate.productName;
+        productToUpdate.productPrice = productPrice || productToUpdate.productPrice;
+        productToUpdate.productDescription = productDescription || productToUpdate.productDescription;
+        productToUpdate.productType = productType || productToUpdate.productType;
+        productToUpdate.colorType = colorType || productToUpdate.colorType;
+        productToUpdate.brand = brand || productToUpdate.brand;
+    
+        // If new images were uploaded, update the product's images
+        if (imageUploadResults.length > 0) {
+          productToUpdate.productImage.push(...imageUploadResults);
+        }
+    
+        // Save the updated product in the database
+        const updatedProduct = await productToUpdate.save();
+    
+        // Send a success response with the updated product
+        res.json({ success: true, product: updatedProduct });
+      } catch (error) {
+        console.error('Error updating product:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+    });
+    
+  // Product fetch route
   app.get('/productfetch', async (req, res) => {
     try {
       const products = await product1.find();
       res.json({ success: true, products });
-      console.log(products)
+      console.log(products);
     } catch (error) {
       console.error('Error fetching products:', error);
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
-
 // likedproduct data
 app.post('/like-product',(req,res)=>{
   let productId =req.body.productId;
@@ -365,13 +449,27 @@ app.get('/quick-page/:id', async (req, res) => {
 });
 
 //product delete
+
 app.delete('/product1/:id', async (req, res) => {
   try {
-    const deletedProduct = await product1.findByIdAndDelete(req.params.id);
+    // Find the product by ID before deleting it
+    const deletedProduct = await product1.findById(req.params.id);
     if (!deletedProduct) {
       return res.status(404).json({ success: false, message: 'Product not found' });
     }
-    res.json({ success: true, message: 'Product deleted successfully' });
+
+    // Delete the images associated with the product from Cloudinary
+    if (deletedProduct.productImage && deletedProduct.productImage.length > 0) {
+      for (const image of deletedProduct.productImage) {
+        await cloudinary.uploader.destroy(image.public_id); // Deletes the image using public_id
+      }
+    }
+
+    // Delete the product from the database
+    await product1.findByIdAndDelete(req.params.id);
+
+    // Send a success response
+    res.json({ success: true, message: 'Product and images deleted successfully' });
   } catch (error) {
     console.error('Error deleting product:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -439,7 +537,38 @@ app.get('/get/userfeed',async(req,res)=>{
 
 })
 
-   
+let viewCount = 0;
+
+app.post('/updateViewCount', async (req, res) => {
+    const userId = req.body.userId;
+
+    if (userId) {
+        try {
+            // Check if user ID already exists in the database
+            const user = await Userview.findOne({ userId });
+            if (!user) {
+                // If not, create a new user
+                await Userview.create({ userId });
+                viewCount++; // Increment view count
+                console.log(`User ID saved: ${userId}, New view count: ${viewCount}`);
+            } else {
+                console.log(`User ID already visited: ${userId}`);
+            }
+            res.json({ viewCount });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    } else {
+        res.status(400).json({ error: 'User ID is required.' });
+    }
+});
+
+// Endpoint to get the view count
+app.get('/getViewCount', (req, res) => {
+  res.json({ viewCount }); // Respond with the current view count
+});
+  
 
 
 

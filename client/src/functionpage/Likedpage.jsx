@@ -54,10 +54,14 @@ export default function Likedpage() {
             <div className='productbox'>
             <li key={product._id}>
               <div className="imgdiv">
-              <img src={`${BASE_URL}/uploads/${product.productImage[0].originalname}`} alt={product.productName} />
+              <img 
+                        key={product.productImage[0].public_id} // Access the first image's public_id
+                        src={product.productImage[0].url} // Access the first image's URL
+              
+               alt={product.productName} />
 
                 <div className="icondiv">
-                <i onClick={()=>handleLiked(product._id)}><IoMdHeartEmpty /></i>
+                {/* <i onClick={()=>handleLiked(product._id)}><IoMdHeartEmpty /></i> */}
                 <i><IoCartOutline /></i>
                 <i onClick={quickHandler}><IoSearchOutline /></i>
 
